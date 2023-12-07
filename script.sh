@@ -14,12 +14,18 @@ if [[ $1 == "build" ]]; then
 elif [[ $1 == "start" ]]; then
     check
     docker-compose --env-file .env --file docker-compose.yml up -d
+    # docker-compose exec backend python manage.py migrate
 elif [[ $1 == "stop" ]]; then
     check
     docker-compose --env-file .env --file docker-compose.yml down
 elif [[ $1 == "clean" ]]; then
     # clean
-    docker system prune --force
+    docker rmi itss2_pomodoro-frontend
+    docker rmi itss2_pomodoro-backend
+    docker rmi itss2_pomodoro-nginx
+    docker rmi itss2_pomodoro-database
+    docker rmi phpmyadmin/phpmyadmin
+    docker rmi mysql:latest
 elif [[ $1 == "fclean" ]]; then
     # full clean
     docker system prune --all --force
