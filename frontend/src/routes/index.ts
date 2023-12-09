@@ -6,7 +6,7 @@ const publicRoutes = [
   {
     path: "",
     component: Home,
-    layout: null,
+    layout: DefaultLayout,
   },
   {
     path: "/404",
