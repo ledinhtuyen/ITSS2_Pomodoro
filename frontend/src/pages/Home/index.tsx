@@ -122,7 +122,7 @@ const Home = () => {
   return (
     <div className="">
       <div className="bg-[url('src/assets/images/Wallpaper.png')] bg-cover bg-no-repeat bg-center h-screen">
-        <div className="pomodoro-timer absolute top-[140px] left-1/3 text-white w-[450px] h-[400px] bg-transparent">
+        <div className="pomodoro-timer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white w-[450px] h-[400px] bg-transparent">
           <div className="flex justify-between leading-8	">
             <button
               className={
