@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Menu, MenuProps } from "antd";
 import { HeartOutlined, HomeOutlined } from "@ant-design/icons";
 import ExerciseIcon from "../assets/icons/ExerciseIcon";
 import LogoIcon from "../assets/images/Icon.png";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Layout.scss";
 interface DefaultLayoutProps {
   children: React.ReactElement;
@@ -13,14 +14,12 @@ type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
   label?: React.ReactNode,
   key?: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[]
+  icon?: React.ReactNode
 ): MenuItem {
   return {
+    label,
     key,
     icon,
-    children,
-    label,
   } as MenuItem;
 }
 
@@ -38,17 +37,35 @@ const items: MenuProps["items"] = [
 ];
 
 const DefaultLayout = ({ children }: DefaultLayoutProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [currentPage, setCurrentPage] = useState(() =>
+    location.pathname == "/"
+      ? "1"
+      : location.pathname == "/exercise"
+      ? "2"
+      : "3"
+  );
+
   const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
+    setCurrentPage(e.key);
   };
+
+  useEffect(() => {
+    currentPage === "1"
+      ? navigate("/")
+      : currentPage === "2"
+      ? navigate("/exercise")
+      : navigate("/likes");
+  }, [currentPage]);
+
   return (
     <div>
       <Menu
         onClick={onClick}
-        style={{ width: 89, borderRadius: 20 }}
-        className="z-[100] fixed top-4 left-8 h-[95vh] !bg-[#1C1917]  "
-        defaultSelectedKeys={["1"]}
-        defaultOpenKeys={["sub1"]}
+        className="sidebar-menu w-[89px] rounded-3xl z-[100] fixed top-4 left-8 h-[95vh] !bg-[#1C1917]  "
+        selectedKeys={[currentPage]}
         mode="inline"
         theme="dark"
         items={items}

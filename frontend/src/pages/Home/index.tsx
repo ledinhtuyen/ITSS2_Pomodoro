@@ -127,8 +127,8 @@ const Home = () => {
             <button
               className={
                 currentProcess === Process.POMODORO
-                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700"
-                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white"
+                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700 cursor-default"
+                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white cursor-default"
               }
             >
               <span>{Process.POMODORO}</span>
@@ -136,8 +136,8 @@ const Home = () => {
             <button
               className={
                 currentProcess === Process.SHORT_BREAK
-                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700"
-                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white"
+                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700 cursor-default"
+                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white cursor-default"
               }
             >
               <span>{Process.SHORT_BREAK}</span>
@@ -145,8 +145,8 @@ const Home = () => {
             <button
               className={
                 currentProcess === Process.LONG_BREAK
-                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700"
-                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white"
+                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700 cursor-default"
+                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white cursor-default"
               }
             >
               <span>{Process.LONG_BREAK}</span>
@@ -207,7 +207,7 @@ const Home = () => {
         <PomodoroPopup setIsOpenPomodoroPopup={setIsOpenPomodoroPopup} />
       )}
       {isOpenSettingPopup && (
-        <SettingPopup setIsOpenPomodoroPopup={setIsOpenPomodoroPopup} />
+        <SettingPopup setIsOpenSettingPopup={setIsOpenSettingPopup} />
       )}
     </div>
   );
