@@ -2,12 +2,12 @@ import React from "react";
 import { CloseOutlined } from "@ant-design/icons";
 
 interface PomodoroPopupProps {
-  setIsOpenPopupPomodoro: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenPomodoroPopup: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const PomodoroPopup = ({ setIsOpenPopupPomodoro }: PomodoroPopupProps) => {
+const PomodoroPopup = ({ setIsOpenPomodoroPopup }: PomodoroPopupProps) => {
   const handleClosePopupPomodoro = () => {
-    setIsOpenPopupPomodoro(false);
+    setIsOpenPomodoroPopup(false);
   };
 
   return (
