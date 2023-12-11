@@ -2,9 +2,17 @@ import React, { useState } from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { Menu, MenuProps } from "antd";
 import "./SettingPopup.scss";
+import PomodoroTab from "./PomodoroTab";
+import ReminderTab from "./ReminderTab";
 
 interface SettingPopupProps {
   setIsOpenSettingPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  pomodoro: number;
+  setPomodoro: React.Dispatch<React.SetStateAction<number>>;
+  shortBreak: number;
+  setShortBreak: React.Dispatch<React.SetStateAction<number>>;
+  longBreak: number;
+  setLongBreak: React.Dispatch<React.SetStateAction<number>>;
 }
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -21,7 +29,15 @@ const items: MenuProps["items"] = [
   getItem("Reminders", "2"),
 ];
 
-const SettingPopup = ({ setIsOpenSettingPopup }: SettingPopupProps) => {
+const SettingPopup = ({
+  longBreak,
+  pomodoro,
+  setIsOpenSettingPopup,
+  setLongBreak,
+  setPomodoro,
+  setShortBreak,
+  shortBreak,
+}: SettingPopupProps) => {
   const [currentTab, setCurrentTab] = useState("1");
 
   const onClick: MenuProps["onClick"] = (e) => {
@@ -41,12 +57,12 @@ const SettingPopup = ({ setIsOpenSettingPopup }: SettingPopupProps) => {
         >
           <CloseOutlined className="text-white" />
         </button>
-        <div className="w-full h-full mt-14 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="grid grid-cols-12 px-4">
-            <div className="col-span-3 border-r border-[#292524] pr-3">
+        <div className="w-full h-[calc(100%-64px)] absolute top-16">
+          <div className="grid grid-cols-12 px-4 ">
+            <div className="col-span-3 border-r border-[#292524] pr-3 relative">
               <Menu
                 onClick={onClick}
-                className="setting-menu w-min !bg-[#1C1917] relative top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                className="setting-menu w-min !bg-[#1C1917] absolute top-11 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                 selectedKeys={[currentTab]}
                 mode="inline"
                 theme="dark"
@@ -55,11 +71,16 @@ const SettingPopup = ({ setIsOpenSettingPopup }: SettingPopupProps) => {
             </div>
             <div className="col-span-9">
               {currentTab === "1" && (
-                <div className="col-span-9">Pomandoro Tab</div>
+                <PomodoroTab
+                  pomodoro={pomodoro}
+                  setPomodoro={setPomodoro}
+                  shortBreak={shortBreak}
+                  setShortBreak={setShortBreak}
+                  longBreak={longBreak}
+                  setLongBreak={setLongBreak}
+                />
               )}
-              {currentTab === "2" && (
-                <div className="col-span-9">Reminder Tab</div>
-              )}
+              {currentTab === "2" && <ReminderTab />}
             </div>
           </div>
         </div>

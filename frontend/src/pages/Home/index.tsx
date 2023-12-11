@@ -25,9 +25,9 @@ const Home = () => {
   const [currentProcess, setCurrentProcess] = useState<Process>(
     Process.POMODORO
   );
-  const [pomodoro, setPomodoro] = useState(0.1 * 60);
-  const [shortBreak, setShortBreak] = useState(0.1 * 60);
-  const [longBreak, setLongBreak] = useState(0.1 * 60);
+  const [pomodoro, setPomodoro] = useState(25 * 60);
+  const [shortBreak, setShortBreak] = useState(5 * 60);
+  const [longBreak, setLongBreak] = useState(30 * 60);
 
   // set CountDown Clock Time
   const [time, setTime] = useState<number>(pomodoro);
@@ -207,7 +207,15 @@ const Home = () => {
         <PomodoroPopup setIsOpenPomodoroPopup={setIsOpenPomodoroPopup} />
       )}
       {isOpenSettingPopup && (
-        <SettingPopup setIsOpenSettingPopup={setIsOpenSettingPopup} />
+        <SettingPopup
+          setIsOpenSettingPopup={setIsOpenSettingPopup}
+          pomodoro={pomodoro}
+          setPomodoro={setPomodoro}
+          shortBreak={shortBreak}
+          setShortBreak={setShortBreak}
+          longBreak={longBreak}
+          setLongBreak={setLongBreak}
+        />
       )}
     </div>
   );
