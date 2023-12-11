@@ -25,9 +25,9 @@ const Home = () => {
   const [currentProcess, setCurrentProcess] = useState<Process>(
     Process.POMODORO
   );
-  const [pomodoro, setPomodoro] = useState(0.1 * 60);
-  const [shortBreak, setShortBreak] = useState(0.1 * 60);
-  const [longBreak, setLongBreak] = useState(0.1 * 60);
+  const [pomodoro, setPomodoro] = useState(25 * 60);
+  const [shortBreak, setShortBreak] = useState(5 * 60);
+  const [longBreak, setLongBreak] = useState(30 * 60);
 
   // set CountDown Clock Time
   const [time, setTime] = useState<number>(pomodoro);
@@ -122,13 +122,13 @@ const Home = () => {
   return (
     <div className="">
       <div className="bg-[url('src/assets/images/Wallpaper.png')] bg-cover bg-no-repeat bg-center h-screen">
-        <div className="pomodoro-timer absolute top-[140px] left-1/3 text-white w-[450px] h-[400px] bg-transparent">
+        <div className="pomodoro-timer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white w-[450px] h-[400px] bg-transparent">
           <div className="flex justify-between leading-8	">
             <button
               className={
                 currentProcess === Process.POMODORO
-                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700"
-                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white"
+                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700 cursor-default"
+                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white cursor-default"
               }
             >
               <span>{Process.POMODORO}</span>
@@ -136,8 +136,8 @@ const Home = () => {
             <button
               className={
                 currentProcess === Process.SHORT_BREAK
-                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700"
-                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white"
+                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700 cursor-default"
+                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white cursor-default"
               }
             >
               <span>{Process.SHORT_BREAK}</span>
@@ -145,8 +145,8 @@ const Home = () => {
             <button
               className={
                 currentProcess === Process.LONG_BREAK
-                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700"
-                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white"
+                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700 cursor-default"
+                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white cursor-default"
               }
             >
               <span>{Process.LONG_BREAK}</span>
@@ -207,7 +207,15 @@ const Home = () => {
         <PomodoroPopup setIsOpenPomodoroPopup={setIsOpenPomodoroPopup} />
       )}
       {isOpenSettingPopup && (
-        <SettingPopup setIsOpenPomodoroPopup={setIsOpenPomodoroPopup} />
+        <SettingPopup
+          setIsOpenSettingPopup={setIsOpenSettingPopup}
+          pomodoro={pomodoro}
+          setPomodoro={setPomodoro}
+          shortBreak={shortBreak}
+          setShortBreak={setShortBreak}
+          longBreak={longBreak}
+          setLongBreak={setLongBreak}
+        />
       )}
     </div>
   );
