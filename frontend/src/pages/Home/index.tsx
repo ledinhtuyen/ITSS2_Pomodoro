@@ -3,6 +3,7 @@ import {
   StepForwardOutlined,
   SettingOutlined,
   InfoCircleOutlined,
+  RedoOutlined,
 } from "@ant-design/icons";
 import TomotoIcon from "../../assets/images/tomato.png";
 import "./Home.scss";
@@ -25,12 +26,13 @@ const Home = () => {
   const [currentProcess, setCurrentProcess] = useState<Process>(
     Process.POMODORO
   );
-  const [pomodoro, setPomodoro] = useState(25 * 60);
-  const [shortBreak, setShortBreak] = useState(5 * 60);
-  const [longBreak, setLongBreak] = useState(30 * 60);
+  const [pomodoro, setPomodoro] = useState(0.1 * 60);
+  const [shortBreak, setShortBreak] = useState(0.1 * 60);
+  const [longBreak, setLongBreak] = useState(0.1 * 60);
 
   // set CountDown Clock Time
   const [time, setTime] = useState<number>(pomodoro);
+  const [reset, setReset] = useState(true);
   const minutes = Math.floor(time / 60);
   const remainingSeconds = time % 60;
 
@@ -51,7 +53,7 @@ const Home = () => {
     return () => clearInterval(timer);
   }, [time, isRunning]);
 
-  // set Time when Process change
+  // set Time with Process is corresponding
   useEffect(() => {
     setTime(
       currentProcess === Process.POMODORO
@@ -70,6 +72,7 @@ const Home = () => {
           currentProcess === Process.POMODORO
             ? setCurrentProcess(Process.SHORT_BREAK)
             : setCurrentProcess(Process.POMODORO);
+          setCurrentIteration(currentIteration + 0.5);
         }, 1000);
       } else {
         setTimeout(() => {
@@ -78,18 +81,24 @@ const Home = () => {
             : currentProcess === Process.SHORT_BREAK
             ? setCurrentProcess(Process.LONG_BREAK)
             : null;
+          setCurrentIteration(currentIteration + 0.5);
         }, 1000);
       }
-      setCurrentIteration(currentIteration + 0.5);
     }
   }, [time, pomodoro, shortBreak, longBreak]);
 
+  // Display Reset button to Reset Pomodoro CLock
   useEffect(() => {
-    if (time === 0 && currentProcess === Process.LONG_BREAK) {
+    if (
+      time === 0 &&
+      currentProcess === Process.LONG_BREAK &&
+      currentIteration === 5.5
+    ) {
       // set thong bao gi do
       setIsRunning(false);
+      setReset(false);
     }
-  }, [time]);
+  }, [time, currentProcess, currentIteration]);
 
   const handleOpenPomodoroPopup = () => {
     setIsOpenPomodoroPopup(true);
@@ -117,6 +126,13 @@ const Home = () => {
 
   const handleOpenSettingPopup = () => {
     setIsOpenSettingPopup(true);
+  };
+
+  const handleReset = () => {
+    setReset(true);
+    setIsRunning(false);
+    setCurrentIteration(1);
+    setCurrentProcess(Process.POMODORO);
   };
 
   return (
@@ -175,7 +191,21 @@ const Home = () => {
           </div>
           <div className="mt-5 flex justify-center gap-3 leading-8">
             <button
-              className="w-[80px] bg-[#44403C] px-4 py-1 rounded-full"
+              className={
+                reset === false
+                  ? "bg-white w-[40px] h-[40px] rounded-full border border-white"
+                  : "hidden"
+              }
+              onClick={handleReset}
+            >
+              <RedoOutlined spin />
+            </button>
+            <button
+              className={
+                reset === true
+                  ? `w-[80px] bg-[#44403C] px-4 py-1 rounded-full`
+                  : "hidden"
+              }
               onClick={handleStartPomodoroTimer}
             >
               <span>{isRunning ? "Pause" : "Start"}</span>
@@ -190,7 +220,7 @@ const Home = () => {
               className="bg-white w-[40px] h-[40px] rounded-full border border-white"
               onClick={handleOpenSettingPopup}
             >
-              <SettingOutlined />
+              <SettingOutlined spin />
             </button>
           </div>
         </div>

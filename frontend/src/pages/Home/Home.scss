@@ -8,3 +8,8 @@
     color: black !important;
   }
 }
+
+.anticon-spin::before,
+.anticon-spin {
+  animation: loadingCircle 4s infinite linear !important;
+}
