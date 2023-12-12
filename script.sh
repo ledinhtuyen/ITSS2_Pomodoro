@@ -22,7 +22,6 @@ elif [[ $1 == "clean" ]]; then
     # clean
     docker rmi itss2_pomodoro-frontend
     docker rmi itss2_pomodoro-backend
-    docker rmi itss2_pomodoro-nginx
     docker rmi itss2_pomodoro-database
     docker rmi phpmyadmin/phpmyadmin
     docker rmi mysql:latest
