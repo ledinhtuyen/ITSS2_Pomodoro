@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Slider, InputNumber } from "antd";
 import type { RadioChangeEvent } from "antd";
 import { Input, Radio, Space } from "antd";
+import axios from "axios";
 
 import "./PomodoroTab.scss";
 
@@ -28,21 +29,37 @@ const PomodoroTab = ({
     setValue(e.target.value);
   };
 
+  const postSetting = (a:number = pomodoro, b:number = shortBreak, c:number = longBreak) => {
+    axios.post(`${import.meta.env.VITE_DOMAIN}/timer/`, {
+      "pomodoro": a / 60,
+      "short_break": b / 60,
+      "long_break": c / 60,
+      "sleep_time": "23:00",
+      "user": 1,
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  };
+
   const onChangePomodoroTime = (minutes: number | null) => {
     if (minutes !== null) {
       setPomodoro(minutes * 60);
+      postSetting(minutes * 60);
     }
   };
 
   const onChangeShortBreak = (minutes: number | null) => {
     if (minutes !== null) {
       setShortBreak(minutes * 60);
+      postSetting(undefined, minutes * 60);
     }
   };
 
   const onChangeLongBreak = (minutes: number | null) => {
     if (minutes !== null) {
       setLongBreak(minutes * 60);
+      postSetting(undefined, undefined, minutes * 60);
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StepForwardOutlined,
   SettingOutlined,
@@ -9,12 +9,25 @@ import TomotoIcon from "../../assets/images/tomato.png";
 import "./Home.scss";
 import PomodoroPopup from "../../pop-up/PomodoroPopup";
 import SettingPopup from "../../pop-up/SettingPopup";
+import axios from "axios";
+import Spotify from "../../components/Spotify/Spotify";
 
 enum Process {
   POMODORO = "Pomodoro",
   LONG_BREAK = "Long Break",
   SHORT_BREAK = "Short Break",
 }
+
+interface Timer {
+  id: number;
+  pomodoro: number;
+  short_break: number;
+  long_break: number;
+  sleep_time: string;
+  user: number;
+}
+
+
 
 const Home = () => {
   const [isOpenPomodoroPopup, setIsOpenPomodoroPopup] = useState(false);
@@ -26,9 +39,9 @@ const Home = () => {
   const [currentProcess, setCurrentProcess] = useState<Process>(
     Process.POMODORO
   );
-  const [pomodoro, setPomodoro] = useState(0.1 * 60);
-  const [shortBreak, setShortBreak] = useState(0.1 * 60);
-  const [longBreak, setLongBreak] = useState(0.1 * 60);
+  const [pomodoro, setPomodoro] = useState(25 * 60);
+  const [shortBreak, setShortBreak] = useState(5 * 60);
+  const [longBreak, setLongBreak] = useState(30 * 60);
 
   // set CountDown Clock Time
   const [time, setTime] = useState<number>(pomodoro);
@@ -99,6 +112,20 @@ const Home = () => {
       setReset(false);
     }
   }, [time, currentProcess, currentIteration]);
+
+  let timer: Timer;
+  // Get Timer from API
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_DOMAIN}/timer/`)
+      .then((res) => {
+        timer = res.data;
+        setPomodoro(timer.pomodoro * 60);
+        setShortBreak(timer.short_break * 60);
+        setLongBreak(timer.long_break * 60);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleOpenPomodoroPopup = () => {
     setIsOpenPomodoroPopup(true);
@@ -231,6 +258,14 @@ const Home = () => {
           >
             <InfoCircleOutlined />
           </button>
+        </div>
+
+        <div className="absolute bottom-14 left-36">
+          <Spotify 
+            key={""}
+            url={`${import.meta.env.VITE_SPOTIFY_MUSIC_URL}`}
+            height="compact"
+            width="380" />
         </div>
       </div>
       {isOpenPomodoroPopup && (
