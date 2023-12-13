@@ -1,6 +1,8 @@
 Django
 djangorestframework
 python-dotenv
-mysqlclient
+mysql-connector-python
 gunicorn
 django-cors-headers
+cryptography
+pymysql
