@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { TimePicker } from "antd";
 import "./ReminderTab.scss";
@@ -24,8 +24,9 @@ const ReminderTab = ({ setSleepReminder, sleepReminder }: ReminderTabProps) => {
     });
   };
 
-  const onChangesleepReminder = (value: Dayjs | null, timeString: string) => {
+  const onChangeSleepReminder = (value: Dayjs | null, timeString: string) => {
     if (timeString !== null) {
+      console.log(value);
       setSleepReminder(timeString);
       postSetting(timeString);
     }
@@ -38,7 +39,7 @@ const ReminderTab = ({ setSleepReminder, sleepReminder }: ReminderTabProps) => {
         <div className="mb-3">Schedule</div>
         <TimePicker
           value={dayjs(sleepReminder, format)}
-          onChange={onChangesleepReminder}
+          onChange={onChangeSleepReminder}
           format={format}
         />
         <div className="mt-3">Default schedule</div>

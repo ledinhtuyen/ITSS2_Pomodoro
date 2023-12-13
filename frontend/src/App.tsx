@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { publicRoutes } from "./routes";
-import DefaultLayout from "./layouts";
 
 function App() {
   return (

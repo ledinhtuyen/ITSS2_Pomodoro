@@ -40,7 +40,7 @@ const Home = () => {
   const [countOpenWarningPopup, setCountOpenWarningPopup] = useState(0);
 
   const [isRunning, setIsRunning] = useState(false);
-  const [totalIteration, setTotalIteration] = useState(4);
+  const [totalIteration] = useState(4);
   const [currentIteration, setCurrentIteration] = useState(1);
   const [currentProcess, setCurrentProcess] = useState<Process>(
     Process.POMODORO

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Slider, InputNumber } from "antd";
 import type { RadioChangeEvent } from "antd";
-import { Input, Radio, Space } from "antd";
+import { Radio, Space } from "antd";
 import axios from "axios";
 
 import "./PomodoroTab.scss";
