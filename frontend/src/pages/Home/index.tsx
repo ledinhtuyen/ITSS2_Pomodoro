@@ -11,6 +11,10 @@ import PomodoroPopup from "../../pop-up/PomodoroPopup";
 import SettingPopup from "../../pop-up/SettingPopup";
 import axios from "axios";
 import Spotify from "../../components/Spotify/Spotify";
+import { extractHourAndMinute } from "../../helper/extractTime";
+import WarningPopup from "../../pop-up/WarningPopup";
+import { current } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
 
 enum Process {
   POMODORO = "Pomodoro",
@@ -30,6 +34,7 @@ interface Timer {
 const Home = () => {
   const [isOpenPomodoroPopup, setIsOpenPomodoroPopup] = useState(false);
   const [isOpenSettingPopup, setIsOpenSettingPopup] = useState(false);
+  const [isOpenWarningPopup, setIsOpenWarningPopup] = useState(false);
 
   const [isRunning, setIsRunning] = useState(false);
   const [totalIteration, setTotalIteration] = useState(4);
@@ -40,8 +45,12 @@ const Home = () => {
   const [pomodoro, setPomodoro] = useState(25 * 60);
   const [shortBreak, setShortBreak] = useState(5 * 60);
   const [longBreak, setLongBreak] = useState(30 * 60);
-  const [sleepReminder, setSleepReminder] = useState<string>("23:00");
-
+  //
+  const [sleepReminder, setSleepReminder] = useState<string>("12:29");
+  // Get Hour and Minute Now every time
+  const [currentHour, setCurrentHour] = useState<number>(dayjs().hour()); // Assuming this is being updated elsewhere
+  const [currentMinute, setCurrentMinute] = useState<number>(dayjs().minute()); // Assuming this is being updated elsewhere
+  console.log(currentHour, currentMinute);
   // set CountDown Clock Time
   const [time, setTime] = useState<number>(pomodoro);
   const [reset, setReset] = useState(true);
@@ -124,6 +133,31 @@ const Home = () => {
         setLongBreak(timer.long_break * 60);
       })
       .catch((err) => console.log(err));
+  }, []);
+
+  // Show WarningPopup
+  useEffect(() => {
+    const { hour: sleepHour, minute: sleepMinute } =
+      extractHourAndMinute(sleepReminder);
+    if (
+      sleepHour < currentHour ||
+      (sleepHour === currentHour && sleepMinute <= currentMinute)
+    ) {
+      setIsOpenWarningPopup(true);
+    } else {
+      setIsOpenWarningPopup(false);
+    }
+  }, [sleepReminder, currentHour, currentMinute]);
+
+  //Update Current Hour and Current Minute everytime
+  useEffect(() => {
+    // Update currentHour and currentMinute every minute
+    const interval = setInterval(() => {
+      setCurrentHour(dayjs().hour());
+      setCurrentMinute(dayjs().minute());
+    }, 60000); // Interval set to 1 minute (60,000 milliseconds)
+
+    return () => clearInterval(interval); // Clear interval on component unmount
   }, []);
 
   const handleOpenPomodoroPopup = () => {
@@ -283,6 +317,9 @@ const Home = () => {
           sleepReminder={sleepReminder}
           setSleepReminder={setSleepReminder}
         />
+      )}
+      {isOpenWarningPopup && (
+        <WarningPopup setIsOpenWarningPopup={setIsOpenWarningPopup} />
       )}
     </div>
   );

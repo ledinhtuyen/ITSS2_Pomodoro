@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { TimePicker } from "antd";
-
+import "./ReminderTab.scss";
 interface ReminderTabProps {
   sleepReminder: string;
   setSleepReminder: React.Dispatch<React.SetStateAction<string>>;
