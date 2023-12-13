@@ -13,13 +13,13 @@ class TimerViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         # Get object has user_id = 1
-        instance = Timer.objects.get(user_id=1)
+        instance = Timer.objects.get(user_id=request.GET['user'])
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
     
     def update(self, request, *args, **kwargs):
         # Get object has user_id = 1
-        instance = Timer.objects.get(user_id=1)
+        instance = Timer.objects.get(user_id=request.data['user'])
         serializer = self.get_serializer(instance, data=request.data)
         if serializer.is_valid():
             serializer.save()

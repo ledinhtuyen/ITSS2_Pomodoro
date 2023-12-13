@@ -125,7 +125,7 @@ const Home = () => {
   // Get Timer from API
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_DOMAIN}/timer/`)
+      .get(`${import.meta.env.VITE_DOMAIN}/timer/?user=1`)
       .then((res) => {
         timer = res.data;
         setPomodoro(timer.pomodoro * 60);
@@ -284,7 +284,7 @@ const Home = () => {
             </button>
           </div>
         </div>
-        <div className="absolute bottom-3 right-10">
+        <div className="absolute bottom-14 right-10">
           <button
             className="bg-white w-[40px] h-[40px] rounded-full border border-white"
             onClick={handleOpenPomodoroPopup}

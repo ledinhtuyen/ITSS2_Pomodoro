@@ -35,7 +35,7 @@ const PomodoroTab = ({
       "short_break": b / 60,
       "long_break": c / 60,
       "sleep_time": "23:00",
-      "user": 1,
+      "user": 1
     })
     .catch((error) => {
       console.log(error);
