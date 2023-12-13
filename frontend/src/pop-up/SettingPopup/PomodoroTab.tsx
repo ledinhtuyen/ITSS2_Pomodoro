@@ -13,6 +13,8 @@ interface PomandoroTabProps {
   setShortBreak: React.Dispatch<React.SetStateAction<number>>;
   longBreak: number;
   setLongBreak: React.Dispatch<React.SetStateAction<number>>;
+  cookies: any;
+  setCookies: any;
 }
 
 const PomodoroTab = ({
@@ -22,11 +24,11 @@ const PomodoroTab = ({
   setPomodoro,
   setShortBreak,
   shortBreak,
+  cookies,
+  setCookies
 }: PomandoroTabProps) => {
-  const [value, setValue] = useState(1);
-  const onChange = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
-    setValue(e.target.value);
+  const onChangeAlertChoice = (e: RadioChangeEvent) => {
+    setCookies("alert_choice", e.target.value);
   };
 
   const postSetting = (a:number = pomodoro, b:number = shortBreak, c:number = longBreak) => {
@@ -60,6 +62,10 @@ const PomodoroTab = ({
       setLongBreak(minutes * 60);
       postSetting(undefined, undefined, minutes * 60);
     }
+  };
+
+  const onChangeCompleteSlider = (value: number) => {
+    setCookies("alert_volume", value);
   };
 
   const handleBrowserNotification = () => {};
@@ -100,10 +106,10 @@ const PomodoroTab = ({
       <div className="mt-9">
         <h1 className="text-2xl mb-5">Alerts</h1>
         <div className="slider-alert w-1/3">
-          <Slider defaultValue={30} />
+          <Slider defaultValue={cookies.alert_volume} onChangeComplete={onChangeCompleteSlider} />
         </div>
         <div className="mt-6 ml-1">
-          <Radio.Group onChange={onChange} value={value}>
+          <Radio.Group value={cookies.alert_choice} onChange={onChangeAlertChoice}>
             <Space direction="vertical">
               <Radio value={1} className="text-white">
                 Soft

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   StepForwardOutlined,
   SettingOutlined,
@@ -14,7 +14,9 @@ import Spotify from "../../components/Spotify/Spotify";
 import { extractHourAndMinute } from "../../helper/extractTime";
 import WarningPopup from "../../pop-up/WarningPopup";
 import dayjs from "dayjs";
-import { current } from "@reduxjs/toolkit";
+import { useCookies } from "react-cookie";
+import SoftAlert from "../../assets/sounds/soft.wav";
+import ChimeAlert from "../../assets/sounds/chime.wav";
 
 enum Process {
   POMODORO = "Pomodoro",
@@ -43,11 +45,24 @@ const Home = () => {
   const [currentProcess, setCurrentProcess] = useState<Process>(
     Process.POMODORO
   );
-  const [pomodoro, setPomodoro] = useState(NaN);
-  const [shortBreak, setShortBreak] = useState(NaN);
-  const [longBreak, setLongBreak] = useState(NaN);
+  const [pomodoro, setPomodoro] = useState(0);
+  const [shortBreak, setShortBreak] = useState(0);
+  const [longBreak, setLongBreak] = useState(0);
   const [sleepReminder, setSleepReminder] = useState<string>("");
-  
+
+  // Cookies
+  const [cookies, setCookies] = useCookies(["alert_volume", "alert_choice"]);
+  if(cookies.alert_volume === undefined) {
+    setCookies("alert_volume", 50);
+  }
+  if(cookies.alert_choice === undefined) {
+    setCookies("alert_choice", 1);
+  }
+
+  // Alert Sound
+  const alertSound:any = [SoftAlert, ChimeAlert];
+  const audioRef = useRef<HTMLAudioElement>(null);
+
   // Get Hour and Minute Now every time
   const [currentHour, setCurrentHour] = useState<number>(dayjs().hour()); // Assuming this is being updated elsewhere
   const [currentMinute, setCurrentMinute] = useState<number>(dayjs().minute()); // Assuming this is being updated elsewhere
@@ -88,6 +103,8 @@ const Home = () => {
   // set Next Process if time of current Process is time up
   useEffect(() => {
     if (time === 0) {
+      if (cookies.alert_choice !== 3) audioRef.current?.play();
+
       if (currentIteration < totalIteration) {
         setTimeout(() => {
           currentProcess === Process.POMODORO
@@ -146,6 +163,7 @@ const Home = () => {
     let extraTime = countOpenWarningPopup * 15;
 
     if ( sleepTime + extraTime <= currentTime ) {
+      if (cookies.alert_choice !== 3) audioRef.current?.play();
       setIsOpenWarningPopup(true);
       setCountOpenWarningPopup(countOpenWarningPopup + 1);
     } else {
@@ -163,6 +181,11 @@ const Home = () => {
 
     return () => clearInterval(interval); // Clear interval on component unmount
   }, []);
+
+  // Update Alert Volume
+  useEffect(() => {
+    audioRef.current!.volume = cookies.alert_volume / 100;
+  }, [cookies.alert_volume]);
 
   const handleOpenPomodoroPopup = () => {
     setIsOpenPomodoroPopup(true);
@@ -201,6 +224,8 @@ const Home = () => {
 
   return (
     <div className="">
+      <audio ref={audioRef} src={alertSound[cookies.alert_choice - 1]}></audio>
+
       <div className="bg-[url('src/assets/images/Wallpaper.png')] bg-cover bg-no-repeat bg-center h-screen">
         <div className="pomodoro-timer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white w-[450px] h-[400px] bg-transparent">
           <div className="flex justify-between leading-8	">
@@ -320,10 +345,14 @@ const Home = () => {
           setLongBreak={setLongBreak}
           sleepReminder={sleepReminder}
           setSleepReminder={setSleepReminder}
+          cookies={cookies}
+          setCookies={setCookies}
         />
       )}
       {isOpenWarningPopup && (
-        <WarningPopup setIsOpenWarningPopup={setIsOpenWarningPopup} />
+        <WarningPopup
+          setIsOpenWarningPopup={setIsOpenWarningPopup}
+        />
       )}
     </div>
   );
