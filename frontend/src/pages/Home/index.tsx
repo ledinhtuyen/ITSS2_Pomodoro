@@ -13,8 +13,8 @@ import axios from "axios";
 import Spotify from "../../components/Spotify/Spotify";
 import { extractHourAndMinute } from "../../helper/extractTime";
 import WarningPopup from "../../pop-up/WarningPopup";
-import { current } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
+import { current } from "@reduxjs/toolkit";
 
 enum Process {
   POMODORO = "Pomodoro",
@@ -35,6 +35,7 @@ const Home = () => {
   const [isOpenPomodoroPopup, setIsOpenPomodoroPopup] = useState(false);
   const [isOpenSettingPopup, setIsOpenSettingPopup] = useState(false);
   const [isOpenWarningPopup, setIsOpenWarningPopup] = useState(false);
+  const [countOpenWarningPopup, setCountOpenWarningPopup] = useState(0);
 
   const [isRunning, setIsRunning] = useState(false);
   const [totalIteration, setTotalIteration] = useState(4);
@@ -42,15 +43,14 @@ const Home = () => {
   const [currentProcess, setCurrentProcess] = useState<Process>(
     Process.POMODORO
   );
-  const [pomodoro, setPomodoro] = useState(25 * 60);
-  const [shortBreak, setShortBreak] = useState(5 * 60);
-  const [longBreak, setLongBreak] = useState(30 * 60);
-  //
-  const [sleepReminder, setSleepReminder] = useState<string>("12:29");
+  const [pomodoro, setPomodoro] = useState(NaN);
+  const [shortBreak, setShortBreak] = useState(NaN);
+  const [longBreak, setLongBreak] = useState(NaN);
+  const [sleepReminder, setSleepReminder] = useState<string>("");
+  
   // Get Hour and Minute Now every time
   const [currentHour, setCurrentHour] = useState<number>(dayjs().hour()); // Assuming this is being updated elsewhere
   const [currentMinute, setCurrentMinute] = useState<number>(dayjs().minute()); // Assuming this is being updated elsewhere
-  console.log(currentHour, currentMinute);
   // set CountDown Clock Time
   const [time, setTime] = useState<number>(pomodoro);
   const [reset, setReset] = useState(true);
@@ -140,11 +140,14 @@ const Home = () => {
   useEffect(() => {
     const { hour: sleepHour, minute: sleepMinute } =
       extractHourAndMinute(sleepReminder);
-    if (
-      sleepHour < currentHour ||
-      (sleepHour === currentHour && sleepMinute <= currentMinute)
-    ) {
+
+    let currentTime = currentHour * 60 + currentMinute;
+    let sleepTime = sleepHour * 60 + sleepMinute;
+    let extraTime = countOpenWarningPopup * 15;
+
+    if ( sleepTime + extraTime <= currentTime ) {
       setIsOpenWarningPopup(true);
+      setCountOpenWarningPopup(countOpenWarningPopup + 1);
     } else {
       setIsOpenWarningPopup(false);
     }
