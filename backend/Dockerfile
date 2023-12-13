@@ -14,4 +14,4 @@ RUN python manage.py makemigrations
 
 RUN chmod +x ./entrypoint.sh
 
-CMD ["./entrypoint.sh"]
+CMD ["bash", "./entrypoint.sh"]
