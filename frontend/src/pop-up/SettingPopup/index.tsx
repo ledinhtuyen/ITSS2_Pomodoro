@@ -13,6 +13,8 @@ interface SettingPopupProps {
   setShortBreak: React.Dispatch<React.SetStateAction<number>>;
   longBreak: number;
   setLongBreak: React.Dispatch<React.SetStateAction<number>>;
+  sleepReminder: string;
+  setSleepReminder: React.Dispatch<React.SetStateAction<string>>;
 }
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -37,6 +39,8 @@ const SettingPopup = ({
   setPomodoro,
   setShortBreak,
   shortBreak,
+  setSleepReminder,
+  sleepReminder,
 }: SettingPopupProps) => {
   const [currentTab, setCurrentTab] = useState("1");
 
@@ -80,7 +84,12 @@ const SettingPopup = ({
                   setLongBreak={setLongBreak}
                 />
               )}
-              {currentTab === "2" && <ReminderTab />}
+              {currentTab === "2" && (
+                <ReminderTab
+                  sleepReminder={sleepReminder}
+                  setSleepReminder={setSleepReminder}
+                />
+              )}
             </div>
           </div>
         </div>

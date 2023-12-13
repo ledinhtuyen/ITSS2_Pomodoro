@@ -27,8 +27,6 @@ interface Timer {
   user: number;
 }
 
-
-
 const Home = () => {
   const [isOpenPomodoroPopup, setIsOpenPomodoroPopup] = useState(false);
   const [isOpenSettingPopup, setIsOpenSettingPopup] = useState(false);
@@ -42,6 +40,7 @@ const Home = () => {
   const [pomodoro, setPomodoro] = useState(25 * 60);
   const [shortBreak, setShortBreak] = useState(5 * 60);
   const [longBreak, setLongBreak] = useState(30 * 60);
+  const [sleepReminder, setSleepReminder] = useState<string>("23:00");
 
   // set CountDown Clock Time
   const [time, setTime] = useState<number>(pomodoro);
@@ -261,11 +260,12 @@ const Home = () => {
         </div>
 
         <div className="absolute bottom-14 left-36">
-          <Spotify 
+          <Spotify
             key={""}
             url={`${import.meta.env.VITE_SPOTIFY_MUSIC_URL}`}
             height="compact"
-            width="380" />
+            width="380"
+          />
         </div>
       </div>
       {isOpenPomodoroPopup && (
@@ -280,6 +280,8 @@ const Home = () => {
           setShortBreak={setShortBreak}
           longBreak={longBreak}
           setLongBreak={setLongBreak}
+          sleepReminder={sleepReminder}
+          setSleepReminder={setSleepReminder}
         />
       )}
     </div>
