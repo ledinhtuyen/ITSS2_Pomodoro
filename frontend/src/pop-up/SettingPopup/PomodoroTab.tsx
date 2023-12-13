@@ -34,7 +34,6 @@ const PomodoroTab = ({
       "pomodoro": a / 60,
       "short_break": b / 60,
       "long_break": c / 60,
-      "sleep_time": "23:00",
       "user": 1
     })
     .catch((error) => {

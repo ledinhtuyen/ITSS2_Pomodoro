@@ -131,6 +131,7 @@ const Home = () => {
         setPomodoro(timer.pomodoro * 60);
         setShortBreak(timer.short_break * 60);
         setLongBreak(timer.long_break * 60);
+        setSleepReminder(timer.sleep_time);
       })
       .catch((err) => console.log(err));
   }, []);
