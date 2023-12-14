@@ -3,31 +3,29 @@ import dayjs, { Dayjs } from "dayjs";
 import { TimePicker } from "antd";
 import "./ReminderTab.scss";
 import axios from "axios";
-
-interface ReminderTabProps {
-  sleepReminder: string;
-  setSleepReminder: React.Dispatch<React.SetStateAction<string>>;
-}
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { setSleepReminder } from "../../redux/reducers/pomodoroReducer";
 
 const format = "HH:mm";
 
-const ReminderTab = ({ setSleepReminder, sleepReminder }: ReminderTabProps) => {
-  // const [sleepReminder, setSleepReminder] = useState<string>("23:00");
+const ReminderTab = () => {
+  const dispatch = useAppDispatch();
+  const sleepReminder = useAppSelector((state) => state.pomodoro.sleepReminder);
 
-  const postSetting = (sleep_time:string) => {
-    axios.post(`${import.meta.env.VITE_DOMAIN}/timer/`, {
-      "sleep_time": sleep_time,
-      "user": 1
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  const postSetting = (sleep_time: string) => {
+    axios
+      .post(`${import.meta.env.VITE_DOMAIN}/timer/`, {
+        sleep_time: sleep_time,
+        user: 1,
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const onChangeSleepReminder = (value: Dayjs | null, timeString: string) => {
     if (timeString !== null) {
-      console.log(value);
-      setSleepReminder(timeString);
+      dispatch(setSleepReminder(timeString));
       postSetting(timeString);
     }
   };

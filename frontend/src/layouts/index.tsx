@@ -24,13 +24,7 @@ function getItem(
 }
 
 const items: MenuProps["items"] = [
-  getItem(
-    undefined,
-    undefined,
-    <a href="/">
-      <img src={LogoIcon} />
-    </a>
-  ),
+  getItem(undefined, "1", <img src={LogoIcon} />),
   getItem("FOCUS", "1", <HomeOutlined />),
   getItem("EXERCISE", "2", <ExerciseIcon />),
   getItem("LIKES", "3", <HeartOutlined />),
