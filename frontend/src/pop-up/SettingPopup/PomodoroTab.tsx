@@ -1,4 +1,3 @@
-import React from "react";
 import { Slider, InputNumber } from "antd";
 import type { RadioChangeEvent } from "antd";
 import { Radio, Space } from "antd";

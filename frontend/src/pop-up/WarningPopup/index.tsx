@@ -1,4 +1,3 @@
-import React from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import WarningPopupBg from "../../assets/images/warningPopup.png";
 import { useAppDispatch } from "../../redux/hook";

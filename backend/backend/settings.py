@@ -20,8 +20,6 @@ load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -83,16 +81,35 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'USER': os.getenv("MYSQL_USER"),
-        'NAME': os.getenv("MYSQL_DATABASE"),
-        'PASSWORD': os.getenv("MYSQL_PASSWORD"),
-        'HOST': os.getenv("MYSQL_HOST"),
-        'PORT': os.getenv("MYSQL_HOST_PORT"),
+if os.getenv("DB_ENGINE") == "sqlite3":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.getenv("DB_NAME"),
+        }
     }
-}
+elif os.getenv("DB_ENGINE") == "mysql":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'USER': os.getenv("MYSQL_USER"),
+            'NAME': os.getenv("MYSQL_DATABASE"),
+            'PASSWORD': os.getenv("MYSQL_PASSWORD"),
+            'HOST': os.getenv("MYSQL_HOST"),
+            'PORT': os.getenv("MYSQL_HOST_PORT"),
+        }
+    }
+elif os.getenv("DB_ENGINE") == "postgres":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'USER': os.getenv("POSTGRES_USER"),
+            'NAME': os.getenv("POSTGRES_DB"),
+            'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
+            'HOST': os.getenv("POSTGRES_HOST"),
+            'PORT': os.getenv("POSTGRES_HOST_PORT"),
+        }
+    }
 
 
 # Password validation
@@ -129,7 +146,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'static/' # new
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'), # new
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

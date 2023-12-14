@@ -1,4 +1,3 @@
-import React from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { TimePicker } from "antd";
 import "./ReminderTab.scss";
@@ -26,6 +25,7 @@ const ReminderTab = () => {
     if (timeString !== null) {
       dispatch(setSleepReminder(timeString));
       postSetting(timeString);
+      value;
     }
   };
 
