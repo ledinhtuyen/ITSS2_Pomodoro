@@ -6,6 +6,7 @@ import {
   RedoOutlined,
 } from "@ant-design/icons";
 import TomotoIcon from "../../assets/images/tomato.png";
+import BackgroundImg from "../../assets/images/Wallpaper.png";
 import "./Home.scss";
 import PomodoroPopup from "../../pop-up/PomodoroPopup";
 import SettingPopup from "../../pop-up/SettingPopup";
@@ -226,7 +227,7 @@ const Home = () => {
     <div className="">
       <audio ref={audioRef} src={alertSound[cookies.alert_choice - 1]}></audio>
 
-      <div className="bg-[url('src/assets/images/Wallpaper.png')] bg-cover bg-no-repeat bg-center h-screen">
+      <div style={{backgroundImage : `url(${BackgroundImg})`}} className="bg-cover bg-no-repeat bg-center h-screen">
         <div className="pomodoro-timer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white w-[450px] h-[400px] bg-transparent">
           <div className="flex justify-between leading-8	">
             <button
