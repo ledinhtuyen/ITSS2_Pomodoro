@@ -7,14 +7,6 @@ import ReminderTab from "./ReminderTab";
 
 interface SettingPopupProps {
   setIsOpenSettingPopup: React.Dispatch<React.SetStateAction<boolean>>;
-  pomodoro: number;
-  setPomodoro: React.Dispatch<React.SetStateAction<number>>;
-  shortBreak: number;
-  setShortBreak: React.Dispatch<React.SetStateAction<number>>;
-  longBreak: number;
-  setLongBreak: React.Dispatch<React.SetStateAction<number>>;
-  sleepReminder: string;
-  setSleepReminder: React.Dispatch<React.SetStateAction<string>>;
   cookies: any;
   setCookies: any;
 }
@@ -34,17 +26,9 @@ const items: MenuProps["items"] = [
 ];
 
 const SettingPopup = ({
-  longBreak,
-  pomodoro,
   setIsOpenSettingPopup,
-  setLongBreak,
-  setPomodoro,
-  setShortBreak,
-  shortBreak,
-  setSleepReminder,
-  sleepReminder,
   cookies,
-  setCookies
+  setCookies,
 }: SettingPopupProps) => {
   const [currentTab, setCurrentTab] = useState("1");
 
@@ -79,23 +63,9 @@ const SettingPopup = ({
             </div>
             <div className="col-span-9">
               {currentTab === "1" && (
-                <PomodoroTab
-                  pomodoro={pomodoro}
-                  setPomodoro={setPomodoro}
-                  shortBreak={shortBreak}
-                  setShortBreak={setShortBreak}
-                  longBreak={longBreak}
-                  setLongBreak={setLongBreak}
-                  cookies={cookies}
-                  setCookies={setCookies}
-                />
+                <PomodoroTab cookies={cookies} setCookies={setCookies} />
               )}
-              {currentTab === "2" && (
-                <ReminderTab
-                  sleepReminder={sleepReminder}
-                  setSleepReminder={setSleepReminder}
-                />
-              )}
+              {currentTab === "2" && <ReminderTab />}
             </div>
           </div>
         </div>

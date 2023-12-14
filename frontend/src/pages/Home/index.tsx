@@ -18,6 +18,16 @@ import dayjs from "dayjs";
 import { useCookies } from "react-cookie";
 import SoftAlert from "../../assets/sounds/soft.wav";
 import ChimeAlert from "../../assets/sounds/chime.wav";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import {
+  handleResetPomodoro,
+  minusOneSecond,
+  setIsResetFalse,
+  setIsRunning,
+  setIsRunningFalse,
+  setTimeWithProcessCorresponding,
+  setToNextProcess,
+} from "../../redux/reducers/pomodoroReducer";
 
 enum Process {
   POMODORO = "Pomodoro",
@@ -35,41 +45,48 @@ interface Timer {
 }
 
 const Home = () => {
+  const dispatch = useAppDispatch();
+
   const [isOpenPomodoroPopup, setIsOpenPomodoroPopup] = useState(false);
   const [isOpenSettingPopup, setIsOpenSettingPopup] = useState(false);
   const [isOpenWarningPopup, setIsOpenWarningPopup] = useState(false);
   const [countOpenWarningPopup, setCountOpenWarningPopup] = useState(0);
 
-  const [isRunning, setIsRunning] = useState(false);
-  const [totalIteration] = useState(4);
-  const [currentIteration, setCurrentIteration] = useState(1);
-  const [currentProcess, setCurrentProcess] = useState<Process>(
-    Process.POMODORO
+  const isRunning = useAppSelector((state) => state.pomodoro.isRunning);
+  const totalIteration = useAppSelector(
+    (state) => state.pomodoro.totalIteration
   );
-  const [pomodoro, setPomodoro] = useState(0);
-  const [shortBreak, setShortBreak] = useState(0);
-  const [longBreak, setLongBreak] = useState(0);
-  const [sleepReminder, setSleepReminder] = useState<string>("");
+  const currentIteration = useAppSelector(
+    (state) => state.pomodoro.currentIteration
+  );
+  const currentProcess = useAppSelector(
+    (state) => state.pomodoro.currentProcess
+  );
+  const pomodoro = useAppSelector((state) => state.pomodoro.pomodoro);
+  const shortBreak = useAppSelector((state) => state.pomodoro.shortBreak);
+  const longBreak = useAppSelector((state) => state.pomodoro.longBreak);
+  const sleepReminder = useAppSelector((state) => state.pomodoro.sleepReminder);
 
   // Cookies
   const [cookies, setCookies] = useCookies(["alert_volume", "alert_choice"]);
-  if(cookies.alert_volume === undefined) {
+  if (cookies.alert_volume === undefined) {
     setCookies("alert_volume", 50);
   }
-  if(cookies.alert_choice === undefined) {
+  if (cookies.alert_choice === undefined) {
     setCookies("alert_choice", 1);
   }
 
   // Alert Sound
-  const alertSound:any = [SoftAlert, ChimeAlert];
+  const alertSound: any = [SoftAlert, ChimeAlert];
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // Get Hour and Minute Now every time
   const [currentHour, setCurrentHour] = useState<number>(dayjs().hour()); // Assuming this is being updated elsewhere
   const [currentMinute, setCurrentMinute] = useState<number>(dayjs().minute()); // Assuming this is being updated elsewhere
+
   // set CountDown Clock Time
-  const [time, setTime] = useState<number>(pomodoro);
-  const [reset, setReset] = useState(true);
+  const time = useAppSelector((state) => state.pomodoro.time);
+  const reset = useAppSelector((state) => state.pomodoro.reset);
   const minutes = Math.floor(time / 60);
   const remainingSeconds = time % 60;
 
@@ -80,7 +97,7 @@ const Home = () => {
     if (isRunning && time > 0) {
       timer = setInterval(() => {
         if (time > 0) {
-          setTime((prevTime) => prevTime - 1);
+          dispatch(minusOneSecond());
         }
       }, 1000);
     } else {
@@ -92,38 +109,21 @@ const Home = () => {
 
   // set Time with Process is corresponding
   useEffect(() => {
-    setTime(
-      currentProcess === Process.POMODORO
-        ? pomodoro
-        : currentProcess === Process.SHORT_BREAK
-        ? shortBreak
-        : longBreak
-    );
+    dispatch(setTimeWithProcessCorresponding());
   }, [currentProcess, pomodoro, shortBreak, longBreak]);
 
   // set Next Process if time of current Process is time up
   useEffect(() => {
+    let timer: any;
     if (time === 0) {
       if (cookies.alert_choice !== 3) audioRef.current?.play();
-
-      if (currentIteration < totalIteration) {
-        setTimeout(() => {
-          currentProcess === Process.POMODORO
-            ? setCurrentProcess(Process.SHORT_BREAK)
-            : setCurrentProcess(Process.POMODORO);
-          setCurrentIteration(currentIteration + 0.5);
-        }, 1000);
-      } else {
-        setTimeout(() => {
-          currentProcess === Process.POMODORO
-            ? setCurrentProcess(Process.SHORT_BREAK)
-            : currentProcess === Process.SHORT_BREAK
-            ? setCurrentProcess(Process.LONG_BREAK)
-            : null;
-          setCurrentIteration(currentIteration + 0.5);
-        }, 1000);
-      }
+      timer = setTimeout(() => {
+        dispatch(setToNextProcess());
+      }, 1000);
     }
+    return () => {
+      clearTimeout(timer);
+    };
   }, [time, pomodoro, shortBreak, longBreak]);
 
   // Display Reset button to Reset Pomodoro CLock
@@ -131,28 +131,12 @@ const Home = () => {
     if (
       time === 0 &&
       currentProcess === Process.LONG_BREAK &&
-      currentIteration === 5.5
+      currentIteration > 5
     ) {
-      // set thong bao gi do
-      setIsRunning(false);
-      setReset(false);
+      dispatch(setIsRunningFalse());
+      dispatch(setIsResetFalse());
     }
   }, [time, currentProcess, currentIteration]);
-
-  let timer: Timer;
-  // Get Timer from API
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_DOMAIN}/timer/?user=1`)
-      .then((res) => {
-        timer = res.data;
-        setPomodoro(timer.pomodoro * 60);
-        setShortBreak(timer.short_break * 60);
-        setLongBreak(timer.long_break * 60);
-        setSleepReminder(timer.sleep_time);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   // Show WarningPopup
   useEffect(() => {
@@ -163,7 +147,7 @@ const Home = () => {
     let sleepTime = sleepHour * 60 + sleepMinute;
     let extraTime = countOpenWarningPopup * 15;
 
-    if ( sleepTime + extraTime <= currentTime ) {
+    if (sleepTime + extraTime <= currentTime) {
       if (cookies.alert_choice !== 3) audioRef.current?.play();
       setIsOpenWarningPopup(true);
       setCountOpenWarningPopup(countOpenWarningPopup + 1);
@@ -193,23 +177,12 @@ const Home = () => {
   };
 
   const handleStartPomodoroTimer = () => {
-    setIsRunning((prev) => !prev);
+    dispatch(setIsRunning());
   };
 
   const handleNextProcess = () => {
-    if (currentIteration < totalIteration) {
-      currentProcess === Process.POMODORO
-        ? setCurrentProcess(Process.SHORT_BREAK)
-        : setCurrentProcess(Process.POMODORO);
-    } else {
-      currentProcess === Process.POMODORO
-        ? setCurrentProcess(Process.SHORT_BREAK)
-        : currentProcess === Process.SHORT_BREAK
-        ? setCurrentProcess(Process.LONG_BREAK)
-        : null;
-    }
-    setIsRunning(false);
-    setCurrentIteration(currentIteration + 0.5);
+    dispatch(setToNextProcess());
+    dispatch(setIsRunningFalse());
   };
 
   const handleOpenSettingPopup = () => {
@@ -217,17 +190,17 @@ const Home = () => {
   };
 
   const handleReset = () => {
-    setReset(true);
-    setIsRunning(false);
-    setCurrentIteration(1);
-    setCurrentProcess(Process.POMODORO);
+    dispatch(handleResetPomodoro());
   };
 
   return (
     <div className="">
       <audio ref={audioRef} src={alertSound[cookies.alert_choice - 1]}></audio>
-
-      <div style={{backgroundImage : `url(${BackgroundImg})`}} className="bg-cover bg-no-repeat bg-center h-screen">
+      <div
+        style={{ backgroundImage: `url(${BackgroundImg})` }}
+        className="bg-cover bg-no-repeat bg-center h-screen"
+      ></div>
+      <div className="bg-[rgba(0,0,0,0.6)] h-screen w-screen fixed top-0 left-0">
         <div className="pomodoro-timer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white w-[450px] h-[400px] bg-transparent">
           <div className="flex justify-between leading-8	">
             <button
@@ -338,22 +311,12 @@ const Home = () => {
       {isOpenSettingPopup && (
         <SettingPopup
           setIsOpenSettingPopup={setIsOpenSettingPopup}
-          pomodoro={pomodoro}
-          setPomodoro={setPomodoro}
-          shortBreak={shortBreak}
-          setShortBreak={setShortBreak}
-          longBreak={longBreak}
-          setLongBreak={setLongBreak}
-          sleepReminder={sleepReminder}
-          setSleepReminder={setSleepReminder}
           cookies={cookies}
           setCookies={setCookies}
         />
       )}
       {isOpenWarningPopup && (
-        <WarningPopup
-          setIsOpenWarningPopup={setIsOpenWarningPopup}
-        />
+        <WarningPopup setIsOpenWarningPopup={setIsOpenWarningPopup} />
       )}
     </div>
   );
