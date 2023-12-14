@@ -5,6 +5,8 @@ import ExerciseIcon from "../assets/icons/ExerciseIcon";
 import LogoIcon from "../assets/images/Icon.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Layout.scss";
+import ClockDraggable from "../components/ClockDraggable";
+
 interface DefaultLayoutProps {
   children: React.ReactElement;
 }
@@ -65,6 +67,10 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
         items={items}
       />
       <div className="h-screen w-screen relative top-0 left-0">{children}</div>
+      <ClockDraggable
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+      />
     </div>
   );
 };
