@@ -26,7 +26,7 @@ function getItem(
 }
 
 const items: MenuProps["items"] = [
-  getItem(undefined, "1", <img src={LogoIcon} />),
+  getItem(undefined, "0", <img src={LogoIcon} />),
   getItem("FOCUS", "1", <HomeOutlined />),
   getItem("EXERCISE", "2", <ExerciseIcon />),
   getItem("LIKES", "3", <HeartOutlined />),
@@ -48,8 +48,9 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     setCurrentPage(e.key);
   };
 
+  // Navigate URL when currentPage state change
   useEffect(() => {
-    currentPage === "1"
+    currentPage === "1" || currentPage === "0"
       ? navigate("/")
       : currentPage === "2"
       ? navigate("/exercise")
