@@ -7,8 +7,6 @@ import ReminderTab from "./ReminderTab";
 
 interface SettingPopupProps {
   setIsOpenSettingPopup: React.Dispatch<React.SetStateAction<boolean>>;
-  cookies: any;
-  setCookies: any;
 }
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -25,11 +23,7 @@ const items: MenuProps["items"] = [
   getItem("Reminders", "2"),
 ];
 
-const SettingPopup = ({
-  setIsOpenSettingPopup,
-  cookies,
-  setCookies,
-}: SettingPopupProps) => {
+const SettingPopup = ({ setIsOpenSettingPopup }: SettingPopupProps) => {
   const [currentTab, setCurrentTab] = useState("1");
 
   const onClick: MenuProps["onClick"] = (e) => {
@@ -62,9 +56,7 @@ const SettingPopup = ({
               />
             </div>
             <div className="col-span-9">
-              {currentTab === "1" && (
-                <PomodoroTab cookies={cookies} setCookies={setCookies} />
-              )}
+              {currentTab === "1" && <PomodoroTab />}
               {currentTab === "2" && <ReminderTab />}
             </div>
           </div>

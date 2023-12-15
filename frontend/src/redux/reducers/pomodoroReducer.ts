@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 const defaultTime = 0.1 * 60
 
-enum Process {
+export enum Process {
     POMODORO = "Pomodoro",
     LONG_BREAK = "Long Break",
     SHORT_BREAK = "Short Break",
@@ -30,9 +30,9 @@ const initialState: PomodoroState = {
     currentIteration: 1,
     currentProcess: Process.POMODORO,
     pomodoro: defaultTime,
-    shortBreak: defaultTime,
-    longBreak: defaultTime,
-    sleepReminder: "",
+    shortBreak: 0.2 * 60,
+    longBreak: 0.05 * 60,
+    sleepReminder: '16:04',
     time: defaultTime,
     reset: true
 }
@@ -95,12 +95,12 @@ export const pomodoroSlice = createSlice({
         },
         setSleepReminder: (state, action: PayloadAction<string>) => {
             state.sleepReminder = action.payload
+        },
+        plusFiveMinutesMore: (state) => {
+            state.time += 5 * 60
         }
     },
 })
 
-export const { handleResetPomodoro, minusOneSecond, setIsRunning, setTimeWithProcessCorresponding, setToNextProcess, setIsResetFalse, setIsRunningFalse, setLongBreak, setPomodoro, setShortBreak, setSleepReminder } = pomodoroSlice.actions
-
-
-
+export const { handleResetPomodoro, minusOneSecond, setIsRunning, setTimeWithProcessCorresponding, setToNextProcess, setIsResetFalse, setIsRunningFalse, setLongBreak, setPomodoro, setShortBreak, setSleepReminder, plusFiveMinutesMore } = pomodoroSlice.actions
 export default pomodoroSlice.reducer
