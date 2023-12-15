@@ -10,21 +10,18 @@ import {
   setShortBreak,
   setLongBreak,
 } from "../../redux/reducers/pomodoroReducer";
+import { useCookies } from "react-cookie";
 
-interface PomandoroTabProps {
-  cookies: any;
-  setCookies: any;
-}
+interface PomandoroTabProps {}
 
-const PomodoroTab = ({ cookies, setCookies }: PomandoroTabProps) => {
+const PomodoroTab = ({}: PomandoroTabProps) => {
+  // Cookies
+  const [cookies, setCookies] = useCookies(["alert_volume", "alert_choice"]);
+
   const dispatch = useAppDispatch();
   const pomodoro = useAppSelector((state) => state.pomodoro.pomodoro);
   const shortBreak = useAppSelector((state) => state.pomodoro.shortBreak);
   const longBreak = useAppSelector((state) => state.pomodoro.longBreak);
-
-  const onChangeAlertChoice = (e: RadioChangeEvent) => {
-    setCookies("alert_choice", e.target.value);
-  };
 
   const postSetting = (
     a: number = pomodoro,
@@ -68,6 +65,10 @@ const PomodoroTab = ({ cookies, setCookies }: PomandoroTabProps) => {
     setCookies("alert_volume", value);
   };
 
+  const onChangeAlertChoice = (e: RadioChangeEvent) => {
+    setCookies("alert_choice", e.target.value);
+  };
+
   const handleBrowserNotification = () => {};
 
   return (
@@ -108,7 +109,7 @@ const PomodoroTab = ({ cookies, setCookies }: PomandoroTabProps) => {
         <div className="slider-alert w-1/3">
           <Slider
             value={cookies.alert_volume}
-            onChangeComplete={onChangeCompleteSlider}
+            onChange={onChangeCompleteSlider}
           />
         </div>
         <div className="mt-6 ml-1">

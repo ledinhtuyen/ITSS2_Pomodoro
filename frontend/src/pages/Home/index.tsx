@@ -179,13 +179,9 @@ const Home = () => {
       {isOpenPomodoroPopup && (
         <PomodoroPopup setIsOpenPomodoroPopup={setIsOpenPomodoroPopup} />
       )}
-      {/* {isOpenSettingPopup && (
-        <SettingPopup
-          setIsOpenSettingPopup={setIsOpenSettingPopup}
-          cookies={cookies}
-          setCookies={setCookies}
-        />
-      )} */}
+      {isOpenSettingPopup && (
+        <SettingPopup setIsOpenSettingPopup={setIsOpenSettingPopup} />
+      )}
     </div>
   );
 };

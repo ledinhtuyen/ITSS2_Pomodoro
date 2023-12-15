@@ -32,7 +32,7 @@ const initialState: PomodoroState = {
     pomodoro: defaultTime,
     shortBreak: 0.2 * 60,
     longBreak: 0.05 * 60,
-    sleepReminder: '',
+    sleepReminder: '16:04',
     time: defaultTime,
     reset: true
 }
