@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import {
   setIsRunning,
   plusFiveMinutesMore,
+  handleResetPomodoro,
 } from "../../redux/reducers/pomodoroReducer";
 
 interface ClockDraggableProps {
@@ -23,6 +24,7 @@ const ClockDraggable = ({
   );
 
   const time = useAppSelector((state) => state.pomodoro.time);
+  const reset = useAppSelector((state) => state.pomodoro.reset);
   const minutes = Math.floor(time / 60);
   const remainingSeconds = time % 60;
 
@@ -36,6 +38,10 @@ const ClockDraggable = ({
 
   const handlePlusFiveMinutes = () => {
     dispatch(plusFiveMinutesMore());
+  };
+
+  const handleReset = () => {
+    dispatch(handleResetPomodoro());
   };
 
   return (
@@ -77,11 +83,27 @@ const ClockDraggable = ({
             <span className="text-[12px] text-white">Back to Focus</span>
           </button>
           <button
-            className="rounded-3xl border-[1px] border-black leading-6"
+            className={
+              reset == true
+                ? "rounded-3xl border-[1px] border-black leading-6"
+                : "hidden"
+            }
             onClick={handleStartPomodoroTimer}
           >
             <span className="text-[12px]">
               <span>{isRunning ? "Pause" : "Start"}</span>
+            </span>
+          </button>
+          <button
+            className={
+              reset == false
+                ? "rounded-3xl border-[1px] border-black leading-6"
+                : "hidden"
+            }
+            onClick={handleReset}
+          >
+            <span className="text-[12px]">
+              <span>Reset</span>
             </span>
           </button>
           <button

@@ -30,8 +30,8 @@ const initialState: PomodoroState = {
     currentIteration: 1,
     currentProcess: Process.POMODORO,
     pomodoro: defaultTime,
-    shortBreak: defaultTime,
-    longBreak: defaultTime,
+    shortBreak: 0.2 * 60,
+    longBreak: 0.05 * 60,
     sleepReminder: '',
     time: defaultTime,
     reset: true
