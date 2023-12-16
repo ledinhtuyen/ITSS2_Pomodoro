@@ -13,10 +13,9 @@ const ReminderTab = () => {
   const sleepReminder = useAppSelector((state) => state.pomodoro.sleepReminder);
 
   const postSetting = (sleep_time: string) => {
-    axios
-      .post(`${import.meta.env.VITE_DOMAIN}/timer/`, {
-        sleep_time: sleep_time,
-        user: 1,
+    axios.post(`${import.meta.env.VITE_DOMAIN}/timer/`, {
+        "sleep_time": sleep_time,
+        "user": 1
       })
       .catch((error) => {
         console.log(error);

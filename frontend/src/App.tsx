@@ -9,6 +9,10 @@ import {
   setIsRunningFalse,
   setTimeWithProcessCorresponding,
   setToNextProcess,
+  setPomodoro,
+  setShortBreak,
+  setLongBreak,
+  setSleepReminder,
 } from "./redux/reducers/pomodoroReducer";
 import SoftAlert from "./assets/sounds/soft.wav";
 import ChimeAlert from "./assets/sounds/chime.wav";
@@ -20,6 +24,7 @@ import {
   setCloseWarningPopup,
   setOpenWarningPopup,
 } from "./redux/reducers/popupReducer";
+import axios from "axios";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -56,6 +61,19 @@ function App() {
   if (cookies.alert_choice === undefined) {
     setCookies("alert_choice", 1);
   }
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_DOMAIN}/timer/?user=1`)
+    .then((res) => {
+      dispatch(setPomodoro(res.data.pomodoro * 60));
+      dispatch(setShortBreak(res.data.short_break * 60));
+      dispatch(setLongBreak(res.data.long_break * 60));
+      dispatch(setSleepReminder(res.data.sleep_time));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }, []);
 
   // Alert Sound
   const alertSound: any = [SoftAlert, ChimeAlert];

@@ -28,12 +28,17 @@ const PomodoroTab = ({}: PomandoroTabProps) => {
     b: number = shortBreak,
     c: number = longBreak
   ) => {
-    axios
-      .post(`${import.meta.env.VITE_DOMAIN}/timer/`, {
-        pomodoro: a / 60,
-        short_break: b / 60,
-        long_break: c / 60,
-        user: 1,
+    // Round to nearest minute
+    a = Math.round(a / 60);
+    b = Math.round(b / 60);
+    c = Math.round(c / 60);
+
+    console.log(a, b, c);
+    axios.post(`${import.meta.env.VITE_DOMAIN}/timer/`, {
+        "pomodoro": a,
+        "short_break": b,
+        "long_break": c,
+        "user": 1
       })
       .catch((error) => {
         console.log(error);
