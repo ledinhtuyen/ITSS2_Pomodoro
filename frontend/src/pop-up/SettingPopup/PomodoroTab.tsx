@@ -33,7 +33,6 @@ const PomodoroTab = ({}: PomandoroTabProps) => {
     b = Math.round(b / 60);
     c = Math.round(c / 60);
 
-    console.log(a, b, c);
     axios.post(`${import.meta.env.VITE_DOMAIN}/timer/`, {
         "pomodoro": a,
         "short_break": b,
@@ -74,7 +73,19 @@ const PomodoroTab = ({}: PomandoroTabProps) => {
     setCookies("alert_choice", e.target.value);
   };
 
-  const handleBrowserNotification = () => {};
+  const handleBrowserNotification = () => {
+    if(!("Notification" in window)) {
+      alert("This browser does not support desktop notification");
+    } else if (Notification.permission === "granted") {
+      new Notification("You will now receive notifications!");
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === "granted") {
+          new Notification("You will now receive notifications!");
+        }
+      });
+    }
+  };
 
   return (
     <div className="mx-5 text-white">

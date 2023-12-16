@@ -25,6 +25,8 @@ import {
   setOpenWarningPopup,
 } from "./redux/reducers/popupReducer";
 import axios from "axios";
+import { Notifications } from "react-push-notification";
+import addNotification from 'react-push-notification';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -116,11 +118,24 @@ function App() {
   useEffect(() => {
     let timer: any;
     if (time === 0) {
-      if (cookies.alert_choice !== 3) audioRef.current?.play();
+      if (cookies.alert_choice !== 3) {
+        audioRef.current?.play();
+      }
+      
       timer = setTimeout(() => {
         dispatch(setToNextProcess());
       }, 1000);
+
+      addNotification({
+        title: "Push Notification",
+        message: "Time out " + currentProcess + " !",
+        onClick: () => {
+          window.parent.focus();
+        },
+        native: true, // when using native, your OS will handle theming.
+      });
     }
+
     return () => {
       clearTimeout(timer);
     };
@@ -189,6 +204,7 @@ function App() {
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
       <audio ref={audioRef} src={alertSound[cookies.alert_choice - 1]}></audio>
+      <Notifications />
       {isOpenWarningPopup && <WarningPopup />}
     </BrowserRouter>
   );
