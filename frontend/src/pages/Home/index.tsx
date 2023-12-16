@@ -66,7 +66,7 @@ const Home = () => {
   };
 
   return (
-    <div className="">
+    <>
       <div
         style={{ backgroundImage: `url(${BackgroundImg})` }}
         className="bg-cover bg-no-repeat bg-center h-screen"
@@ -182,7 +182,7 @@ const Home = () => {
       {isOpenSettingPopup && (
         <SettingPopup setIsOpenSettingPopup={setIsOpenSettingPopup} />
       )}
-    </div>
+    </>
   );
 };
 

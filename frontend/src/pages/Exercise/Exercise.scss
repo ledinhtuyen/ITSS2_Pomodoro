@@ -1,0 +1,18 @@
+.excersice-component {
+  .ant-input-group-addon {
+    background-color: white;
+  }
+  .ant-btn {
+    background-color: white !important;
+  }
+  .slick-slide > div {
+    margin: 0 10px;
+  }
+  .slick-slider {
+    .slick-arrow {
+      &::before {
+        color: #474747 !important;
+      }
+    }
+  }
+}
