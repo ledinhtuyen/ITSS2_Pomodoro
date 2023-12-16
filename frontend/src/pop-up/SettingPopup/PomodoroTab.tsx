@@ -61,7 +61,7 @@ const PomodoroTab = ({}: PomandoroTabProps) => {
     }
   };
 
-  const onChangeCompleteSlider = (value: number) => {
+  const onChangeSlider = (value: number) => {
     setCookies("alert_volume", value);
   };
 
@@ -109,7 +109,7 @@ const PomodoroTab = ({}: PomandoroTabProps) => {
         <div className="slider-alert w-1/3">
           <Slider
             value={cookies.alert_volume}
-            onChangeComplete={onChangeCompleteSlider}
+            onChange={onChangeSlider}
           />
         </div>
         <div className="mt-6 ml-1">
