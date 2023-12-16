@@ -1,8 +1,6 @@
-import { SearchOutlined } from "@ant-design/icons";
 import Search, { SearchProps } from "antd/es/input/Search";
 import "./Exercise.scss";
 import Slider from "react-slick";
-import Logo from "../../assets/images/Icon.png";
 import InstructionalBlog from "./components/InstructionalBlog";
 import InstructionalVideo from "./components/InstructionalVideo";
 
@@ -56,7 +54,7 @@ const Exercise = () => {
             ))}
           </Slider>
         </div>
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-5">
           <InstructionalVideo />
           <InstructionalBlog />
         </div>

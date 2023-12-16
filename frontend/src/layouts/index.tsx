@@ -68,12 +68,12 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
         items={items}
       />
       <div className="h-screen w-screen relative top-0 left-0">{children}</div>
-      { currentPage !== "1" && currentPage !== "0" && 
+      {currentPage !== "1" && currentPage !== "0" && (
         <ClockDraggable
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
         />
-      }
+      )}
     </div>
   );
 };

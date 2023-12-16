@@ -21,6 +21,7 @@
     "react-cookie": "^6.1.1",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
+    "react-paginate": "^8.2.0",
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.20.1",
     "react-slick": "^0.29.0"

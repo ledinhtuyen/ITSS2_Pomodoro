@@ -48,9 +48,7 @@ const ClockDraggable = ({
     <Draggable>
       <div
         className={
-          currentPage === "1"
-            ? " fixed right-6 top-6 bg-white w-[240px] h-[150px] rounded-2xl border-solid border-black border-[1px] z-[1000]"
-            : "fixed right-6 top-6 bg-white w-[240px] h-[150px] rounded-2xl border-solid border-black border-[1px] z-[1000]"
+          "fixed right-6 top-6 bg-white w-[240px] h-[150px] rounded-2xl border-solid border-black border-[1px] z-[1000]"
         }
       >
         <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 rounded-xl border-black border-[1px] w-[100px] h-[100px]">

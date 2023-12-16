@@ -15,4 +15,17 @@
       }
     }
   }
+  .pagination-component {
+    li {
+      &.previous:hover {
+        color: red;
+      }
+      &.next:hover {
+        color: red;
+      }
+      &.page-className:hover {
+         color: red;
+      }
+    }
+  }
 }
