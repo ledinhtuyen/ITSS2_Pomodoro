@@ -103,7 +103,4 @@ export const pomodoroSlice = createSlice({
 })
 
 export const { handleResetPomodoro, minusOneSecond, setIsRunning, setTimeWithProcessCorresponding, setToNextProcess, setIsResetFalse, setIsRunningFalse, setLongBreak, setPomodoro, setShortBreak, setSleepReminder, plusFiveMinutesMore } = pomodoroSlice.actions
-
-
-
 export default pomodoroSlice.reducer
