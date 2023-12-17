@@ -65,7 +65,7 @@ function App() {
   }
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_DOMAIN}/timer?user=1`)
+    axios.get(`${import.meta.env.VITE_API_DOMAIN}/timer?user=1`)
     .then((res) => {
       dispatch(setPomodoro(res.data.pomodoro * 60));
       dispatch(setShortBreak(res.data.short_break * 60));

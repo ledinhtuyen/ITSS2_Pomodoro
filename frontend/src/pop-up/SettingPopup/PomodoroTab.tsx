@@ -32,7 +32,7 @@ const PomodoroTab = ({}: PomandoroTabProps) => {
     b = Math.round(b / 60);
     c = Math.round(c / 60);
 
-    axios.post(`${import.meta.env.VITE_DOMAIN}/timer`, {
+    axios.post(`${import.meta.env.VITE_API_DOMAIN}/timer`, {
         "pomodoro": a,
         "short_break": b,
         "long_break": c,

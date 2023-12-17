@@ -3,6 +3,8 @@ import "./Exercise.scss";
 import Slider from "react-slick";
 import InstructionalBlog from "./components/InstructionalBlog";
 import InstructionalVideo from "./components/InstructionalVideo";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Exercise = () => {
   const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
@@ -24,14 +26,27 @@ const Exercise = () => {
     ),
   };
 
-  const categoriesExercise = [
-    "Heart",
-    "Eyes",
-    "Musculoskeletal",
-    "Nerve",
-    "Sleep",
-    "Muscle",
-  ];
+  const [categoriesExercise, setCategoriesExercise] = useState<any>([]);
+  const [listPost, setListPost] = useState<any>([]);
+  const [listVideo, setListVideo] = useState<any>([]);
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_API_DOMAIN}/list_category`)
+      .then((res) => {
+        setCategoriesExercise(res.data["categories"]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    axios
+      .get(`${import.meta.env.VITE_API_DOMAIN}/list_post_video`)
+      .then((res) => {
+        setListPost(res.data["posts"]);
+        setListVideo(res.data["videos"]);
+      })
+  }, []);
 
   return (
     <div className="bg-[#F5F5F4] w-full excersice-component">
@@ -45,18 +60,18 @@ const Exercise = () => {
             className="absolute top-[6px] left-1/2 -translate-x-1/2 "
           />
         </div>
-        <div className="mt-8 mb-5">
+        <div className="ml-5 mt-8 mb-5">
           <Slider {...settings}>
-            {categoriesExercise.map((category, index) => (
+            {categoriesExercise.map((category : any, index) => (
               <div className="bg-[#E7E5E4] rounded-lg" key={index}>
-                <h3 className="text-center py-4 font-semibold">{category}</h3>
+                <h3 className="text-center py-4 font-semibold">{category.name}</h3>
               </div>
             ))}
           </Slider>
         </div>
-        <div className="grid grid-cols-2 gap-5">
-          <InstructionalVideo />
-          <InstructionalBlog />
+        <div className="ml-8 grid grid-cols-2 gap-5">
+          <InstructionalBlog items={listPost} />
+          <InstructionalVideo items={listVideo} />
         </div>
       </div>
     </div>

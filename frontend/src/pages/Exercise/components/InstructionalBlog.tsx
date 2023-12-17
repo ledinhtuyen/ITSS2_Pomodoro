@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import Logo from "../../../assets/images/Icon.png";
 import ReactPaginate from "react-paginate";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import "../Exercise.scss";
-
-const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
 function Items({ currentItems }: any) {
   return (
@@ -12,19 +9,19 @@ function Items({ currentItems }: any) {
       {currentItems &&
         currentItems.map((item: any) => (
           <a
-            href={`/exercise/blog/${item}`}
-            className="border-b-[1px] border-[#E7E5E4] pb-2"
-            key={item}
+            href={`/exercise/blog/${item.id}`}
+            className="border-b-[1px] border-[#543d31] pb-2"
+            key={item.id}
           >
             <li>
               <div className="flex gap-5">
-                <img src={Logo} className="w-[58px]" />
+                <img src={item.thumbnail} className="w-[58px]" />
                 <div>
                   <h1 className="font-semibold text-[#1C1917]">
-                    Exercises to treat back pain
+                    {item.title}
                   </h1>
                   <span className="text-[#78716C]">
-                    Lorem ipsum dolor sit amet consectetur.
+                    {item.description}
                   </span>
                 </div>
               </div>
@@ -35,13 +32,17 @@ function Items({ currentItems }: any) {
   );
 }
 
-const InstructionalBlog = () => {
+const InstructionalBlog = ({ items } : any) => {
   const itemsPerPage = 5;
+
   // index đầu của 1 trang
-  const [itemOffset, setItemOffset] = useState(0);
+  const [itemOffset, setItemOffset] = useState<number>(0);
+
   // index cuối của 1 trang
   const endOffset = itemOffset + itemsPerPage;
+
   const currentItems = items.slice(itemOffset, endOffset);
+
   // Tổng số trang
   const pageCount = Math.ceil(items.length / itemsPerPage);
   const handlePageClick = (event: any) => {
@@ -67,7 +68,7 @@ const InstructionalBlog = () => {
           nextLabel={<RightOutlined />}
           previousLabel={<LeftOutlined />}
           onPageChange={handlePageClick}
-          initialPage={1}
+          initialPage={0}
           pageClassName="border-[2px] w-6 h-6 text-center leading-[20px] border-[#f5f5f4] page-className"
           activeClassName="!border-red-500 text-red-500 font-semibold"
         />
