@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 class Timer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -21,7 +22,7 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=255)
     thumbnail = models.CharField(max_length=255)
-    content = models.TextField()
+    content = RichTextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -32,7 +33,7 @@ class Video(models.Model):
     thumbnail = models.CharField(max_length=255)
     link = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    content = models.TextField()
+    content = RichTextField()
 
     def __str__(self):
         return self.title

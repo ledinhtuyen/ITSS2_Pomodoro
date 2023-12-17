@@ -7,3 +7,4 @@ django-cors-headers
 cryptography
 pymysql
 psycopg2-binary
+django-ckeditor
