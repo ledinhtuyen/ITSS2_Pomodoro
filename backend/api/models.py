@@ -22,8 +22,9 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=255)
     thumbnail = models.CharField(max_length=255)
-    content = RichTextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    content = RichTextField()
+    description = models.CharField(max_length=255)
 
     def __str__(self):
         return self.title
@@ -34,6 +35,7 @@ class Video(models.Model):
     link = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     content = RichTextField()
+    description = models.CharField(max_length=255)
 
     def __str__(self):
         return self.title
