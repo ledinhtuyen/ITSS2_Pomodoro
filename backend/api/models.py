@@ -20,6 +20,7 @@ class Category(models.Model):
     
 class Post(models.Model):
     title = models.CharField(max_length=255)
+    thumbnail = models.CharField(max_length=255)
     content = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
@@ -28,6 +29,7 @@ class Post(models.Model):
     
 class Video(models.Model):
     title = models.CharField(max_length=255)
+    thumbnail = models.CharField(max_length=255)
     link = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     content = models.TextField()
