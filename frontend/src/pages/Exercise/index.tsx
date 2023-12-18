@@ -51,7 +51,7 @@ const Exercise = () => {
     setCurrentCategory(name);
   };
 
-  // Get List Video and Blog by Category 
+  // Get Video and Blog by Category 
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_category?name=${currentCategory}`)

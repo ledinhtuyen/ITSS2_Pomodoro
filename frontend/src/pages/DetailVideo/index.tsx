@@ -1,10 +1,15 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ClockCircleOutlined } from "@ant-design/icons";
 import likeButton from "../../assets/images/LikeButton.png"
 
 const DetailVideo = () => {
     const { id } = useParams();
+    const navigate = useNavigate()
+
+    const backToExercise = () => {
+        navigate("/exercise")
+    }
 
     return (
         <div className="container mx-auto max-w-[1200px]">
@@ -13,7 +18,7 @@ const DetailVideo = () => {
                     <div className="mb-3 font-semibold">
                         <a href="/exercise">Exercise</a>
                         <span className="mx-2">/</span>
-                        <span>Neck</span>
+                        <span className="cursor-pointer" onClick={backToExercise}>Neck</span>
                     </div>
                     <div className="text-4xl font-semibold">Do This Easy Eye Massage After You Have Been Using A Screen</div>
                     <div className="mt-8 text-[#A8A29E]">
