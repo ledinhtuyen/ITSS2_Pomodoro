@@ -22,11 +22,13 @@ import dayjs from "dayjs";
 import WarningPopup from "./pop-up/WarningPopup";
 import {
   setCloseWarningPopup,
+  setOpenTimeUpPopup,
   setOpenWarningPopup,
 } from "./redux/reducers/popupReducer";
 import axios from "axios";
 import { Notifications } from "react-push-notification";
-import addNotification from 'react-push-notification';
+import addNotification from "react-push-notification";
+import TimeUpPopup from "./pop-up/TimeUp/index";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -51,6 +53,10 @@ function App() {
     (state) => state.popup.isOpenWarningPopup
   );
 
+  const isOpenTimeUpPopup = useAppSelector(
+    (state) => state.popup.isOpenTimeUpPopup
+  );
+
   // Get Hour and Minute Now every time
   const [currentHour, setCurrentHour] = useState<number>(dayjs().hour()); // Assuming this is being updated elsewhere
   const [currentMinute, setCurrentMinute] = useState<number>(dayjs().minute()); // Assuming this is being updated elsewhere
@@ -66,15 +72,15 @@ function App() {
 
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_DOMAIN}/timer?user=1`)
-    .then((res) => {
-      dispatch(setPomodoro(res.data.pomodoro * 60));
-      dispatch(setShortBreak(res.data.short_break * 60));
-      dispatch(setLongBreak(res.data.long_break * 60));
-      dispatch(setSleepReminder(res.data.sleep_time));
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((res) => {
+        dispatch(setPomodoro(res.data.pomodoro * 60));
+        dispatch(setShortBreak(res.data.short_break * 60));
+        dispatch(setLongBreak(res.data.long_break * 60));
+        dispatch(setSleepReminder(res.data.sleep_time));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   // Alert Sound
@@ -121,7 +127,7 @@ function App() {
       if (cookies.alert_choice !== 3) {
         audioRef.current?.play();
       }
-      
+
       timer = setTimeout(() => {
         dispatch(setToNextProcess());
       }, 1000);
@@ -171,6 +177,14 @@ function App() {
     }
   }, [sleepReminder, currentHour, currentMinute]);
 
+  // Show TimeUpPopup
+  useEffect(() => {
+    if (time == shortBreak && currentProcess == Process.SHORT_BREAK) {
+      dispatch(setOpenTimeUpPopup())
+      dispatch(setIsRunningFalse())
+    }
+  }, [time, currentProcess, currentIteration]);
+
   // Update Alert Volume
   useEffect(() => {
     audioRef.current!.volume = cookies.alert_volume / 100;
@@ -206,6 +220,7 @@ function App() {
       <audio ref={audioRef} src={alertSound[cookies.alert_choice - 1]}></audio>
       <Notifications />
       {isOpenWarningPopup && <WarningPopup />}
+      {isOpenTimeUpPopup && <TimeUpPopup />}
     </BrowserRouter>
   );
 }
