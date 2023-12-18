@@ -7,8 +7,32 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Exercise = () => {
+  const [categoriesExercise, setCategoriesExercise] = useState<any>([]);
+  const [listPost, setListPost] = useState<any>([]);
+  const [listVideo, setListVideo] = useState<any>([]);
+
   const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
-    console.log(info?.source, value);
+    axios
+      .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_title?title=${value}`)
+      .then((res) => {
+        setListPost(res.data["posts"]);
+        setListVideo(res.data["videos"]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const onClickCategory = (name: string) => {
+    axios
+      .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_category?name=${name}`)
+      .then((res) => {
+        setListPost(res.data["posts"]);
+        setListVideo(res.data["videos"]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const settings = {
@@ -25,10 +49,6 @@ const Exercise = () => {
       ></div>
     ),
   };
-
-  const [categoriesExercise, setCategoriesExercise] = useState<any>([]);
-  const [listPost, setListPost] = useState<any>([]);
-  const [listVideo, setListVideo] = useState<any>([]);
 
   useEffect(() => {
     axios
@@ -62,8 +82,10 @@ const Exercise = () => {
         </div>
         <div className="ml-5 mt-8 mb-5">
           <Slider {...settings}>
-            {categoriesExercise.map((category : any, index) => (
-              <div className="bg-[#E7E5E4] rounded-lg" key={index}>
+            {categoriesExercise.map((category : any, index : any) => (
+              <div className="bg-[#E7E5E4] rounded-lg" key={index} onClick={() => {
+                onClickCategory(category.name);
+              }}>
                 <h3 className="text-center py-4 font-semibold">{category.name}</h3>
               </div>
             ))}
