@@ -6,16 +6,29 @@ import InstructionalVideo from "./components/InstructionalVideo";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const settings = {
+  dots: true,
+  infinite: true,
+  speed: 300,
+  slidesToShow: 5,
+  slidesToScroll: 2,
+  appendDots: () => (
+    <div
+      style={{
+        display: "none",
+      }}
+    ></div>
+  ),
+};
+
 const Exercise = () => {
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const [currentCategory, setCurrentCategory] = useState<string>("");
   const [categoriesExercise, setCategoriesExercise] = useState<any>([]);
   const [listPost, setListPost] = useState<any>([]);
   const [listVideo, setListVideo] = useState<any>([]);
 
   const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
-    setSearchTerm(value);
     setCurrentCategory("");
     setLoading(true);
     setTimeout(() => {
@@ -35,10 +48,13 @@ const Exercise = () => {
   };
 
   const onClickCategory = (name: string) => {
-    setSearchTerm("");
     setCurrentCategory(name);
+  };
+
+  // Get List Video and Blog by Category 
+  useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_category?name=${name}`)
+      .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_category?name=${currentCategory}`)
       .then((res) => {
         setListPost(res.data["posts"]);
         setListVideo(res.data["videos"]);
@@ -46,23 +62,10 @@ const Exercise = () => {
       .catch((err) => {
         console.log(err);
       });
-  };
+  }, [currentCategory])
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 300,
-    slidesToShow: 5,
-    slidesToScroll: 2,
-    appendDots: () => (
-      <div
-        style={{
-          display: "none",
-        }}
-      ></div>
-    ),
-  };
 
+  // Call API to get List Categories && get All Post and Video
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_API_DOMAIN}/list_category`)
@@ -83,7 +86,7 @@ const Exercise = () => {
 
   return (
     <div className="bg-[#F5F5F4] excersice-component">
-      <div className="container mx-auto max-w-[1200px] pt-10 pb-20">
+      <div className="container mx-auto max-w-[1200px] pt-10 pb-20 min-h-screen">
         <div className="relative">
           <h1 className="text-4xl font-bold">Exercise</h1>
           <Search
