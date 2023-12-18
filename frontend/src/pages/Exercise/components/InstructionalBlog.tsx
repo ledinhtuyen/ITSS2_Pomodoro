@@ -18,7 +18,7 @@ function Items({ currentItems }: any) {
                 <img src={item.thumbnail} className="w-[58px]" />
                 <div>
                   <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
-                  <span className="text-[#78716C]">{item.description}</span>
+                  <span className="text-[#78716C] multiline-ellipsis">{item.description}</span>
                 </div>
               </div>
             </li>
@@ -57,13 +57,13 @@ const InstructionalBlog = ({ items }: any) => {
           <Items currentItems={currentItems} />
         </ul>
       </div>
-      <div className="mt-3">
+      <div className="mt-5">
         {items.length > 5 && (
           <ReactPaginate
             className="flex justify-center gap-5 pagination-component"
             pageCount={pageCount}
-            pageRangeDisplayed={1}
-            marginPagesDisplayed={1}
+            pageRangeDisplayed={2}
+            marginPagesDisplayed={2}
             nextLabel={<RightOutlined />}
             previousLabel={<LeftOutlined />}
             onPageChange={handlePageClick}

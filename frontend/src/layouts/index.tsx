@@ -75,7 +75,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
         theme="dark"
         items={items}
       />
-      <div className="h-screen w-screen relative top-0 left-0">{children}</div>
+      <div className="h-full w-full relative top-0 left-0">{children}</div>
       {currentPage !== "1" && currentPage !== "0" && (
         <ClockDraggable
           setCurrentPage={setCurrentPage}

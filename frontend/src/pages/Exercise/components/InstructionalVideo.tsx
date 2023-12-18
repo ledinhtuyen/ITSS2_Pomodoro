@@ -11,10 +11,10 @@ function Items({ currentItems }: any) {
           <a href={`/exercise/video/${item.id}`} className="pb-2" key={item.id}>
             <li>
               <div className="flex gap-5">
-                <img src={item.thumbnail} width={300}/>
+                <img src={item.thumbnail} width={300} />
                 <div>
                   <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
-                  <span className="text-[#78716C]">{item.description}</span>
+                  <span className="text-[#78716C] multiline-ellipsis">{item.description}</span>
                 </div>
               </div>
             </li>
@@ -46,13 +46,13 @@ const InstructionalVideo = ({ items }: any) => {
           <Items currentItems={currentItems} />
         </ul>
       </div>
-      <div className="mt-3">
+      <div className="mt-5">
         {items.length > 2 && (
           <ReactPaginate
             className="flex justify-center gap-5 pagination-component"
             pageCount={pageCount}
-            pageRangeDisplayed={1}
-            marginPagesDisplayed={1}
+            pageRangeDisplayed={2}
+            marginPagesDisplayed={2}
             nextLabel={<RightOutlined />}
             previousLabel={<LeftOutlined />}
             onPageChange={handlePageClick}

@@ -82,8 +82,8 @@ const Exercise = () => {
   }, []);
 
   return (
-    <div className="bg-[#F5F5F4] w-full h-screen excersice-component">
-      <div className="container mx-auto max-w-[1200px] pt-10">
+    <div className="bg-[#F5F5F4] excersice-component">
+      <div className="container mx-auto max-w-[1200px] pt-10 pb-20">
         <div className="relative">
           <h1 className="text-4xl font-bold">Exercise</h1>
           <Search
@@ -94,7 +94,7 @@ const Exercise = () => {
             className="absolute top-[6px] left-1/2 -translate-x-1/2 "
           />
         </div>
-        <div className="ml-5 mt-8 mb-5">
+        <div className="pl-5 pt-8 pb-5">
           <Slider {...settings}>
             {categoriesExercise.map((category: any, index: any) => (
               <div
