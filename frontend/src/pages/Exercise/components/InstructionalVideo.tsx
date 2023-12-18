@@ -11,7 +11,7 @@ function Items({ currentItems }: any) {
           <a href={`/exercise/video/${item.id}`} className="pb-2" key={item.id}>
             <li>
               <div className="flex gap-5">
-                <img src={item.thumbnail} />
+                <img src={item.thumbnail} width={300}/>
                 <div>
                   <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
                   <span className="text-[#78716C]">{item.description}</span>
@@ -47,17 +47,19 @@ const InstructionalVideo = ({ items }: any) => {
         </ul>
       </div>
       <div className="mt-3">
-        <ReactPaginate
-          className="flex justify-center gap-5 pagination-component"
-          pageCount={pageCount}
-          pageRangeDisplayed={1}
-          marginPagesDisplayed={1}
-          nextLabel={<RightOutlined />}
-          previousLabel={<LeftOutlined />}
-          onPageChange={handlePageClick}
-          pageClassName="border-[2px] w-6 h-6 text-center leading-[20px] border-[#f5f5f4] page-className"
-          activeClassName="!border-red-500 text-red-500 font-semibold"
-        />
+        {items.length > 2 && (
+          <ReactPaginate
+            className="flex justify-center gap-5 pagination-component"
+            pageCount={pageCount}
+            pageRangeDisplayed={1}
+            marginPagesDisplayed={1}
+            nextLabel={<RightOutlined />}
+            previousLabel={<LeftOutlined />}
+            onPageChange={handlePageClick}
+            pageClassName="border-[2px] w-6 h-6 text-center leading-[20px] border-[#f5f5f4] page-className"
+            activeClassName="!border-red-500 text-red-500 font-semibold"
+          />
+        )}
       </div>
     </div>
   );
