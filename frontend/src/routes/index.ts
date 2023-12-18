@@ -1,5 +1,6 @@
 import DefaultLayout from "../layouts";
-import DetailPage from "../pages/DetailPage";
+import DetailBlog from "../pages/DetailBlog";
+import DetailVideo from "../pages/DetailVideo";
 import ErrorPage from "../pages/ErrorPage";
 import Exercise from "../pages/Exercise";
 import Home from "../pages/Home";
@@ -34,7 +35,12 @@ const publicRoutes = [
   },
   {
     path: `/${RoutePath.EXERCISE}/blog/:id`,
-    component: DetailPage,
+    component: DetailBlog,
+    layout: DefaultLayout,
+  },
+  {
+    path: `/${RoutePath.EXERCISE}/video/:id`,
+    component: DetailVideo,
     layout: DefaultLayout,
   }
 ];

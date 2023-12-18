@@ -6,6 +6,7 @@ import LogoIcon from "../assets/images/Icon.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Layout.scss";
 import ClockDraggable from "../components/ClockDraggable";
+import { RoutePath } from "../routes";
 
 interface DefaultLayoutProps {
   children: React.ReactElement;
