@@ -39,10 +39,11 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   const [currentPage, setCurrentPage] = useState(() =>
     location.pathname == "/"
       ? "1"
-      : location.pathname == "/exercise"
-      ? "2"
-      : "3"
+      : location.pathname.includes("/exercise")
+        ? "2"
+        : "3"
   );
+
 
   const onClick: MenuProps["onClick"] = (e) => {
     setCurrentPage(e.key);
@@ -50,12 +51,18 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
 
   // Navigate URL when currentPage state change
   useEffect(() => {
-    currentPage === "1" || currentPage === "0"
-      ? navigate("/")
-      : currentPage === "2"
-      ? navigate("/exercise")
-      : navigate("/likes");
+    if (currentPage === "1" || currentPage === "0") {
+      navigate("/")
+    }
+    else if (currentPage === "2") {
+      location.pathname.length > 9 ? navigate(location.pathname) : navigate("/exercise")
+    }
+    else {
+      navigate("/likes")
+    }
   }, [currentPage]);
+
+  console.log(currentPage);
 
   return (
     <div>

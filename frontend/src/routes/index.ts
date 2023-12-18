@@ -1,4 +1,5 @@
 import DefaultLayout from "../layouts";
+import DetailPage from "../pages/DetailPage";
 import ErrorPage from "../pages/ErrorPage";
 import Exercise from "../pages/Exercise";
 import Home from "../pages/Home";
@@ -31,6 +32,11 @@ const publicRoutes = [
     component: ErrorPage,
     layout: DefaultLayout,
   },
+  {
+    path: `/${RoutePath.EXERCISE}/blog/:id`,
+    component: DetailPage,
+    layout: DefaultLayout,
+  }
 ];
 
 export { publicRoutes };
