@@ -68,7 +68,6 @@ const InstructionalBlog = ({ items } : any) => {
           nextLabel={<RightOutlined />}
           previousLabel={<LeftOutlined />}
           onPageChange={handlePageClick}
-          initialPage={0}
           pageClassName="border-[2px] w-6 h-6 text-center leading-[20px] border-[#f5f5f4] page-className"
           activeClassName="!border-red-500 text-red-500 font-semibold"
         />

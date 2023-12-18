@@ -11,16 +11,10 @@ function Items({ currentItems }: any) {
           <a href={`/exercise/video/${item.id}`} className="pb-2" key={item.id}>
             <li>
               <div className="flex gap-5">
-                <img
-                  src={item.thumbnail}
-                />
+                <img src={item.thumbnail} />
                 <div>
-                  <h1 className="font-semibold text-[#1C1917]">
-                    {item.title}
-                  </h1>
-                  <span className="text-[#78716C]">
-                    {item.description}
-                  </span>
+                  <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
+                  <span className="text-[#78716C]">{item.description}</span>
                 </div>
               </div>
             </li>
@@ -30,7 +24,7 @@ function Items({ currentItems }: any) {
   );
 }
 
-const InstructionalVideo = ({items}: any) => {
+const InstructionalVideo = ({ items }: any) => {
   const itemsPerPage = 2;
   // index đầu của 1 trang
   const [itemOffset, setItemOffset] = useState(0);
@@ -61,7 +55,6 @@ const InstructionalVideo = ({items}: any) => {
           nextLabel={<RightOutlined />}
           previousLabel={<LeftOutlined />}
           onPageChange={handlePageClick}
-          initialPage={0}
           pageClassName="border-[2px] w-6 h-6 text-center leading-[20px] border-[#f5f5f4] page-className"
           activeClassName="!border-red-500 text-red-500 font-semibold"
         />

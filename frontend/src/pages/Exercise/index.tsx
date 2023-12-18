@@ -54,6 +54,7 @@ const Exercise = () => {
     axios
       .get(`${import.meta.env.VITE_API_DOMAIN}/list_category`)
       .then((res) => {
+        console.log(res.data);
         setCategoriesExercise(res.data["categories"]);
       })
       .catch((err) => {
@@ -63,9 +64,10 @@ const Exercise = () => {
     axios
       .get(`${import.meta.env.VITE_API_DOMAIN}/list_post_video`)
       .then((res) => {
+        console.log(res.data);
         setListPost(res.data["posts"]);
         setListVideo(res.data["videos"]);
-      })
+      });
   }, []);
 
   return (
