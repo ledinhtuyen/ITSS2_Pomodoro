@@ -5,6 +5,7 @@ from .serializers import TimerSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.db.models import Count
+import random
 
 def index(request):
     return HttpResponse("Hello.")
@@ -46,7 +47,8 @@ def recommend(request):
                 "id": liked_post.post.id,
                 "title": liked_post.post.title,
                 "thumbnail": liked_post.post.thumbnail,
-                "likes": count
+                "likes": count,
+                "readtime": random.randint(1, 5)
             })
 
     # Add to data
@@ -57,7 +59,8 @@ def recommend(request):
                 "id": liked_video.video.id,
                 "title": liked_video.video.title,
                 "thumbnail": liked_video.video.thumbnail,
-                "likes": count
+                "likes": count,
+                "readtime": random.randint(1, 5)
             })
 
     # Get post, video has most liked
@@ -73,7 +76,8 @@ def recommend(request):
                     "id": post.id,
                     "title": post.title,
                     "thumbnail": post.thumbnail,
-                    "likes": count
+                    "likes": count,
+                    "readtime": random.randint(1, 5)
                 })
 
     for most_liked_video in most_liked_videos:
@@ -85,7 +89,8 @@ def recommend(request):
                     "id": video.id,
                     "title": video.title,
                     "thumbnail": video.thumbnail,
-                    "likes": count
+                    "likes": count,
+                    "readtime": random.randint(1, 5)
                 })
     
     return Response(data)
@@ -206,6 +211,7 @@ def detail(request):
     data["thumbnail"] = result.thumbnail
     data["category"] = result.category.name
     data["content"] = result.content
+    data["readtime"] = random.randint(1, 5)
 
     return Response(data)
 
