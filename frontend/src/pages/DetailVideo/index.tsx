@@ -37,7 +37,7 @@ const DetailVideo = () => {
 
                 </div>
                 <div className="ml-32">
-                    <iframe width="560" height="315" src={data.link} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src={data.link} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
                     <div dangerouslySetInnerHTML={{__html: data.content}} />
                 </div>
                 <div className="font-semibold text-center mt-5">

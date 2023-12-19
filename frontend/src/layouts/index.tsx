@@ -36,13 +36,17 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [currentPage, setCurrentPage] = useState(() =>
-    location.pathname == "/"
-      ? "1"
-      : location.pathname.includes("/exercise")
-        ? "2" : location.pathname == "/likes"
-          ? "3" : null
-  );
+  const [currentPage, setCurrentPage] = useState<any>(() => {
+    if (location.pathname === "/") {
+      return "1";
+    } else if (location.pathname.includes("/exercise")) {
+      return "2";
+    } else if (location.pathname === "/likes") {
+      return "3";
+    } else {
+      return "1";
+    }
+  });
 
   const onClick: MenuProps["onClick"] = (e) => {
     setCurrentPage(e.key);

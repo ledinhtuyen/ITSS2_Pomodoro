@@ -8,8 +8,8 @@ import {
 } from "../../redux/reducers/pomodoroReducer";
 
 interface ClockDraggableProps {
-  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
-  currentPage: string;
+  setCurrentPage: any;
+  currentPage: any;
 }
 
 const ClockDraggable = ({
