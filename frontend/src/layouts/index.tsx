@@ -54,10 +54,15 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
       navigate("/")
     }
     else if (currentPage === "2") {
-      if (location.pathname.length > 9) {
-        navigate(location.pathname)
-      } else {
-        navigate("/exercise")
+      if (location.search) {
+        navigate(location.pathname + location.search)
+      }
+      else {
+        if (location.pathname.length > 9) {
+          navigate(location.pathname)
+        } else {
+          navigate("/exercise")
+        }
       }
     }
     else if (currentPage === "3") {

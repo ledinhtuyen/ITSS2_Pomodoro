@@ -77,17 +77,22 @@ const Exercise = () => {
 
   // Get Video and Blog by Category 
   useEffect(() => {
-    if (categoryParam) {
-      axios
-        .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_category?name=${categoryParam}`)
-        .then((res) => {
-          setListPost(res.data["posts"]);
-          setListVideo(res.data["videos"]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    const timer = setTimeout(() => {
+      if (categoryParam) {
+        axios
+          .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_category?name=${categoryParam}`)
+          .then((res) => {
+            setListPost(res.data["posts"]);
+            setListVideo(res.data["videos"]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+
+      return () => clearTimeout(timer)
+    }, 100)
+
   }, [categoryParam])
 
   return (
