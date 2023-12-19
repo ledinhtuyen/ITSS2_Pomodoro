@@ -1,10 +1,10 @@
-import React from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { useAppDispatch } from "../../redux/hook";
 import { setCloseTimeUpPopup } from "../../redux/reducers/popupReducer";
 import timeUpImage from "../../assets/images/TimeUp.png";
-import greyBackGround from "../../assets/images/GreyBackground.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const TimeUpPopup = () => {
   const navigate = useNavigate();
@@ -12,6 +12,21 @@ const TimeUpPopup = () => {
   const handleCloseTimUpPopup = () => {
     dispatch(setCloseTimeUpPopup());
   };
+
+  const [dataPost, setDataPost] = useState<any>([]);
+  const [dataVideo, setDataVideo] = useState<any>([]);
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_API_DOMAIN}/recommend`)
+      .then((res) => {
+        setDataPost(res.data.posts);
+        setDataVideo(res.data.videos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div className="w-screen h-screen fixed inset-0 bg-[rgba(0,0,0,0.5)] z-[101]">
@@ -34,15 +49,25 @@ const TimeUpPopup = () => {
             </a>
           </div>
           <div className="grid grid-cols-4 gap-x-4 gap-y-2">
-            {Array.from({ length: 8 }, (item, index) => (
-              <div className="" key={index}>
-                <img src={greyBackGround} className="w-full" />
-                <h1 className="font-semibold">Relax Eyes Excercise</h1>
+            {dataPost.map((item : any, index : any) => (
+              <a href={`exercise/blog/${item.id}`} key={index}>
+                <img src={item.thumbnail} className="w-full" />
+                <h1 className="font-semibold multiline-ellipsis">{item.title}</h1>
                 <div className="flex justify-between text-[14px] text-[#78716C]">
-                  <span>5 mins</span>
-                  <span>107 likes</span>
+                  <span>{item.readtime} mins</span>
+                  <span>{item.likes} likes</span>
                 </div>
-              </div>
+              </a>
+            ))}
+            {dataVideo.map((item : any, index : any) => (
+              <a href={`exercise/video/${item.id}`} key={index}>
+                <img src={item.thumbnail} className="w-full" />
+                <h1 className="font-semibold multiline-ellipsis">{item.title}</h1>
+                <div className="flex justify-between text-[14px] text-[#78716C]">
+                  <span>{item.readtime} mins</span>
+                  <span>{item.likes} likes</span>
+                </div>
+              </a>
             ))}
           </div>
         </div>
