@@ -5,6 +5,7 @@ import InstructionalBlog from "./components/InstructionalBlog";
 import InstructionalVideo from "./components/InstructionalVideo";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const settings = {
   dots: true,
@@ -22,14 +23,18 @@ const settings = {
 };
 
 const Exercise = () => {
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search);
+  const categoryParam = queryParams.get('category');
+  const navigate = useNavigate()
+
   const [loading, setLoading] = useState(false);
-  const [currentCategory, setCurrentCategory] = useState<string>("");
   const [categoriesExercise, setCategoriesExercise] = useState<any>([]);
   const [listPost, setListPost] = useState<any>([]);
   const [listVideo, setListVideo] = useState<any>([]);
 
   const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
-    setCurrentCategory("");
+    navigate(`/exercise`)
     setLoading(true);
     setTimeout(() => {
       axios
@@ -48,22 +53,23 @@ const Exercise = () => {
   };
 
   const onClickCategory = (name: string) => {
-    setCurrentCategory(name);
+    navigate(`/exercise?category=${name}`)
   };
 
   // Get Video and Blog by Category 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_category?name=${currentCategory}`)
-      .then((res) => {
-        setListPost(res.data["posts"]);
-        setListVideo(res.data["videos"]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [currentCategory])
-
+    if (categoryParam) {
+      axios
+        .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_category?name=${categoryParam}`)
+        .then((res) => {
+          setListPost(res.data["posts"]);
+          setListVideo(res.data["videos"]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [categoryParam])
 
   // Call API to get List Categories && get All Post and Video
   useEffect(() => {
@@ -102,7 +108,7 @@ const Exercise = () => {
             {categoriesExercise.map((category: any, index: any) => (
               <div
                 className={
-                  currentCategory === category.name
+                  categoryParam === category.name
                     ? "bg-[#EF4444] rounded-lg cursor-pointer text-white"
                     : "bg-[#E7E5E4] rounded-lg cursor-pointer hover:scale-[1.05]"
                 }

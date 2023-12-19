@@ -1,24 +1,19 @@
 import React from "react"
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import likeButton from "../../assets/images/LikeButton.png"
 
 const DetailBlog = () => {
     const { id } = useParams()
-    const navigate = useNavigate()
-
-    const backToExercise = () => {
-        navigate("/exercise")
-    }
 
     return (
         <div className="container mx-auto max-w-[1200px]">
             <div className="pt-16">
                 <div className="container mx-auto max-w-[800px] mb-10">
                     <div className="mb-3 font-semibold">
-                        <a href="/exercise">Exercise</a>
+                        <Link to="/exercise">Exercise</Link>
                         <span className="mx-2">/</span>
-                        <span className="cursor-pointer" onClick={backToExercise}>Neck</span>
+                        <Link className="cursor-pointer" to={`/exercise?category=Neck`}>Neck</Link>
                     </div>
                     <div className="text-4xl font-semibold">Excercise for Neck Massage</div>
                     <div className="mt-8 text-[#A8A29E]">

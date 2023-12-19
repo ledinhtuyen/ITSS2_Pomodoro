@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import "../Exercise.scss";
 
 function Items({ currentItems }: any) {
@@ -8,7 +9,7 @@ function Items({ currentItems }: any) {
     <>
       {currentItems &&
         currentItems.map((item: any) => (
-          <a href={`/exercise/video/${item.id}`} className="pb-2" key={item.id}>
+          <Link to={`/exercise/video/${item.id}`} className="pb-2" key={item.id}>
             <li>
               <div className="flex gap-5">
                 <img src={item.thumbnail} width={300} />
@@ -18,7 +19,7 @@ function Items({ currentItems }: any) {
                 </div>
               </div>
             </li>
-          </a>
+          </Link>
         ))}
     </>
   );
@@ -40,7 +41,7 @@ const InstructionalVideo = ({ items }: any) => {
   };
   return (
     <div>
-      <div className="bg-white rounded-lg border-[1px] border-[#e7e5e4] p-5">
+      <div className="bg-white rounded-lg border-[1px] border-[#e7e5e4] p-5 min-h-[560px]">
         <h1 className="font-bold text-[rgb(28,25,23)] mb-5 text-2xl">Video</h1>
         <ul className="flex flex-col gap-2">
           <Items currentItems={currentItems} />

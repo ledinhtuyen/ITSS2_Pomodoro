@@ -29,11 +29,6 @@ const publicRoutes = [
     layout: DefaultLayout,
   },
   {
-    path: "/404",
-    component: ErrorPage,
-    layout: DefaultLayout,
-  },
-  {
     path: `/${RoutePath.EXERCISE}/blog/:id`,
     component: DetailBlog,
     layout: DefaultLayout,
@@ -42,7 +37,12 @@ const publicRoutes = [
     path: `/${RoutePath.EXERCISE}/video/:id`,
     component: DetailVideo,
     layout: DefaultLayout,
-  }
+  },
+  {
+    path: "/404",
+    component: ErrorPage,
+    layout: DefaultLayout,
+  },
 ];
 
 export { publicRoutes };

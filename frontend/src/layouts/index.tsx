@@ -6,7 +6,6 @@ import LogoIcon from "../assets/images/Icon.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Layout.scss";
 import ClockDraggable from "../components/ClockDraggable";
-import { RoutePath } from "../routes";
 
 interface DefaultLayoutProps {
   children: React.ReactElement;
@@ -45,7 +44,6 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
         : "3"
   );
 
-
   const onClick: MenuProps["onClick"] = (e) => {
     setCurrentPage(e.key);
   };
@@ -56,14 +54,21 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
       navigate("/")
     }
     else if (currentPage === "2") {
-      location.pathname.length > 9 ? navigate(location.pathname) : navigate("/exercise")
+      if (location.search) {
+        navigate(location.pathname + location.search)
+      }
+      else {
+        if (location.pathname.length > 9) {
+          navigate(location.pathname)
+        } else {
+          navigate("/exercise")
+        }
+      }
     }
-    else {
+    else if (currentPage === "3") {
       navigate("/likes")
     }
   }, [currentPage]);
-
-  console.log(currentPage);
 
   return (
     <div>

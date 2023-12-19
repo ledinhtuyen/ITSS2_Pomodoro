@@ -1,5 +1,5 @@
-import { CloseOutlined } from "@ant-design/icons";
 import React from "react";
+import { CloseOutlined } from "@ant-design/icons";
 import { useAppDispatch } from "../../redux/hook";
 import { setCloseTimeUpPopup } from "../../redux/reducers/popupReducer";
 import timeUpImage from "../../assets/images/TimeUp.png";

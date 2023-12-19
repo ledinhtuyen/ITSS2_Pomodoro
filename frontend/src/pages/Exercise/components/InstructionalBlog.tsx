@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import "../Exercise.scss";
 
 function Items({ currentItems }: any) {
@@ -8,21 +9,21 @@ function Items({ currentItems }: any) {
     <>
       {currentItems &&
         currentItems.map((item: any) => (
-          <a
-            href={`/exercise/blog/${item.id}`}
+          <Link
+            to={`/exercise/blog/${item.id}`}
             className="border-b-[1px] border-[#E7E5E4] pb-2"
             key={item.id}
           >
-            <li>
-              <div className="flex gap-5">
-                <img src={item.thumbnail} className="w-[58px]" />
-                <div>
-                  <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
-                  <span className="text-[#78716C] multiline-ellipsis">{item.description}</span>
-                </div>
+            <li className="grid grid-cols-5 gap-5">
+              <div className="">
+                <img src={item.thumbnail} className="mt-1" />
+              </div>
+              <div className="col-span-4">
+                <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
+                <span className="text-[#78716C] multiline-ellipsis">{item.description}</span>
               </div>
             </li>
-          </a>
+          </Link>
         ))}
     </>
   );
@@ -49,7 +50,7 @@ const InstructionalBlog = ({ items }: any) => {
 
   return (
     <div>
-      <div className="bg-white rounded-lg border-[1px] border-[#e7e5e4] p-5">
+      <div className="bg-white rounded-lg border-[1px] border-[#e7e5e4] p-5 min-h-[560px]">
         <h1 className="font-bold text-[#1C1917] mb-5 text-2xl">
           Instructional Blog
         </h1>
