@@ -56,21 +56,6 @@ const Exercise = () => {
     navigate(`/exercise?category=${name}`)
   };
 
-  // Get Video and Blog by Category 
-  useEffect(() => {
-    if (categoryParam) {
-      axios
-        .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_category?name=${categoryParam}`)
-        .then((res) => {
-          setListPost(res.data["posts"]);
-          setListVideo(res.data["videos"]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [categoryParam])
-
   // Call API to get List Categories && get All Post and Video
   useEffect(() => {
     axios
@@ -89,6 +74,21 @@ const Exercise = () => {
         setListVideo(res.data["videos"]);
       });
   }, []);
+
+  // Get Video and Blog by Category 
+  useEffect(() => {
+    if (categoryParam) {
+      axios
+        .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_category?name=${categoryParam}`)
+        .then((res) => {
+          setListPost(res.data["posts"]);
+          setListVideo(res.data["videos"]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [categoryParam])
 
   return (
     <div className="bg-[#F5F5F4] excersice-component">

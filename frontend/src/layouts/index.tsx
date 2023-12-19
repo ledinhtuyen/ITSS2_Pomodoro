@@ -40,8 +40,8 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     location.pathname == "/"
       ? "1"
       : location.pathname.includes("/exercise")
-        ? "2"
-        : "3"
+        ? "2" : location.pathname == "/likes"
+          ? "3" : null
   );
 
   const onClick: MenuProps["onClick"] = (e) => {
@@ -54,15 +54,10 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
       navigate("/")
     }
     else if (currentPage === "2") {
-      if (location.search) {
-        navigate(location.pathname + location.search)
-      }
-      else {
-        if (location.pathname.length > 9) {
-          navigate(location.pathname)
-        } else {
-          navigate("/exercise")
-        }
+      if (location.pathname.length > 9) {
+        navigate(location.pathname)
+      } else {
+        navigate("/exercise")
       }
     }
     else if (currentPage === "3") {
