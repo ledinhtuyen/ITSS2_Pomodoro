@@ -1,10 +1,11 @@
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined, PlayCircleOutlined } from "@ant-design/icons";
 import { useAppDispatch } from "../../redux/hook";
 import { setCloseTimeUpPopup } from "../../redux/reducers/popupReducer";
 import timeUpImage from "../../assets/images/TimeUp.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import PlayIcon from "../../assets/icons/PlayIcon";
 
 const TimeUpPopup = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const TimeUpPopup = () => {
             </a>
           </div>
           <div className="grid grid-cols-4 gap-x-4 gap-y-2">
-            {dataPost.map((item : any, index : any) => (
+            {dataPost.map((item: any, index: any) => (
               <a href={`exercise/blog/${item.id}`} key={index}>
                 <img src={item.thumbnail} className="w-full" />
                 <h1 className="font-semibold multiline-ellipsis">{item.title}</h1>
@@ -59,9 +60,12 @@ const TimeUpPopup = () => {
                 </div>
               </a>
             ))}
-            {dataVideo.map((item : any, index : any) => (
+            {dataVideo.map((item: any, index: any) => (
               <a href={`exercise/video/${item.id}`} key={index}>
-                <img src={item.thumbnail} className="w-full" />
+                <div className="relative">
+                  <img src={item.thumbnail} className="w-full" />
+                  <PlayIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                </div>
                 <h1 className="font-semibold multiline-ellipsis">{item.title}</h1>
                 <div className="flex justify-between text-[14px] text-[#78716C]">
                   <span>{item.readtime} mins</span>
