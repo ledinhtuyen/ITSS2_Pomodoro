@@ -200,8 +200,12 @@ def detail(request):
 
     if request.GET['type'] == "post":
         result = Post.objects.get(id=request.GET['id'])
+        likes = len(LikePost.objects.filter(post_id=request.GET['id']).annotate(total=Count('post_id')))
+        liked = LikePost.objects.filter(user_id=1, post_id=request.GET['id']).exists()
     elif request.GET['type'] == "video":
         result = Video.objects.get(id=request.GET['id'])
+        likes = len(LikeVideo.objects.filter(video_id=request.GET['id']).annotate(total=Count('video_id')))
+        liked = LikeVideo.objects.filter(user_id=1, video_id=request.GET['id']).exists()
         data["link"] = result.link
     else:
         return Response({"status": 400, "message": "エラー" }, status=400, content_type='application/json')
@@ -212,6 +216,8 @@ def detail(request):
     data["category"] = result.category.name
     data["content"] = result.content
     data["readtime"] = random.randint(1, 5)
+    data["likes"] = likes
+    data["liked"] = liked
 
     return Response(data)
 

@@ -8,12 +8,16 @@ const DetailVideo = () => {
     const { id } = useParams();
 
     const [data, setData] = useState<any>();
+    const [likes, setLikes] = useState<any>(0);
     const [like, setLike] = useState(false);
+
     useEffect(() => {
         axios
             .get(`${import.meta.env.VITE_API_DOMAIN}/detail?type=video&id=${id}`)
             .then((res) => {
                 setData(res.data);
+                setLikes(res.data.likes);
+                setLike(res.data.liked);
             })
             .catch((err) => {
                 console.log(err);
@@ -22,6 +26,18 @@ const DetailVideo = () => {
 
     const toggleLike = () => {
         setLike(prev => !prev)
+        setLikes((prev: number) => prev + (like ? -1 : 1))
+        axios
+            .post(`${import.meta.env.VITE_API_DOMAIN}/like`, {
+                "type": "video",
+                "id": id
+            })
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     return (data && (
@@ -52,7 +68,7 @@ const DetailVideo = () => {
                         <div className={clsx(like === true ? "bg-blue-500" : "", "w-[49px] h-[49px] rounded-full text-center border-[2px] border-black leading-[42px]  hover:cursor-pointer")} onClick={toggleLike}>
                             <LikeOutlined />
                         </div>
-                        <div className="w-[49px] h-[49px] rounded-full text-center border-[2px] border-black text-2xl leading-[42px]">6</div>
+                        <div className="w-[49px] h-[49px] rounded-full text-center border-[2px] border-black text-2xl leading-[42px]">{likes}</div>
                     </div>
                 </div>
             </div>
