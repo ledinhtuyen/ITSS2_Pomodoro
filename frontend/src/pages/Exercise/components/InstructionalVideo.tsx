@@ -41,7 +41,7 @@ const InstructionalVideo = ({ items }: any) => {
   };
   return (
     <div>
-      <div className="bg-white rounded-lg border-[1px] border-[#e7e5e4] p-5 min-h-[560px]">
+      <div className="bg-white rounded-lg border-[1px] border-[#e7e5e4] p-5 min-h-[580px]">
         <h1 className="font-bold text-[rgb(28,25,23)] mb-5 text-2xl">Video</h1>
         <ul className="flex flex-col gap-2">
           <Items currentItems={currentItems} />

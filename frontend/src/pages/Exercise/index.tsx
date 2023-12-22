@@ -5,7 +5,8 @@ import InstructionalBlog from "./components/InstructionalBlog";
 import InstructionalVideo from "./components/InstructionalVideo";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const settings = {
   dots: true,
@@ -26,30 +27,14 @@ const Exercise = () => {
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search);
   const categoryParam = queryParams.get('category');
+  const titleParam = queryParams.get('title')
   const navigate = useNavigate()
-
-  const [loading, setLoading] = useState(false);
   const [categoriesExercise, setCategoriesExercise] = useState<any>([]);
   const [listPost, setListPost] = useState<any>([]);
   const [listVideo, setListVideo] = useState<any>([]);
 
   const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
-    navigate(`/exercise`)
-    setLoading(true);
-    setTimeout(() => {
-      axios
-        .get(
-          `${import.meta.env.VITE_API_DOMAIN}/search_by_title?title=${value}`
-        )
-        .then((res) => {
-          setLoading(false);
-          setListPost(res.data["posts"]);
-          setListVideo(res.data["videos"]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }, 500);
+    if (value) { navigate(`/exercise?title=${value}`) }
   };
 
   const onClickCategory = (name: string) => {
@@ -75,10 +60,22 @@ const Exercise = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (categoryParam === null && titleParam === null) {
+      axios
+        .get(`${import.meta.env.VITE_API_DOMAIN}/list_post_video`)
+        .then((res) => {
+          setListPost(res.data["posts"]);
+          setListVideo(res.data["videos"]);
+        });
+    }
+  }, [categoryParam, titleParam])
+
   // Get Video and Blog by Category 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (categoryParam) {
+    let timer: any
+    if (categoryParam) {
+      timer = setTimeout(() => {
         axios
           .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_category?name=${categoryParam}`)
           .then((res) => {
@@ -88,12 +85,36 @@ const Exercise = () => {
           .catch((err) => {
             console.log(err);
           });
-      }
+      }, 100)
+    }
 
-      return () => clearTimeout(timer)
-    }, 100)
-
+    return () => clearTimeout(timer)
   }, [categoryParam])
+
+  // Get Video and Blog by Title 
+  useEffect(() => {
+    let timer: any
+    if (titleParam) {
+      timer = setTimeout(() => {
+        axios
+          .get(
+            `${import.meta.env.VITE_API_DOMAIN}/search_by_title?title=${titleParam}`
+          )
+          .then((res) => {
+            setListPost(res.data["posts"]);
+            setListVideo(res.data["videos"]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }, 100)
+    }
+
+    return () => clearTimeout(timer)
+  }, [titleParam])
+
+  console.log({ titleParam, categoryParam });
+
 
   return (
     <div className="bg-[#F5F5F4] excersice-component">
@@ -101,15 +122,23 @@ const Exercise = () => {
         <div className="relative">
           <h1 className="text-4xl font-bold">Exercise</h1>
           <Search
-            loading={loading}
             placeholder="Enter name"
             onSearch={onSearch}
             style={{ width: 397, height: 52 }}
             className="absolute top-[6px] left-1/2 -translate-x-1/2 "
+            defaultValue={titleParam}
           />
         </div>
-        <div className="pl-5 pt-8 pb-5">
-          <Slider {...settings}>
+        <div className="mt-8 mb-5">
+          {titleParam ? <div className="bg-[#E7E5E4] min-h-[146px] rounded-3xl border-[1px] border-[#78716C]">
+            <div className="pl-10 pt-8">
+              <Link className="text-[#A8A29E] text-lg font-semibold" to="/exercise">
+                <ArrowLeftOutlined />
+                <span className="ml-3">Back</span>
+              </Link>
+              <h1 className="font-semibold text-3xl">Search:"{titleParam}"</h1>
+            </div>
+          </div> : <Slider {...settings}>
             {categoriesExercise.map((category: any, index: any) => (
               <div
                 className={
@@ -127,7 +156,7 @@ const Exercise = () => {
                 </h3>
               </div>
             ))}
-          </Slider>
+          </Slider>}
         </div>
         <div className="ml-8 grid grid-cols-2 gap-5">
           <InstructionalBlog items={listPost} />
