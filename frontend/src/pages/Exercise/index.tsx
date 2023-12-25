@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import { useAppDispatch } from "../../redux/hook";
+import { setLoadingFalse, setLoadingTrue } from "../../redux/reducers/appReducer";
 
 const settings = {
   dots: true,
@@ -33,6 +35,8 @@ const Exercise = () => {
   const [listPost, setListPost] = useState<any>([]);
   const [listVideo, setListVideo] = useState<any>([]);
 
+  const dispatch = useAppDispatch();
+
   const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
     if (value) { navigate(`/exercise?title=${value}`) }
   };
@@ -43,30 +47,37 @@ const Exercise = () => {
 
   // Call API to get List Categories && get All Post and Video
   useEffect(() => {
+    dispatch(setLoadingTrue());
     axios
       .get(`${import.meta.env.VITE_API_DOMAIN}/list_category`)
       .then((res) => {
         setCategoriesExercise(res.data["categories"]);
+        dispatch(setLoadingFalse());
       })
       .catch((err) => {
         console.log(err);
       });
 
+    dispatch(setLoadingTrue());
     axios
       .get(`${import.meta.env.VITE_API_DOMAIN}/list_post_video`)
       .then((res) => {
         setListPost(res.data["posts"]);
         setListVideo(res.data["videos"]);
+        dispatch(setLoadingFalse());
       });
   }, []);
 
+  //Re - Get All Post and Video
   useEffect(() => {
     if (categoryParam === null && titleParam === null) {
+      dispatch(setLoadingTrue());
       axios
         .get(`${import.meta.env.VITE_API_DOMAIN}/list_post_video`)
         .then((res) => {
           setListPost(res.data["posts"]);
           setListVideo(res.data["videos"]);
+          dispatch(setLoadingFalse());
         });
     }
   }, [categoryParam, titleParam])
@@ -76,11 +87,13 @@ const Exercise = () => {
     let timer: any
     if (categoryParam) {
       timer = setTimeout(() => {
+        dispatch(setLoadingTrue());
         axios
           .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_category?name=${categoryParam}`)
           .then((res) => {
             setListPost(res.data["posts"]);
             setListVideo(res.data["videos"]);
+            dispatch(setLoadingFalse());
           })
           .catch((err) => {
             console.log(err);
@@ -96,6 +109,7 @@ const Exercise = () => {
     let timer: any
     if (titleParam) {
       timer = setTimeout(() => {
+        dispatch(setLoadingTrue());
         axios
           .get(
             `${import.meta.env.VITE_API_DOMAIN}/search_by_title?title=${titleParam}`
@@ -103,6 +117,7 @@ const Exercise = () => {
           .then((res) => {
             setListPost(res.data["posts"]);
             setListVideo(res.data["videos"]);
+            dispatch(setLoadingFalse());
           })
           .catch((err) => {
             console.log(err);
@@ -112,9 +127,6 @@ const Exercise = () => {
 
     return () => clearTimeout(timer)
   }, [titleParam])
-
-  console.log({ titleParam, categoryParam });
-
 
   return (
     <div className="bg-[#F5F5F4] excersice-component">

@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import pomodoroReducer from '../reducers/pomodoroReducer'
 import popupReducer from '../reducers/popupReducer'
+import appReducer from '../reducers/appReducer'
 export const store = configureStore({
     reducer: {
         pomodoro: pomodoroReducer,
-        popup: popupReducer
+        popup: popupReducer,
+        app: appReducer
     },
 })
 

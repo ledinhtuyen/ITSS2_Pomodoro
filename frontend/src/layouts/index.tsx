@@ -76,7 +76,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   }, [currentPage]);
 
   return (
-    <div>
+    <>
       <Menu
         onClick={onClick}
         className="sidebar-menu w-[89px] rounded-3xl z-[100] fixed top-4 left-8 h-[95vh] !bg-[#1C1917]  "
@@ -92,7 +92,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
           currentPage={currentPage}
         />
       )}
-    </div>
+    </>
   );
 };
 

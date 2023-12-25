@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { ClockCircleOutlined, LikeOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { clsx } from 'clsx';
+import { useAppDispatch } from "../../redux/hook";
+import { setLoadingFalse, setLoadingTrue } from "../../redux/reducers/appReducer";
 
 const DetailBlog = () => {
     const { id } = useParams()
@@ -11,13 +13,17 @@ const DetailBlog = () => {
     const [likes, setLikes] = useState<any>(0);
     const [like, setLike] = useState(false);
 
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
+        dispatch(setLoadingTrue());
         axios
             .get(`${import.meta.env.VITE_API_DOMAIN}/detail?type=post&id=${id}`)
             .then((res) => {
                 setData(res.data);
                 setLikes(res.data.likes);
                 setLike(res.data.liked);
+                dispatch(setLoadingFalse());
             })
             .catch((err) => {
                 console.log(err);
@@ -25,8 +31,9 @@ const DetailBlog = () => {
     }, [id]);
 
     const toggleLike = () => {
+        dispatch(setLoadingTrue());
         setLike(prev => !prev)
-        setLikes((prev: number) => prev + (like ? -1 : 1))
+        setLikes((prev: number) => prev + (like ? -1 : +1))
         axios
             .post(`${import.meta.env.VITE_API_DOMAIN}/like`, {
                 "type": "post",
@@ -34,6 +41,7 @@ const DetailBlog = () => {
             })
             .then((res) => {
                 console.log(res.data);
+                dispatch(setLoadingFalse());
             })
             .catch((err) => {
                 console.log(err);

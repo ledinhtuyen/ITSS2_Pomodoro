@@ -194,6 +194,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Loading />
       <Suspense fallback={<Loading />}>
         <Routes>
           {publicRoutes.map((route) => {
