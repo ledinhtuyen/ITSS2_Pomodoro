@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { publicRoutes } from "./routes";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
@@ -19,7 +19,6 @@ import ChimeAlert from "./assets/sounds/chime.wav";
 import { useCookies } from "react-cookie";
 import { extractHourAndMinute } from "./helper/extractTime";
 import dayjs from "dayjs";
-import WarningPopup from "./pop-up/WarningPopup";
 import {
   setCloseWarningPopup,
   setOpenTimeUpPopup,
@@ -28,7 +27,10 @@ import {
 import axios from "axios";
 import { Notifications } from "react-push-notification";
 import addNotification from "react-push-notification";
-import TimeUpPopup from "./pop-up/TimeUp/index";
+import Loading from "./components/Loading";
+import TimeUpPopup from './pop-up/TimeUp/index';
+import WarningPopup from "./pop-up/WarningPopup";
+
 
 function App() {
   const dispatch = useAppDispatch();
@@ -192,31 +194,33 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        {publicRoutes.map((route) => {
-          if (route.layout) {
-            const Layout = route.layout;
-            const View = route.component;
-            return (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={
-                  <Layout>
-                    <View />
-                  </Layout>
-                }
-              />
-            );
-          } else {
-            const View = route.component;
-            return (
-              <Route key={route.path} path={route.path} element={<View />} />
-            );
-          }
-        })}
-        <Route path="*" element={<Navigate to="/404" replace />} />
-      </Routes>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          {publicRoutes.map((route) => {
+            if (route.layout) {
+              const Layout = route.layout;
+              const View = route.component;
+              return (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={
+                    <Layout>
+                      <View />
+                    </Layout>
+                  }
+                />
+              );
+            } else {
+              const View = route.component;
+              return (
+                <Route key={route.path} path={route.path} element={<View />} />
+              );
+            }
+          })}
+          <Route path="*" element={<Navigate to="/404" replace />} />
+        </Routes>
+      </Suspense>
       <audio ref={audioRef} src={alertSound[cookies.alert_choice - 1]}></audio>
       <Notifications />
       {isOpenWarningPopup && <WarningPopup />}

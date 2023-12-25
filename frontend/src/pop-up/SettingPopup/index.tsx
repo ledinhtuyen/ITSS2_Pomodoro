@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { lazy, useState } from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { Menu, MenuProps } from "antd";
 import "./SettingPopup.scss";
-import PomodoroTab from "./PomodoroTab";
-import ReminderTab from "./ReminderTab";
+
+const PomodoroTab = lazy(() => import("./PomodoroTab"))
+const ReminderTab = lazy(() => import("./ReminderTab"))
 
 interface SettingPopupProps {
   setIsOpenSettingPopup: React.Dispatch<React.SetStateAction<boolean>>;

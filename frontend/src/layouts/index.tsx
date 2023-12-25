@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, useEffect, useState } from "react";
 import { Menu, MenuProps } from "antd";
 import { HeartOutlined, HomeOutlined } from "@ant-design/icons";
 import ExerciseIcon from "../assets/icons/ExerciseIcon";
 import LogoIcon from "../assets/images/Icon.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Layout.scss";
-import ClockDraggable from "../components/ClockDraggable";
+
+const ClockDraggable = lazy(() => import("../components/ClockDraggable"))
 
 interface DefaultLayoutProps {
   children: React.ReactElement;

@@ -1,10 +1,13 @@
-import DefaultLayout from "../layouts";
-import DetailBlog from "../pages/DetailBlog";
-import DetailVideo from "../pages/DetailVideo";
-import ErrorPage from "../pages/ErrorPage";
-import Exercise from "../pages/Exercise";
-import Home from "../pages/Home";
-import Likes from "../pages/Likes";
+import { lazy } from 'react';
+
+const DefaultLayout = lazy(() => import('../layouts'))
+const DetailBlog = lazy(() => import('../pages/DetailBlog'));
+const DetailVideo = lazy(() => import('../pages/DetailVideo'));
+const ErrorPage = lazy(() => import('../pages/ErrorPage'));
+const Exercise = lazy(() => import('../pages/Exercise'));
+const Home = lazy(() => import('../pages/Home'));
+const Likes = lazy(() => import('../pages/Likes'));
+
 
 export enum RoutePath {
   HOME = "/",

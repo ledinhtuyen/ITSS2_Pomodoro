@@ -126,7 +126,6 @@ const Exercise = () => {
             onSearch={onSearch}
             style={{ width: 397, height: 52 }}
             className="absolute top-[6px] left-1/2 -translate-x-1/2 "
-            defaultValue={titleParam}
           />
         </div>
         <div className="mt-8 mb-5">

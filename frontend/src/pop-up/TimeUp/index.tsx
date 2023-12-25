@@ -1,8 +1,8 @@
-import { CloseOutlined, PlayCircleOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import { useAppDispatch } from "../../redux/hook";
 import { setCloseTimeUpPopup } from "../../redux/reducers/popupReducer";
 import timeUpImage from "../../assets/images/TimeUp.png";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PlayIcon from "../../assets/icons/PlayIcon";
