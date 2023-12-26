@@ -1,7 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 
 type Props = {
-  key: string;
+  key?: string;
   url: string;
   borderRadius?: string;
   width?: number | string;
@@ -27,10 +27,10 @@ const Spotify: React.FC<Props> = ({
         width === "wide"
           ? "100%"
           : width === "compact"
-          ? "40%"
-          : !width
-          ? "100%"
-          : width
+            ? "40%"
+            : !width
+              ? "100%"
+              : width
       }
       height={height === "compact" ? "152" : !height ? "352" : height}
       allowFullScreen
@@ -40,4 +40,4 @@ const Spotify: React.FC<Props> = ({
   );
 };
 
-export default Spotify;
+export default memo(Spotify);;

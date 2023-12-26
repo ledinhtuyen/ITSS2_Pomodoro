@@ -169,7 +169,6 @@ const Home = () => {
 
         <div className="absolute bottom-14 left-36">
           <Spotify
-            key={""}
             url={`${import.meta.env.VITE_SPOTIFY_MUSIC_URL}`}
             height="compact"
             width="380"
