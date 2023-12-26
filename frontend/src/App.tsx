@@ -31,7 +31,7 @@ import Loading from "./components/Loading";
 import TimeUpPopup from './pop-up/TimeUp/index';
 import WarningPopup from "./pop-up/WarningPopup";
 import { setLoadingFalse, setLoadingTrue } from "./redux/reducers/appReducer";
-
+import useCustomTitle from "./hooks/useCustomTitle";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -194,6 +194,9 @@ function App() {
   useEffect(() => {
     audioRef.current!.volume = cookies.alert_volume / 100;
   }, [cookies.alert_volume]);
+
+  // Custom Title When Current Process and Time change
+  useCustomTitle()
 
   return (
     <BrowserRouter>
