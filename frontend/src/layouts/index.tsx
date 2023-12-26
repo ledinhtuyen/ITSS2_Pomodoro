@@ -5,8 +5,7 @@ import ExerciseIcon from "../assets/icons/ExerciseIcon";
 import LogoIcon from "../assets/images/Icon.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Layout.scss";
-
-const ClockDraggable = lazy(() => import("../components/ClockDraggable"))
+import ClockDraggable from "../components/ClockDraggable";
 
 interface DefaultLayoutProps {
   children: React.ReactElement;
