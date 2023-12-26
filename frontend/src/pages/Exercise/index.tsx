@@ -58,14 +58,6 @@ const Exercise = () => {
         console.log(err);
       });
 
-    dispatch(setLoadingTrue());
-    axios
-      .get(`${import.meta.env.VITE_API_DOMAIN}/list_post_video`)
-      .then((res) => {
-        setListPost(res.data["posts"]);
-        setListVideo(res.data["videos"]);
-        dispatch(setLoadingFalse());
-      });
   }, []);
 
   //Re - Get All Post and Video
