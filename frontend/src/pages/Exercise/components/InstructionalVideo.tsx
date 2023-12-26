@@ -12,7 +12,7 @@ function Items({ currentItems }: any) {
           <Link to={`/exercise/video/${item.id}`} className="pb-2" key={item.id}>
             <li>
               <div className="flex gap-5">
-                <img src={item.thumbnail} width={300} />
+                <img src={item.thumbnail} width={300} loading="lazy" />
                 <div>
                   <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
                   <span className="text-[#78716C] multiline-ellipsis">{item.description}</span>

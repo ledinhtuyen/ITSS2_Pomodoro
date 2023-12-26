@@ -66,7 +66,7 @@ const DetailBlog = () => {
                 </div>
                 <div className="ml-32">
                     <div className='my-5 mx-auto max-w-[560px]'>
-                        <img src={data.thumbnail} />
+                        <img src={data.thumbnail} loading="lazy" />
                     </div>
                     <div dangerouslySetInnerHTML={{ __html: data.content }} />
                 </div>

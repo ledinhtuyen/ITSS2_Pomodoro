@@ -67,7 +67,7 @@ const DetailVideo = () => {
                 </div>
                 <div className="ml-32">
                     <div className='my-5 mx-auto max-w-[560px]'>
-                        <iframe width="560" height="315" src={data.link} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+                        <iframe width="560" height="315" src={data.link} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" loading="lazy"></iframe>
                     </div>
                     <div dangerouslySetInnerHTML={{ __html: data.content }} />
                 </div>

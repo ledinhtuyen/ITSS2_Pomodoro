@@ -16,7 +16,7 @@ function Items({ currentItems }: any) {
           >
             <li className="grid grid-cols-5 gap-5">
               <div className="">
-                <img src={item.thumbnail} className="mt-1" />
+                <img src={item.thumbnail} className="mt-1" loading="lazy"/>
               </div>
               <div className="col-span-4">
                 <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
