@@ -30,6 +30,7 @@ import addNotification from "react-push-notification";
 import Loading from "./components/Loading";
 import TimeUpPopup from './pop-up/TimeUp/index';
 import WarningPopup from "./pop-up/WarningPopup";
+import { setLoadingFalse, setLoadingTrue } from "./redux/reducers/appReducer";
 
 
 function App() {
@@ -73,12 +74,14 @@ function App() {
   }
 
   useEffect(() => {
+    dispatch(setLoadingTrue());
     axios.get(`${import.meta.env.VITE_API_DOMAIN}/timer?user=1`)
       .then((res) => {
         dispatch(setPomodoro(res.data.pomodoro * 60));
         dispatch(setShortBreak(res.data.short_break * 60));
         dispatch(setLongBreak(res.data.long_break * 60));
         dispatch(setSleepReminder(res.data.sleep_time));
+        dispatch(setLoadingFalse());
       })
       .catch((err) => {
         console.log(err);
