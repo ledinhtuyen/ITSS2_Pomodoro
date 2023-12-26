@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-const defaultTime = 25 * 60
-
 export enum Process {
     POMODORO = "Pomodoro",
     LONG_BREAK = "Long Break",
@@ -29,11 +27,11 @@ const initialState: PomodoroState = {
     totalIteration: 4,
     currentIteration: 1,
     currentProcess: Process.POMODORO,
-    pomodoro: defaultTime,
-    shortBreak: 5 * 60,
-    longBreak: 30 * 60,
+    pomodoro: 671,
+    shortBreak: 671,
+    longBreak: 671,
     sleepReminder: '',
-    time: defaultTime,
+    time: 671,
     reset: true
 }
 
