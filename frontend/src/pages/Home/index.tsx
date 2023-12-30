@@ -20,6 +20,7 @@ import {
   setIsRunningFalse,
   setToNextProcess,
 } from "../../redux/reducers/pomodoroReducer";
+import addNotification from "react-push-notification";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -55,6 +56,15 @@ const Home = () => {
   const handleNextProcess = () => {
     dispatch(setToNextProcess());
     dispatch(setIsRunningFalse());
+
+    addNotification({
+      title: "Push Notification",
+      message: "Time out " + currentProcess + " !",
+      onClick: () => {
+        window.parent.focus();
+      },
+      native: true, // when using native, your OS will handle theming.
+    });
   };
 
   const handleOpenSettingPopup = () => {
