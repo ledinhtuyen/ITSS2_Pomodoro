@@ -141,7 +141,7 @@ function App() {
         title: "Push Notification",
         message: "Time out " + currentProcess + " !",
         onClick: () => {
-          window.parent.focus();
+          window.focus();
         },
         native: true, // when using native, your OS will handle theming.
       });

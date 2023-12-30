@@ -177,13 +177,13 @@ const Home = () => {
           </button>
         </div>
 
-        <div className="absolute bottom-14 left-36">
+        {/* <div className="absolute bottom-14 left-36">
           <Spotify
             url={`${import.meta.env.VITE_SPOTIFY_MUSIC_URL}`}
             height="compact"
             width="380"
           />
-        </div>
+        </div> */}
       </div>
       {isOpenPomodoroPopup && (
         <PomodoroPopup setIsOpenPomodoroPopup={setIsOpenPomodoroPopup} />
