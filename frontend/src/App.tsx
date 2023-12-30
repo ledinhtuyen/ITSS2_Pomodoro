@@ -196,7 +196,7 @@ function App() {
   }, [cookies.alert_volume]);
 
   // Custom Title When Current Process and Time change
-  useCustomTitle()
+  // useCustomTitle()
 
   return (
     <BrowserRouter>
