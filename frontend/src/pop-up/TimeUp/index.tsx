@@ -45,13 +45,13 @@ const TimeUpPopup = () => {
             <h1 className="font-semibold text-[20px]">
               Try these exercises while in break
             </h1>
-            <a className="font-semibold text-[14px]" href="exercise">
+            <a className="font-semibold text-[14px]" href="/exercise">
               See more
             </a>
           </div>
           <div className="grid grid-cols-4 gap-x-4 gap-y-2">
             {dataPost.map((item: any, index: any) => (
-              <a href={`exercise/blog/${item.id}`} key={index}>
+              <a href={`/exercise/blog/${item.id}`} key={index}>
                 <img src={item.thumbnail} className="w-full" />
                 <h1 className="font-semibold multiline-ellipsis">{item.title}</h1>
                 <div className="flex justify-between text-[14px] text-[#78716C]">
@@ -61,7 +61,7 @@ const TimeUpPopup = () => {
               </a>
             ))}
             {dataVideo.map((item: any, index: any) => (
-              <a href={`exercise/video/${item.id}`} key={index}>
+              <a href={`/exercise/video/${item.id}`} key={index}>
                 <div className="relative">
                   <img src={item.thumbnail} className="w-full" />
                   <PlayIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
