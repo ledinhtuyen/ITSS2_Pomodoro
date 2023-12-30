@@ -48,6 +48,19 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     }
   });
 
+  // set Current Page when URL change
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setCurrentPage("1");
+    } else if (location.pathname.includes("/exercise")) {
+      setCurrentPage("2");
+    } else if (location.pathname === "/likes") {
+      setCurrentPage("3");
+    } else {
+      setCurrentPage("1");
+    }
+  }, [location.pathname])
+
   const onClick: MenuProps["onClick"] = (e) => {
     setCurrentPage(e.key);
   };
