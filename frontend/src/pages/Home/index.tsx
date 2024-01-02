@@ -5,7 +5,6 @@ import {
   InfoCircleOutlined,
   RedoOutlined,
 } from "@ant-design/icons";
-import TomotoIcon from "../../assets/images/tomato.png";
 import BackgroundImg from "../../assets/images/Wallpaper.png";
 import "./Home.scss";
 import PomodoroPopup from "../../pop-up/PomodoroPopup";
@@ -21,6 +20,9 @@ import {
   setToNextProcess,
 } from "../../redux/reducers/pomodoroReducer";
 import addNotification from "react-push-notification";
+import classNames from "classnames";
+import { twMerge } from "tailwind-merge";
+import { ArrowCounterClockwise, GearSix, SkipForward } from "@phosphor-icons/react";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -29,15 +31,9 @@ const Home = () => {
   const [isOpenSettingPopup, setIsOpenSettingPopup] = useState(false);
 
   const isRunning = useAppSelector((state) => state.pomodoro.isRunning);
-  const totalIteration = useAppSelector(
-    (state) => state.pomodoro.totalIteration
-  );
-  const currentIteration = useAppSelector(
-    (state) => state.pomodoro.currentIteration
-  );
-  const currentProcess = useAppSelector(
-    (state) => state.pomodoro.currentProcess
-  );
+  const totalIteration = useAppSelector((state) => state.pomodoro.totalIteration);
+  const currentIteration = useAppSelector((state) => state.pomodoro.currentIteration);
+  const currentProcess = useAppSelector((state) => state.pomodoro.currentProcess);
 
   // set CountDown Clock Time
   const time = useAppSelector((state) => state.pomodoro.time);
@@ -58,8 +54,8 @@ const Home = () => {
     dispatch(setIsRunningFalse());
 
     addNotification({
-      title: "Push Notification",
-      message: "Time out " + currentProcess + " !",
+      title: "Time up!",
+      message: `You have finished ${currentIteration} pomodoro!`,
       onClick: () => {
         window.parent.focus();
       },
@@ -82,95 +78,72 @@ const Home = () => {
         className="bg-cover bg-no-repeat bg-center h-screen"
       ></div>
       <div className="bg-[rgba(0,0,0,0.6)] h-screen w-screen fixed top-0 left-0">
-        <div className="pomodoro-timer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white w-[450px] h-[400px] bg-transparent">
-          <div className="flex justify-between leading-8	">
-            <button
-              className={
-                currentProcess === Process.POMODORO
-                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700 cursor-default"
-                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white cursor-default"
-              }
-            >
-              <span>{Process.POMODORO}</span>
-            </button>
-            <button
-              className={
-                currentProcess === Process.SHORT_BREAK
-                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700 cursor-default"
-                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white cursor-default"
-              }
-            >
-              <span>{Process.SHORT_BREAK}</span>
-            </button>
-            <button
-              className={
-                currentProcess === Process.LONG_BREAK
-                  ? "w-[120px] bg-black px-4 py-1 rounded-full border-[2px] border-red-700 cursor-default"
-                  : "w-[120px] bg-transparent px-4 py-1 rounded-full border border-white cursor-default"
-              }
-            >
-              <span>{Process.LONG_BREAK}</span>
-            </button>
-          </div>
-          <div className="mt-5 flex justify-center gap-3">
-            {Array.from({ length: totalIteration }).map((_i, index) => (
-              <img
+        <div className="pomodoro-timer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white w-[450px] h-[400px] bg-transparent flex flex-col justify-center items-center">
+          <div className="flex gap-3">
+            {[Process.POMODORO, Process.SHORT_BREAK, Process.LONG_BREAK].map((process, index) => (
+              <div
                 key={index}
-                src={TomotoIcon}
-                alt={`Tomato ${index + 1}`}
-                className={index + 1 > currentIteration ? "opacity-50" : ""}
-              />
+                className={twMerge(
+                  "grow px-4 py-1 rounded-full border border-white select-none bg-transparent flex justify-center items-center",
+                  currentProcess === process && "bg-black border-[2px] border-red-700"
+                )}
+              >
+                {process}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-5 flex justify-center gap-3">
+            {Array.from({ length: totalIteration }).map((_, index) => (
+              <span
+                className={classNames("text-4xl", index + 1 > currentIteration && "opacity-50")}
+                key={index}
+              >
+                🍅
+              </span>
             ))}
           </div>
           <div className="flex justify-center text-9xl font-semibold">
-            <div className="text-9xl">
-              {minutes < 10 ? `0${minutes}` : minutes}
-            </div>
+            <div className="text-9xl">{minutes < 10 ? `0${minutes}` : minutes}</div>
             <div className="text-9xl">:</div>
             <div className="text-9xl">
-              {remainingSeconds < 10
-                ? `0${remainingSeconds}`
-                : remainingSeconds}
+              {remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}
             </div>
           </div>
           <div className="mt-5 flex justify-center gap-3 leading-8">
+            {reset === false && (
+              <button
+                className="bg-stone-50 w-10 h-10 rounded-full flex justify-center items-center text-stone-900"
+                onClick={handleReset}
+              >
+                <ArrowCounterClockwise size={24} />
+              </button>
+            )}
+            {reset !== false && (
+              <button
+                className="w-[80px] bg-[#44403C] px-4 py-1 rounded-full"
+                onClick={handleStartPomodoroTimer}
+              >
+                {isRunning ? "Pause" : "Start"}
+              </button>
+            )}
             <button
-              className={
-                reset === false
-                  ? "bg-white w-[40px] h-[40px] rounded-full border border-white"
-                  : "hidden"
-              }
-              onClick={handleReset}
-            >
-              <RedoOutlined spin />
-            </button>
-            <button
-              className={
-                reset === true
-                  ? `w-[80px] bg-[#44403C] px-4 py-1 rounded-full`
-                  : "hidden"
-              }
-              onClick={handleStartPomodoroTimer}
-            >
-              <span>{isRunning ? "Pause" : "Start"}</span>
-            </button>
-            <button
-              className="bg-white w-[40px] h-[40px] rounded-full border border-white"
+              className="bg-stone-50 w-10 h-10 rounded-full flex justify-center items-center text-stone-900"
               onClick={handleNextProcess}
             >
-              <StepForwardOutlined />
+              <SkipForward size={24} />
             </button>
             <button
-              className="bg-white w-[40px] h-[40px] rounded-full border border-white"
+              className="bg-stone-50 w-10 h-10 rounded-full flex justify-center items-center text-stone-900"
               onClick={handleOpenSettingPopup}
             >
-              <SettingOutlined spin />
+              <GearSix size={24} />
             </button>
           </div>
         </div>
         <div className="absolute bottom-14 right-10">
           <button
-            className="bg-white w-[40px] h-[40px] rounded-full border border-white"
+            className="bg-stone-50 w-10 h-10 rounded-full flex justify-center items-center text-stone-900"
             onClick={handleOpenPomodoroPopup}
           >
             <InfoCircleOutlined />
@@ -178,19 +151,11 @@ const Home = () => {
         </div>
 
         {/* <div className="absolute bottom-14 left-36">
-          <Spotify
-            url={`${import.meta.env.VITE_SPOTIFY_MUSIC_URL}`}
-            height="compact"
-            width="380"
-          />
+          <Spotify url={`${import.meta.env.VITE_SPOTIFY_MUSIC_URL}`} height="compact" width="380" />
         </div> */}
       </div>
-      {isOpenPomodoroPopup && (
-        <PomodoroPopup setIsOpenPomodoroPopup={setIsOpenPomodoroPopup} />
-      )}
-      {isOpenSettingPopup && (
-        <SettingPopup setIsOpenSettingPopup={setIsOpenSettingPopup} />
-      )}
+      {isOpenPomodoroPopup && <PomodoroPopup setIsOpenPomodoroPopup={setIsOpenPomodoroPopup} />}
+      {isOpenSettingPopup && <SettingPopup setIsOpenSettingPopup={setIsOpenSettingPopup} />}
     </>
   );
 };

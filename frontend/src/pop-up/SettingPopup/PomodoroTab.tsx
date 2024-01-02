@@ -4,11 +4,7 @@ import { Radio, Space } from "antd";
 import axios from "axios";
 import "./PomodoroTab.scss";
 import { useAppSelector, useAppDispatch } from "../../redux/hook";
-import {
-  setPomodoro,
-  setShortBreak,
-  setLongBreak,
-} from "../../redux/reducers/pomodoroReducer";
+import { setPomodoro, setShortBreak, setLongBreak } from "../../redux/reducers/pomodoroReducer";
 import { useCookies } from "react-cookie";
 
 interface PomandoroTabProps {}
@@ -22,21 +18,18 @@ const PomodoroTab = ({}: PomandoroTabProps) => {
   const shortBreak = useAppSelector((state) => state.pomodoro.shortBreak);
   const longBreak = useAppSelector((state) => state.pomodoro.longBreak);
 
-  const postSetting = (
-    a: number = pomodoro,
-    b: number = shortBreak,
-    c: number = longBreak
-  ) => {
+  const postSetting = (a: number = pomodoro, b: number = shortBreak, c: number = longBreak) => {
     // Round to nearest minute
     a = Math.round(a / 60);
     b = Math.round(b / 60);
     c = Math.round(c / 60);
 
-    axios.post(`${import.meta.env.VITE_API_DOMAIN}/timer`, {
-        "pomodoro": a,
-        "short_break": b,
-        "long_break": c,
-        "user": 1
+    axios
+      .post(`${import.meta.env.VITE_API_DOMAIN}/timer`, {
+        pomodoro: a,
+        short_break: b,
+        long_break: c,
+        user: 1,
       })
       .catch((error) => {
         console.log(error);
@@ -73,7 +66,7 @@ const PomodoroTab = ({}: PomandoroTabProps) => {
   };
 
   const handleBrowserNotification = () => {
-    if(!("Notification" in window)) {
+    if (!("Notification" in window)) {
       alert("This browser does not support desktop notification");
     } else if (Notification.permission === "granted") {
       new Notification("You will now receive notifications!");
@@ -122,16 +115,10 @@ const PomodoroTab = ({}: PomandoroTabProps) => {
       <div className="mt-9">
         <h1 className="text-2xl mb-5">Alerts</h1>
         <div className="slider-alert w-1/3">
-          <Slider
-            value={cookies.alert_volume}
-            onChange={onChangeSlider}
-          />
+          <Slider value={cookies.alert_volume} onChange={onChangeSlider} />
         </div>
         <div className="mt-6 ml-1">
-          <Radio.Group
-            value={cookies.alert_choice}
-            onChange={onChangeAlertChoice}
-          >
+          <Radio.Group value={cookies.alert_choice} onChange={onChangeAlertChoice}>
             <Space direction="vertical">
               <Radio value={1} className="text-white">
                 Soft

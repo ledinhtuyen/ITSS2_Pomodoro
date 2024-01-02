@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { publicRoutes } from "./routes";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
@@ -28,21 +28,16 @@ import axios from "axios";
 import { Notifications } from "react-push-notification";
 import addNotification from "react-push-notification";
 import Loading from "./components/Loading";
-import TimeUpPopup from './pop-up/TimeUp/index';
+import TimeUpPopup from "./pop-up/TimeUp/index";
 import WarningPopup from "./pop-up/WarningPopup";
 import { setLoadingFalse, setLoadingTrue } from "./redux/reducers/appReducer";
-import useCustomTitle from "./hooks/useCustomTitle";
 
 function App() {
   const dispatch = useAppDispatch();
 
   const isRunning = useAppSelector((state) => state.pomodoro.isRunning);
-  const currentIteration = useAppSelector(
-    (state) => state.pomodoro.currentIteration
-  );
-  const currentProcess = useAppSelector(
-    (state) => state.pomodoro.currentProcess
-  );
+  const currentIteration = useAppSelector((state) => state.pomodoro.currentIteration);
+  const currentProcess = useAppSelector((state) => state.pomodoro.currentProcess);
 
   const pomodoro = useAppSelector((state) => state.pomodoro.pomodoro);
   const shortBreak = useAppSelector((state) => state.pomodoro.shortBreak);
@@ -52,13 +47,9 @@ function App() {
   const time = useAppSelector((state) => state.pomodoro.time);
 
   const [countOpenWarningPopup, setCountOpenWarningPopup] = useState(0);
-  const isOpenWarningPopup = useAppSelector(
-    (state) => state.popup.isOpenWarningPopup
-  );
+  const isOpenWarningPopup = useAppSelector((state) => state.popup.isOpenWarningPopup);
 
-  const isOpenTimeUpPopup = useAppSelector(
-    (state) => state.popup.isOpenTimeUpPopup
-  );
+  const isOpenTimeUpPopup = useAppSelector((state) => state.popup.isOpenTimeUpPopup);
 
   // Get Hour and Minute Now every time
   const [currentHour, setCurrentHour] = useState<number>(dayjs().hour()); // Assuming this is being updated elsewhere
@@ -75,7 +66,8 @@ function App() {
 
   useEffect(() => {
     dispatch(setLoadingTrue());
-    axios.get(`${import.meta.env.VITE_API_DOMAIN}/timer?user=1`)
+    axios
+      .get(`${import.meta.env.VITE_API_DOMAIN}/timer?user=1`)
       .then((res) => {
         dispatch(setPomodoro(res.data.pomodoro * 60));
         dispatch(setShortBreak(res.data.short_break * 60));
@@ -154,11 +146,7 @@ function App() {
 
   // Display Reset button to Reset Pomodoro CLock
   useEffect(() => {
-    if (
-      time === 0 &&
-      currentProcess === Process.LONG_BREAK &&
-      currentIteration > 5
-    ) {
+    if (time === 0 && currentProcess === Process.LONG_BREAK && currentIteration > 5) {
       dispatch(setIsRunningFalse());
       dispatch(setIsResetFalse());
     }
@@ -166,12 +154,11 @@ function App() {
 
   // Show WarningPopup
   useEffect(() => {
-    const { hour: sleepHour, minute: sleepMinute } =
-      extractHourAndMinute(sleepReminder);
+    const { hour: sleepHour, minute: sleepMinute } = extractHourAndMinute(sleepReminder);
 
-    let currentTime = currentHour * 60 + currentMinute;
-    let sleepTime = sleepHour * 60 + sleepMinute;
-    let extraTime = countOpenWarningPopup * 15;
+    const currentTime = currentHour * 60 + currentMinute;
+    const sleepTime = sleepHour * 60 + sleepMinute;
+    const extraTime = countOpenWarningPopup * 15;
 
     if (sleepTime + extraTime <= currentTime) {
       if (cookies.alert_choice !== 3) audioRef.current?.play();
@@ -185,8 +172,8 @@ function App() {
   // Show TimeUpPopup
   useEffect(() => {
     if (time == shortBreak && currentProcess == Process.SHORT_BREAK) {
-      dispatch(setOpenTimeUpPopup())
-      dispatch(setIsRunningFalse())
+      dispatch(setOpenTimeUpPopup());
+      dispatch(setIsRunningFalse());
     }
   }, [time, currentProcess, currentIteration]);
 
@@ -220,9 +207,7 @@ function App() {
               );
             } else {
               const View = route.component;
-              return (
-                <Route key={route.path} path={route.path} element={<View />} />
-              );
+              return <Route key={route.path} path={route.path} element={<View />} />;
             }
           })}
           <Route path="*" element={<Navigate to="/404" replace />} />
