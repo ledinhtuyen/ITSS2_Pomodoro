@@ -26,11 +26,11 @@ const settings = {
 };
 
 const Exercise = () => {
-  const location = useLocation()
+  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const categoryParam = queryParams.get('category');
-  const titleParam = queryParams.get('title')
-  const navigate = useNavigate()
+  const categoryParam = queryParams.get("category");
+  const titleParam = queryParams.get("title");
+  const navigate = useNavigate();
   const [categoriesExercise, setCategoriesExercise] = useState<any>([]);
   const [listPost, setListPost] = useState<any>([]);
   const [listVideo, setListVideo] = useState<any>([]);
@@ -38,11 +38,13 @@ const Exercise = () => {
   const dispatch = useAppDispatch();
 
   const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
-    if (value) { navigate(`/exercise?title=${value}`) }
+    if (value) {
+      navigate(`/exercise?title=${value}`);
+    }
   };
 
   const onClickCategory = (name: string) => {
-    navigate(`/exercise?category=${name}`)
+    navigate(`/exercise?category=${name}`);
   };
 
   // Call API to get List Categories && get All Post and Video
@@ -57,26 +59,23 @@ const Exercise = () => {
       .catch((err) => {
         console.log(err);
       });
-
   }, []);
 
   //Re - Get All Post and Video
   useEffect(() => {
     if (categoryParam === null && titleParam === null) {
       dispatch(setLoadingTrue());
-      axios
-        .get(`${import.meta.env.VITE_API_DOMAIN}/list_post_video`)
-        .then((res) => {
-          setListPost(res.data["posts"]);
-          setListVideo(res.data["videos"]);
-          dispatch(setLoadingFalse());
-        });
+      axios.get(`${import.meta.env.VITE_API_DOMAIN}/list_post_video`).then((res) => {
+        setListPost(res.data["posts"]);
+        setListVideo(res.data["videos"]);
+        dispatch(setLoadingFalse());
+      });
     }
-  }, [categoryParam, titleParam])
+  }, [categoryParam, titleParam]);
 
-  // Get Video and Blog by Category 
+  // Get Video and Blog by Category
   useEffect(() => {
-    let timer: any
+    let timer: any;
     if (categoryParam) {
       timer = setTimeout(() => {
         dispatch(setLoadingTrue());
@@ -90,22 +89,21 @@ const Exercise = () => {
           .catch((err) => {
             console.log(err);
           });
-      }, 100)
+      }, 100);
     }
 
-    return () => clearTimeout(timer)
-  }, [categoryParam])
+    return () => clearTimeout(timer);
+  }, [categoryParam]);
 
-  // Get Video and Blog by Title 
+  // Get Video and Blog by Title
   useEffect(() => {
-    let timer: any
+    let timer: any;
+
     if (titleParam) {
       timer = setTimeout(() => {
         dispatch(setLoadingTrue());
         axios
-          .get(
-            `${import.meta.env.VITE_API_DOMAIN}/search_by_title?title=${titleParam}`
-          )
+          .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_title?title=${titleParam}`)
           .then((res) => {
             setListPost(res.data["posts"]);
             setListVideo(res.data["videos"]);
@@ -114,11 +112,11 @@ const Exercise = () => {
           .catch((err) => {
             console.log(err);
           });
-      }, 100)
+      }, 100);
     }
 
-    return () => clearTimeout(timer)
-  }, [titleParam])
+    return () => clearTimeout(timer);
+  }, [titleParam]);
 
   return (
     <div className="bg-[#F5F5F4] excersice-component">
@@ -133,34 +131,37 @@ const Exercise = () => {
           />
         </div>
         <div className="mt-8 mb-5">
-          {titleParam ? <div className="bg-[#E7E5E4] min-h-[146px] rounded-3xl border-[1px] border-[#78716C]">
-            <div className="pl-10 pt-8">
-              <Link className="text-[#A8A29E] text-lg font-semibold" to="/exercise">
-                <ArrowLeftOutlined />
-                <span className="ml-3">Back</span>
-              </Link>
-              <h1 className="font-semibold text-3xl">Search:"{titleParam}"</h1>
-            </div>
-          </div> : <Slider {...settings}>
-            {categoriesExercise.map((category: any, index: any) => (
-              <div
-                className={
-                  categoryParam === category.name
-                    ? "bg-[#EF4444] rounded-lg cursor-pointer text-white"
-                    : "bg-[#E7E5E4] rounded-lg cursor-pointer hover:scale-[1.05]"
-                }
-                key={index}
-                onClick={() => {
-                  onClickCategory(category.name);
-                }}
-              >
-                <h3 className="text-center py-4 font-semibold">
-                  {category.name}
-                </h3>
+          {titleParam ? (
+            <div className="bg-[#E7E5E4] min-h-[146px] rounded-3xl border-[1px] border-[#78716C]">
+              <div className="pl-10 pt-8">
+                <Link className="text-[#A8A29E] text-lg font-semibold" to="/exercise">
+                  <ArrowLeftOutlined />
+                  <span className="ml-3">Back</span>
+                </Link>
+                <h1 className="font-semibold text-3xl">Search:"{titleParam}"</h1>
               </div>
-            ))}
-          </Slider>}
+            </div>
+          ) : (
+            <Slider {...settings}>
+              {categoriesExercise.map((category: any, index: any) => (
+                <div
+                  className={
+                    categoryParam === category.name
+                      ? "bg-[#EF4444] rounded-lg cursor-pointer text-white"
+                      : "bg-[#E7E5E4] rounded-lg cursor-pointer hover:scale-[1.05]"
+                  }
+                  key={index}
+                  onClick={() => {
+                    onClickCategory(category.name);
+                  }}
+                >
+                  <h3 className="text-center py-4 font-semibold">{category.name}</h3>
+                </div>
+              ))}
+            </Slider>
+          )}
         </div>
+
         <div className="ml-8 grid grid-cols-2 gap-5">
           <InstructionalBlog items={listPost} />
           <InstructionalVideo items={listVideo} />

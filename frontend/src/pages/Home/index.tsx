@@ -84,8 +84,9 @@ const Home = () => {
               <div
                 key={index}
                 className={twMerge(
-                  "grow px-4 py-1 rounded-full border border-white select-none bg-transparent flex justify-center items-center",
-                  currentProcess === process && "bg-black border-[2px] border-red-700"
+                  "grow px-4 py-1 rounded-full border border-white select-none",
+                  "flex justify-center items-center bg-stone-50/[0.1] backdrop-blur-sm",
+                  currentProcess === process && "bg-black/[0.5] border-[2px] border-red-700"
                 )}
               >
                 {process}
@@ -96,7 +97,10 @@ const Home = () => {
           <div className="mt-5 flex justify-center gap-3">
             {Array.from({ length: totalIteration }).map((_, index) => (
               <span
-                className={classNames("text-4xl", index + 1 > currentIteration && "opacity-50")}
+                className={classNames(
+                  "text-4xl cursor-default transition hover:scale-125",
+                  index + 1 > currentIteration && "opacity-50"
+                )}
                 key={index}
               >
                 🍅
@@ -121,7 +125,7 @@ const Home = () => {
             )}
             {reset !== false && (
               <button
-                className="w-[80px] bg-[#44403C] px-4 py-1 rounded-full"
+                className="min-w-[100px] bg-stone-700 px-4 py-1 rounded-full"
                 onClick={handleStartPomodoroTimer}
               >
                 {isRunning ? "Pause" : "Start"}

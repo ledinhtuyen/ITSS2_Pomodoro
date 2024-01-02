@@ -6,14 +6,12 @@ import {
   plusFiveMinutesMore,
   handleResetPomodoro,
 } from "../../redux/reducers/pomodoroReducer";
-import { Pause, SkipForward } from "@phosphor-icons/react";
+import { Pause, Play } from "@phosphor-icons/react";
+import classNames from "classnames";
+import { useNavigate } from "react-router-dom";
 
-interface ClockDraggableProps {
-  setCurrentPage: any;
-  currentPage: any;
-}
-
-const ClockDraggable = ({ setCurrentPage }: ClockDraggableProps) => {
+const ClockDraggable: React.FC = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const isRunning = useAppSelector((state) => state.pomodoro.isRunning);
@@ -23,10 +21,6 @@ const ClockDraggable = ({ setCurrentPage }: ClockDraggableProps) => {
   const reset = useAppSelector((state) => state.pomodoro.reset);
   const minutes = Math.floor(time / 60);
   const remainingSeconds = time % 60;
-
-  const navigateHomePage = () => {
-    setCurrentPage("1");
-  };
 
   const handleStartPomodoroTimer = () => {
     dispatch(setIsRunning());
@@ -43,9 +37,11 @@ const ClockDraggable = ({ setCurrentPage }: ClockDraggableProps) => {
   return (
     <Draggable>
       <div
-        className={
-          "fixed right-6 top-6 bg-stone-800 text-stone-50 rounded-full flex flex-row z-[1000] items-center cursor-grab p-3 pl-4 gap-3"
-        }
+        className={classNames(
+          "fixed right-6 top-6 z-[1000] flex flex-row items-center",
+          "bg-stone-800 text-stone-50 rounded-full cursor-grab p-3 pl-4 gap-2",
+          window.location.pathname === "/" && "hidden"
+        )}
       >
         <div className="flex flex-row items-center text-9xl font-semibold text-[28px]">
           <div>{minutes < 10 ? `0${minutes}` : minutes}</div>
@@ -53,19 +49,22 @@ const ClockDraggable = ({ setCurrentPage }: ClockDraggableProps) => {
           <div>{remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}</div>
         </div>
 
-        <span className="border border-red-500 text-[12px] py-[6px] px-[12px] rounded-full font-semibold">
+        <div className="border border-red-500 text-[12px] py-[6px] px-[12px] rounded-full font-semibold" onClick={() => navigate("/")}>
           {currentProcess}
-        </span>
+        </div>
 
         {reset === true ? (
           <button
             className="rounded-full h-8 w-8 flex items-center justify-center bg-stone-50 text-stone-900"
             onClick={handleStartPomodoroTimer}
           >
-            {isRunning ? <Pause size={20} /> : <SkipForward size={20} />}
+            {isRunning ? <Pause size={20} /> : <Play size={20} />}
           </button>
         ) : (
-          <button className="" onClick={handleReset}>
+          <button
+            className="rounded-full h-8 w-8 flex items-center justify-center bg-stone-50 text-stone-900"
+            onClick={handleReset}
+          >
             Reset
           </button>
         )}

@@ -5,28 +5,23 @@ import { Link } from "react-router-dom";
 import "../Exercise.scss";
 
 function Items({ currentItems }: any) {
-  return (
-    <>
-      {currentItems &&
-        currentItems.map((item: any) => (
-          <Link
-            to={`/exercise/blog/${item.id}`}
-            className="border-b-[1px] border-[#E7E5E4] pb-2"
-            key={item.id}
-          >
-            <li className="grid grid-cols-5 gap-5">
-              <div className="">
-                <img src={item.thumbnail} className="mt-1" loading="lazy"/>
-              </div>
-              <div className="col-span-4">
-                <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
-                <span className="text-[#78716C] multiline-ellipsis">{item.description}</span>
-              </div>
-            </li>
-          </Link>
-        ))}
-    </>
-  );
+  return currentItems?.map((item: any) => (
+    <Link
+      to={`/exercise/blog/${item.id}`}
+      className="border-b-[1px] border-[#E7E5E4] pb-2"
+      key={item.id}
+    >
+      <li className="grid grid-cols-5 gap-5">
+        <div className="">
+          <img src={item.thumbnail} className="mt-1" loading="lazy" />
+        </div>
+        <div className="col-span-4">
+          <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
+          <span className="text-[#78716C] multiline-ellipsis">{item.description}</span>
+        </div>
+      </li>
+    </Link>
+  ));
 }
 
 const InstructionalBlog = ({ items }: any) => {
@@ -51,13 +46,12 @@ const InstructionalBlog = ({ items }: any) => {
   return (
     <div>
       <div className="bg-white rounded-lg border-[1px] border-[#e7e5e4] p-5 min-h-[580px]">
-        <h1 className="font-bold text-[#1C1917] mb-5 text-2xl">
-          Instructional Blog
-        </h1>
+        <h1 className="font-bold text-[#1C1917] mb-5 text-2xl">Instructional Blog</h1>
         <ul className="flex flex-col gap-4">
           <Items currentItems={currentItems} />
         </ul>
       </div>
+
       <div className="mt-5">
         {items.length > 5 && (
           <ReactPaginate

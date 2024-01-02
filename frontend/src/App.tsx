@@ -1,36 +1,34 @@
-import { Suspense, useEffect, useRef, useState } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { publicRoutes } from "./routes";
+import axios from "axios";
+import dayjs from "dayjs";
+import { useEffect, useRef, useState } from "react";
+import { useCookies } from "react-cookie";
+import addNotification, { Notifications } from "react-push-notification";
+import { BrowserRouter } from "react-router-dom";
+import ChimeAlert from "./assets/sounds/chime.wav";
+import SoftAlert from "./assets/sounds/soft.wav";
+import { extractHourAndMinute } from "./helper/extractTime";
+import TimeUpPopup from "./pop-up/TimeUp/index";
+import WarningPopup from "./pop-up/WarningPopup";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
+import { setLoadingFalse, setLoadingTrue } from "./redux/reducers/appReducer";
 import {
   Process,
   minusOneSecond,
   setIsResetFalse,
   setIsRunningFalse,
-  setTimeWithProcessCorresponding,
-  setToNextProcess,
+  setLongBreak,
   setPomodoro,
   setShortBreak,
-  setLongBreak,
   setSleepReminder,
+  setTimeWithProcessCorresponding,
+  setToNextProcess,
 } from "./redux/reducers/pomodoroReducer";
-import SoftAlert from "./assets/sounds/soft.wav";
-import ChimeAlert from "./assets/sounds/chime.wav";
-import { useCookies } from "react-cookie";
-import { extractHourAndMinute } from "./helper/extractTime";
-import dayjs from "dayjs";
 import {
   setCloseWarningPopup,
   setOpenTimeUpPopup,
   setOpenWarningPopup,
 } from "./redux/reducers/popupReducer";
-import axios from "axios";
-import { Notifications } from "react-push-notification";
-import addNotification from "react-push-notification";
-import Loading from "./components/Loading";
-import TimeUpPopup from "./pop-up/TimeUp/index";
-import WarningPopup from "./pop-up/WarningPopup";
-import { setLoadingFalse, setLoadingTrue } from "./redux/reducers/appReducer";
+import Router from "./routes";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -179,7 +177,9 @@ function App() {
 
   // Update Alert Volume
   useEffect(() => {
-    audioRef.current!.volume = cookies.alert_volume / 100;
+    if (audioRef.current) {
+      audioRef.current!.volume = cookies.alert_volume / 100;
+    }
   }, [cookies.alert_volume]);
 
   // Custom Title When Current Process and Time change
@@ -187,32 +187,8 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Loading />
-      <Suspense fallback={<Loading />}>
-        <Routes>
-          {publicRoutes.map((route) => {
-            if (route.layout) {
-              const Layout = route.layout;
-              const View = route.component;
-              return (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={
-                    <Layout>
-                      <View />
-                    </Layout>
-                  }
-                />
-              );
-            } else {
-              const View = route.component;
-              return <Route key={route.path} path={route.path} element={<View />} />;
-            }
-          })}
-          <Route path="*" element={<Navigate to="/404" replace />} />
-        </Routes>
-      </Suspense>
+      <Router />
+
       <audio ref={audioRef} src={alertSound[cookies.alert_choice - 1]}></audio>
       <Notifications />
       {isOpenWarningPopup && <WarningPopup />}
