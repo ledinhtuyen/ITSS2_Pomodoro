@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "./Exercise.scss";
 
 function Items({ currentItems }: any) {
-  return currentItems?.map((item: any, index) => (
+  return currentItems?.map((item: any, index: number) => (
     <>
       <Link to={`/exercise/video/${item.id}`} key={item.id}>
         <div className="flex gap-5">
