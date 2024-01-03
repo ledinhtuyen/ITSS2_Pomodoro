@@ -5,9 +5,8 @@ import DefaultLayout from "../layouts";
 import Home from "../pages/Home";
 import Likes from "../pages/Likes";
 import Exercise from "../pages/Exercise";
-import DetailBlog from "../pages/DetailBlog";
-import DetailVideo from "../pages/DetailVideo";
 import ErrorPage from "../pages/ErrorPage";
+import ExerciseDetail from "../pages/ExerciseDetail";
 
 const Router: React.FC = () => {
   const routes = useRoutes([
@@ -20,8 +19,8 @@ const Router: React.FC = () => {
           path: "exercise",
           children: [
             { path: "", element: <Exercise /> },
-            { path: "blog/:id", element: <DetailBlog /> },
-            { path: "video/:id", element: <DetailVideo /> },
+            { path: "blog/:id", element: <ExerciseDetail exerciseType="post" /> },
+            { path: "video/:id", element: <ExerciseDetail exerciseType="video" /> },
           ],
         },
         { path: "*", element: <ErrorPage /> },

@@ -1,14 +1,15 @@
+import { ArrowLeft } from "@phosphor-icons/react";
 import Search, { SearchProps } from "antd/es/input/Search";
-import "./Exercise.scss";
-import Slider from "react-slick";
-import InstructionalBlog from "./components/InstructionalBlog";
-import InstructionalVideo from "./components/InstructionalVideo";
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import Slider from "react-slick";
 import { useAppDispatch } from "../../redux/hook";
 import { setLoadingFalse, setLoadingTrue } from "../../redux/reducers/appReducer";
+import InstructionalBlog from "./InstructionalBlog";
+import InstructionalVideo from "./InstructionalVideo";
+
+import "./Exercise.scss";
 
 const settings = {
   dots: true,
@@ -21,23 +22,25 @@ const settings = {
       style={{
         display: "none",
       }}
-    ></div>
+    />
   ),
 };
 
 const Exercise = () => {
+  const navigate = useNavigate();
   const location = useLocation();
+
   const queryParams = new URLSearchParams(location.search);
   const categoryParam = queryParams.get("category");
   const titleParam = queryParams.get("title");
-  const navigate = useNavigate();
-  const [categoriesExercise, setCategoriesExercise] = useState<any>([]);
-  const [listPost, setListPost] = useState<any>([]);
-  const [listVideo, setListVideo] = useState<any>([]);
+
+  const [categoriesExercise, setCategoriesExercise] = useState<any[]>([]);
+  const [listPost, setListPost] = useState<any[]>([]);
+  const [listVideo, setListVideo] = useState<any[]>([]);
 
   const dispatch = useAppDispatch();
 
-  const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
+  const onSearch: SearchProps["onSearch"] = (value) => {
     if (value) {
       navigate(`/exercise?title=${value}`);
     }
@@ -50,6 +53,7 @@ const Exercise = () => {
   // Call API to get List Categories && get All Post and Video
   useEffect(() => {
     dispatch(setLoadingTrue());
+
     axios
       .get(`${import.meta.env.VITE_API_DOMAIN}/list_category`)
       .then((res) => {
@@ -59,7 +63,7 @@ const Exercise = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [dispatch]);
 
   //Re - Get All Post and Video
   useEffect(() => {
@@ -71,7 +75,7 @@ const Exercise = () => {
         dispatch(setLoadingFalse());
       });
     }
-  }, [categoryParam, titleParam]);
+  }, [categoryParam, titleParam, dispatch]);
 
   // Get Video and Blog by Category
   useEffect(() => {
@@ -93,79 +97,81 @@ const Exercise = () => {
     }
 
     return () => clearTimeout(timer);
-  }, [categoryParam]);
+  }, [categoryParam, dispatch]);
 
   // Get Video and Blog by Title
   useEffect(() => {
     let timer: any;
 
-    if (titleParam) {
-      timer = setTimeout(() => {
+    const searchByTitle = async () => {
+      try {
         dispatch(setLoadingTrue());
-        axios
-          .get(`${import.meta.env.VITE_API_DOMAIN}/search_by_title?title=${titleParam}`)
-          .then((res) => {
-            setListPost(res.data["posts"]);
-            setListVideo(res.data["videos"]);
-            dispatch(setLoadingFalse());
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }, 100);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_DOMAIN}/search_by_title?title=${titleParam}`
+        );
+        setListPost(response.data["posts"]);
+        setListVideo(response.data["videos"]);
+        dispatch(setLoadingFalse());
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (titleParam) {
+      timer = setTimeout(searchByTitle, 100);
     }
 
     return () => clearTimeout(timer);
-  }, [titleParam]);
+  }, [titleParam, dispatch]);
 
   return (
-    <div className="bg-[#F5F5F4] excersice-component">
-      <div className="container mx-auto max-w-[1200px] pt-10 pb-20 min-h-screen">
-        <div className="relative">
-          <h1 className="text-4xl font-bold">Exercise</h1>
-          <Search
-            placeholder="Enter name"
-            onSearch={onSearch}
-            style={{ width: 397, height: 52 }}
-            className="absolute top-[6px] left-1/2 -translate-x-1/2 "
-          />
-        </div>
-        <div className="mt-8 mb-5">
-          {titleParam ? (
-            <div className="bg-[#E7E5E4] min-h-[146px] rounded-3xl border-[1px] border-[#78716C]">
-              <div className="pl-10 pt-8">
-                <Link className="text-[#A8A29E] text-lg font-semibold" to="/exercise">
-                  <ArrowLeftOutlined />
-                  <span className="ml-3">Back</span>
-                </Link>
-                <h1 className="font-semibold text-3xl">Search:"{titleParam}"</h1>
-              </div>
-            </div>
-          ) : (
-            <Slider {...settings}>
-              {categoriesExercise.map((category: any, index: any) => (
-                <div
-                  className={
-                    categoryParam === category.name
-                      ? "bg-[#EF4444] rounded-lg cursor-pointer text-white"
-                      : "bg-[#E7E5E4] rounded-lg cursor-pointer hover:scale-[1.05]"
-                  }
-                  key={index}
-                  onClick={() => {
-                    onClickCategory(category.name);
-                  }}
-                >
-                  <h3 className="text-center py-4 font-semibold">{category.name}</h3>
-                </div>
-              ))}
-            </Slider>
-          )}
-        </div>
+    <div className="pt-8 min-h-screen ml-40 mr-12">
+      <div className="relative flex flex-row gap-4 items-center">
+        <h1 className="text-4xl font-bold">Bài tập</h1>
 
-        <div className="ml-8 grid grid-cols-2 gap-5">
-          <InstructionalBlog items={listPost} />
-          <InstructionalVideo items={listVideo} />
-        </div>
+        <Search
+          placeholder="Tìm kiếm bằng tên"
+          onSearch={onSearch}
+          style={{ width: 397, height: 52 }}
+          className="flex items-center justify-center"
+        />
+      </div>
+
+      <div className="my-6">
+        {titleParam ? (
+          <div className="bg-stone-200 rounded-2xl border-4 border-stone-300 p-8 flex flex-col gap-1">
+            <Link
+              to="/exercise"
+              className="text-stone-400 text-md font-medium flex flex-row gap-1 items-center"
+            >
+              <ArrowLeft weight="bold" />
+              <span>Trở lại</span>
+            </Link>
+
+            <h1 className="font-semibold text-2xl">Tìm kiếm: "{titleParam}"</h1>
+          </div>
+        ) : (
+          <Slider {...settings}>
+            {categoriesExercise.map((category: any, index: any) => (
+              <div
+                className={
+                  categoryParam === category.name
+                    ? "bg-[#EF4444] rounded-lg cursor-pointer text-white"
+                    : "bg-[#E7E5E4] rounded-lg cursor-pointer hover:scale-[1.05]"
+                }
+                key={index}
+                onClick={() => onClickCategory(category.name)}
+              >
+                <h3 className="text-center py-4 font-semibold">{category.name}</h3>
+              </div>
+            ))}
+          </Slider>
+        )}
+      </div>
+
+      <div className="grid grid-cols-2 gap-5 mb-6">
+        <InstructionalBlog items={listPost} />
+        <InstructionalVideo items={listVideo} />
       </div>
     </div>
   );

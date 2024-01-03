@@ -1,16 +1,14 @@
 import { useState } from "react";
-import {
-  StepForwardOutlined,
-  SettingOutlined,
-  InfoCircleOutlined,
-  RedoOutlined,
-} from "@ant-design/icons";
 import BackgroundImg from "../../assets/images/Wallpaper.png";
-import "./Home.scss";
 import PomodoroPopup from "../../pop-up/PomodoroPopup";
 import SettingPopup from "../../pop-up/SettingPopup";
-import Spotify from "../../components/Spotify/Spotify";
+import "./Home.scss";
+// import Spotify from "../../components/Spotify/Spotify";
 
+import { ArrowCounterClockwise, GearSix, Info, SkipForward } from "@phosphor-icons/react";
+import classNames from "classnames";
+import addNotification from "react-push-notification";
+import { twMerge } from "tailwind-merge";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import {
   Process,
@@ -19,10 +17,12 @@ import {
   setIsRunningFalse,
   setToNextProcess,
 } from "../../redux/reducers/pomodoroReducer";
-import addNotification from "react-push-notification";
-import classNames from "classnames";
-import { twMerge } from "tailwind-merge";
-import { ArrowCounterClockwise, GearSix, SkipForward } from "@phosphor-icons/react";
+
+const VI = {
+  Pomodoro: "Pomodoro",
+  "Short Break": "Nghỉ ngắn",
+  "Long Break": "Nghỉ dài",
+};
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -54,7 +54,7 @@ const Home = () => {
     dispatch(setIsRunningFalse());
 
     addNotification({
-      title: "Time up!",
+      title: "Hết giờ!",
       message: `You have finished ${currentIteration} pomodoro!`,
       onClick: () => {
         window.parent.focus();
@@ -89,7 +89,7 @@ const Home = () => {
                   currentProcess === process && "bg-black/[0.5] border-[2px] border-red-700"
                 )}
               >
-                {process}
+                {VI[process]}
               </div>
             ))}
           </div>
@@ -114,13 +114,14 @@ const Home = () => {
               {remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}
             </div>
           </div>
-          <div className="mt-5 flex justify-center gap-3 leading-8">
+          <div className="mt-5 flex justify-center gap-3 font-semibold">
             {reset === false && (
               <button
-                className="bg-stone-50 w-10 h-10 rounded-full flex justify-center items-center text-stone-900"
+                className="bg-stone-50 h-10 rounded-full flex justify-center items-center text-stone-900 flex gap-2 px-4 pl-3 py-1"
                 onClick={handleReset}
               >
                 <ArrowCounterClockwise size={24} />
+                Bắt đầu lại
               </button>
             )}
             {reset !== false && (
@@ -128,7 +129,7 @@ const Home = () => {
                 className="min-w-[100px] bg-stone-700 px-4 py-1 rounded-full"
                 onClick={handleStartPomodoroTimer}
               >
-                {isRunning ? "Pause" : "Start"}
+                {isRunning ? "Tạm dừng" : "Bắt đầu"}
               </button>
             )}
             <button
@@ -150,7 +151,7 @@ const Home = () => {
             className="bg-stone-50 w-10 h-10 rounded-full flex justify-center items-center text-stone-900"
             onClick={handleOpenPomodoroPopup}
           >
-            <InfoCircleOutlined />
+            <Info size={24} />
           </button>
         </div>
 

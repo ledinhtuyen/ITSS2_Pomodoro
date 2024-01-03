@@ -10,6 +10,12 @@ import { Pause, Play } from "@phosphor-icons/react";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 
+const VI = {
+  Pomodoro: "Pomodoro",
+  "Short Break": "Nghỉ ngắn",
+  "Long Break": "Nghỉ dài",
+};
+
 const ClockDraggable: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -38,7 +44,7 @@ const ClockDraggable: React.FC = () => {
     <Draggable>
       <div
         className={classNames(
-          "fixed right-6 top-6 z-[1000] flex flex-row items-center",
+          "fixed right-12 top-8 z-[1000] flex flex-row items-center",
           "bg-stone-800 text-stone-50 rounded-full cursor-grab p-3 pl-4 gap-2",
           window.location.pathname === "/" && "hidden"
         )}
@@ -49,8 +55,11 @@ const ClockDraggable: React.FC = () => {
           <div>{remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}</div>
         </div>
 
-        <div className="border border-red-500 text-[12px] py-[6px] px-[12px] rounded-full font-semibold" onClick={() => navigate("/")}>
-          {currentProcess}
+        <div
+          className="border border-red-500 text-[12px] py-[6px] px-[12px] rounded-full font-semibold"
+          onClick={() => navigate("/")}
+        >
+          {VI[currentProcess]}
         </div>
 
         {reset === true ? (
@@ -65,7 +74,7 @@ const ClockDraggable: React.FC = () => {
             className="rounded-full h-8 w-8 flex items-center justify-center bg-stone-50 text-stone-900"
             onClick={handleReset}
           >
-            Reset
+            Bắt đầu lại
           </button>
         )}
 

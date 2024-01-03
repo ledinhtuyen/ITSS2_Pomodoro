@@ -32,14 +32,20 @@ const ReminderTab = () => {
 
   return (
     <div className="mx-5 text-white">
-      <div>
-        <h1 className="text-2xl mb-3">Nhắc nhở đi ngủ</h1>
-        <div className="mb-3">Schedule</div>
-        <TimePicker
-          value={dayjs(sleepReminder, format)}
-          onChange={onChangeSleepReminder}
-          format={format}
-        />
+      <div className="flex flex-col gap-4">
+        <h1 className="text-2xl mb-3 font-semibold">Nhắc nhở đi ngủ</h1>
+
+        <div className="flex flex-col gap-4">
+          <div className="">Thời điểm</div>
+          <TimePicker
+            value={dayjs(sleepReminder, format)}
+            onChange={onChangeSleepReminder}
+            format={format}
+          />
+          <div className="text-stone-600 text-sm">
+            Đây là thời điểm hệ thống sẽ thông báo bạn nên dừng làm việc{" "}
+          </div>
+        </div>
       </div>
     </div>
   );

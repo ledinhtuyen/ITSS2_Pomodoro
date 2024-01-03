@@ -18,10 +18,7 @@ function getItem(label: React.ReactNode, key: React.Key): MenuItem {
   } as MenuItem;
 }
 
-const items: MenuProps["items"] = [
-  getItem("Pomodoro Timer", "1"),
-  getItem("Reminders", "2"),
-];
+const items: MenuProps["items"] = [getItem("Quản lý thời gian", "1"), getItem("Cảnh báo", "2")];
 
 const SettingPopup = ({ setIsOpenSettingPopup }: SettingPopupProps) => {
   const [currentTab, setCurrentTab] = useState("1");

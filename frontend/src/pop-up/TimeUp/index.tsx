@@ -55,15 +55,15 @@ const TimeUpPopup = () => {
         </button>
 
         <div className="p-8">
-          <h1 className="font-semibold text-[36px] text-center">Time Up</h1>
+          <h1 className="font-semibold text-[36px] text-center">Hết giờ</h1>
 
           <img src={timeUpImage} className="block mx-auto" />
 
           <div className="flex items-end justify-between mb-3">
-            <h1 className="font-semibold text-[20px]">Try these exercises while in break</h1>
-            <div className="font-semibold text-[14px] cursor-pointer" onClick={navigateToExercise}>
-              See more
-            </div>
+            <h1 className="font-semibold text-[20px]">Thử các bài tập sau khi nghỉ ngơi</h1>
+            <button className="font-semibold text-sm text-stone-500" onClick={navigateToExercise}>
+              Xem thêm
+            </button>
           </div>
 
           <div className="grid grid-cols-4 gap-4">
@@ -78,8 +78,8 @@ const TimeUpPopup = () => {
                 </div>
                 <h1 className="font-semibold multiline-ellipsis">{item.title}</h1>
                 <div className="flex justify-between text-[14px] text-[#78716C]">
-                  <span>{item.readtime} mins</span>
-                  <span>{item.likes} likes</span>
+                  <span>{item.readtime} phút</span>
+                  <span>{item.likes} thích</span>
                 </div>
               </div>
             ))}
@@ -100,8 +100,8 @@ const TimeUpPopup = () => {
                 </div>
                 <h1 className="font-semibold multiline-ellipsis">{item.title}</h1>
                 <div className="flex justify-between text-[14px] text-[#78716C]">
-                  <span>{item.readtime} mins</span>
-                  <span>{item.likes} likes</span>
+                  <span>{item.readtime} phút</span>
+                  <span>{item.likes} thích</span>
                 </div>
               </div>
             ))}

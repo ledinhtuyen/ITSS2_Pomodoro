@@ -1,31 +1,37 @@
-.excersice-component {
-  .ant-input-group-addon {
-    background-color: white;
-  }
-  .ant-btn {
-    background-color: white !important;
-  }
-  .slick-slide > div {
-    margin: 0 10px;
-  }
-  .slick-slider {
-    .slick-arrow {
-      &::before {
-        color: #474747 !important;
-      }
+body {
+  @apply bg-stone-100;
+}
+
+.ant-input-group-addon {
+  background-color: white;
+}
+
+.ant-btn {
+  background-color: white !important;
+}
+
+.slick-slide > div {
+  margin: 0 10px;
+}
+
+.slick-slider {
+  .slick-arrow {
+    &::before {
+      color: #474747 !important;
     }
   }
-  .pagination-component {
-    li {
-      &.previous:hover {
-        color: red;
-      }
-      &.next:hover {
-        color: red;
-      }
-      &.page-className:hover {
-         color: red;
-      }
+}
+
+.pagination-component {
+  li {
+    &.previous:hover {
+      @apply text-red-500;
+    }
+    &.next:hover {
+      @apply text-red-500;
+    }
+    &.page-className:hover {
+      @apply text-red-500;
     }
   }
 }

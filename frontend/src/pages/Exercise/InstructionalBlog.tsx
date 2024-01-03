@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import ReactPaginate from "react-paginate";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import "../Exercise.scss";
+import "./Exercise.scss";
 
 function Items({ currentItems }: any) {
-  return currentItems?.map((item: any) => (
-    <Link
-      to={`/exercise/blog/${item.id}`}
-      className="border-b-[1px] border-[#E7E5E4] pb-2"
-      key={item.id}
-    >
-      <li className="grid grid-cols-5 gap-5">
-        <div className="">
-          <img src={item.thumbnail} className="mt-1" loading="lazy" />
-        </div>
-        <div className="col-span-4">
-          <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
-          <span className="text-[#78716C] multiline-ellipsis">{item.description}</span>
-        </div>
-      </li>
-    </Link>
+  return currentItems?.map((item: any, index) => (
+    <>
+      <Link to={`/exercise/blog/${item.id}`} key={item.id}>
+        <li className="flex flex-row gap-4">
+          <div className="aspect-video rounded-md overflow-hidden flex-[1] border border-stone-100">
+            <img src={item.thumbnail} loading="lazy" className="w-full h-full object-cover" />
+          </div>
+          <div className="flex-[2]">
+            <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
+            <span className="text-[#78716C] multiline-ellipsis">{item.description}</span>
+          </div>
+        </li>
+      </Link>
+
+      {index !== currentItems.length - 1 && <hr className="bg-stone-50/[0.5]" />}
+    </>
   ));
 }
 
@@ -44,15 +44,14 @@ const InstructionalBlog = ({ items }: any) => {
   };
 
   return (
-    <div>
-      <div className="bg-white rounded-lg border-[1px] border-[#e7e5e4] p-5 min-h-[580px]">
-        <h1 className="font-bold text-[#1C1917] mb-5 text-2xl">Instructional Blog</h1>
-        <ul className="flex flex-col gap-4">
-          <Items currentItems={currentItems} />
-        </ul>
-      </div>
+    <div className="bg-white rounded-lg border border-stone-200 p-6 flex flex-col gap-6">
+      <h1 className="font-bold text-[#1C1917] text-2xl">Blog ngắn</h1>
 
-      <div className="mt-5">
+      <ul className="flex flex-col gap-4">
+        <Items currentItems={currentItems} />
+      </ul>
+
+      <div className="mt-auto">
         {items.length > 5 && (
           <ReactPaginate
             className="flex justify-center gap-5 pagination-component"

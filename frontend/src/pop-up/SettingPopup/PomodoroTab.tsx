@@ -82,38 +82,34 @@ const PomodoroTab = ({}: PomandoroTabProps) => {
   return (
     <div className="mx-5 text-white">
       <div>
-        <h1 className="text-2xl mb-5">Timer Lengths</h1>
+        <h1 className="text-2xl mb-5 font-semibold">Chỉnh sửa thời gian</h1>
         <div className="w-[80%]">
           <div className="pomandoro-timer-clock flex justify-between gap-5">
             <div>
               <h1 className="mb-2">Pomodoro</h1>
               <InputNumber
-                addonAfter={"mins"}
+                addonAfter="phút"
                 value={pomodoro / 60}
                 onChange={onChangePomodoroTime}
               />
             </div>
             <div>
-              <h1 className="mb-2">Short Break</h1>
+              <h1 className="mb-2">Nghỉ ngắn</h1>
               <InputNumber
-                addonAfter={"mins"}
+                addonAfter="phút"
                 value={shortBreak / 60}
                 onChange={onChangeShortBreak}
               />
             </div>
             <div>
-              <h1 className="mb-2">Long Break</h1>
-              <InputNumber
-                addonAfter={"mins"}
-                value={longBreak / 60}
-                onChange={onChangeLongBreak}
-              />
+              <h1 className="mb-2">Nghỉ dài</h1>
+              <InputNumber addonAfter="phút" value={longBreak / 60} onChange={onChangeLongBreak} />
             </div>
           </div>
         </div>
       </div>
       <div className="mt-9">
-        <h1 className="text-2xl mb-5">Alerts</h1>
+        <h1 className="text-2xl mb-5 font-semibold">Âm thanh nhắc nhở </h1>
         <div className="slider-alert w-1/3">
           <Slider value={cookies.alert_volume} onChange={onChangeSlider} />
         </div>
@@ -121,13 +117,13 @@ const PomodoroTab = ({}: PomandoroTabProps) => {
           <Radio.Group value={cookies.alert_choice} onChange={onChangeAlertChoice}>
             <Space direction="vertical">
               <Radio value={1} className="text-white">
-                Soft
+                Nhẹ nhàng
               </Radio>
               <Radio value={2} className="text-white">
-                Chime
+                Chuông
               </Radio>
               <Radio value={3} className="text-white">
-                No Alert
+                Không có âm thanh
               </Radio>
             </Space>
           </Radio.Group>
@@ -137,7 +133,7 @@ const PomodoroTab = ({}: PomandoroTabProps) => {
             className="bg-[#1C1917] px-4 py-1 rounded-full border-white border"
             onClick={handleBrowserNotification}
           >
-            <span>Allow Browser Notification</span>
+            <span>Cho phép thông báo qua trình duyệt</span>
           </button>
         </div>
       </div>

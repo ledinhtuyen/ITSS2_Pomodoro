@@ -1,28 +1,27 @@
-import React, { useState } from "react";
-import ReactPaginate from "react-paginate";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import "../Exercise.scss";
+import "./Exercise.scss";
 
 function Items({ currentItems }: any) {
-  return (
+  return currentItems?.map((item: any, index) => (
     <>
-      {currentItems &&
-        currentItems.map((item: any) => (
-          <Link to={`/exercise/video/${item.id}`} className="pb-2" key={item.id}>
-            <li>
-              <div className="flex gap-5">
-                <img src={item.thumbnail} width={300} loading="lazy" />
-                <div>
-                  <h1 className="font-semibold text-[#1C1917]">{item.title}</h1>
-                  <span className="text-[#78716C] multiline-ellipsis">{item.description}</span>
-                </div>
-              </div>
-            </li>
-          </Link>
-        ))}
+      <Link to={`/exercise/video/${item.id}`} key={item.id}>
+        <div className="flex gap-5">
+          <div className="aspect-video rounded-md overflow-hidden flex-[2] border border-stone-100">
+            <img src={item.thumbnail} loading="lazy" className="w-full h-full object-cover" />
+          </div>
+          <div className="flex-[3]">
+            <h2 className="font-semibold text-[#1C1917]">{item.title}</h2>
+            <span className="text-[#78716C] multiline-ellipsis">{item.description}</span>
+          </div>
+        </div>
+      </Link>
+
+      {index !== currentItems.length - 1 && <hr className="bg-stone-50/[0.5]" />}
     </>
-  );
+  ));
 }
 
 const InstructionalVideo = ({ items }: any) => {
@@ -40,14 +39,14 @@ const InstructionalVideo = ({ items }: any) => {
     setItemOffset(newOffset);
   };
   return (
-    <div>
-      <div className="bg-white rounded-lg border-[1px] border-[#e7e5e4] p-5 min-h-[580px]">
-        <h1 className="font-bold text-[rgb(28,25,23)] mb-5 text-2xl">Video</h1>
-        <ul className="flex flex-col gap-2">
-          <Items currentItems={currentItems} />
-        </ul>
-      </div>
-      <div className="mt-5">
+    <div className="bg-white rounded-lg border border-stone-200 p-6 flex flex-col gap-6">
+      <h1 className="font-bold text-[rgb(28,25,23)] text-2xl">Video</h1>
+
+      <ul className="flex flex-col gap-4">
+        <Items currentItems={currentItems} />
+      </ul>
+
+      <div className="mt-auto">
         {items.length > 2 && (
           <ReactPaginate
             className="flex justify-center gap-5 pagination-component"

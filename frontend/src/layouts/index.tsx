@@ -13,21 +13,21 @@ interface DefaultLayoutProps {
 
 const NAV_ITEMS = [
   {
-    label: "FOCUS",
+    label: "Làm việc",
     key: "1",
     href: "/",
     icon: <House />,
     activeIcon: <House weight="fill" />,
   },
   {
-    label: "EXERCISE",
+    label: "Bài tập",
     key: "2",
     href: "exercise",
     icon: <Barbell />,
     activeIcon: <Barbell weight="fill" />,
   },
   {
-    label: "LIKES",
+    label: "Thích",
     key: "3",
     href: "likes",
     icon: <Heart />,
@@ -39,9 +39,9 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
     <>
       <div className="z-[100] fixed top-0 left-0 p-6 pt-8 h-screen">
-        <div className="rounded-2xl bg-stone-900 p-2 pt-3 flex flex-col gap-4 h-full">
+        <div className="rounded-3xl bg-stone-900 p-3 flex flex-col gap-4 h-full">
           <NavLink to="/">
-            <div className="h-14 w-14">
+            <div className="h-[72px] w-[72px]">
               <img src={LogoIcon} />
             </div>
           </NavLink>
@@ -53,7 +53,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
                 to={href}
                 className={({ isActive }) =>
                   twMerge(
-                    "flex flex-col gap-1 text-stone-500 justify-center items-center h-14 w-14 rounded-lg",
+                    "flex flex-col gap-1 text-stone-500 justify-center items-center h-[72px] w-[72px] rounded-lg",
                     isActive && "bg-stone-800 text-stone-200"
                   )
                 }
@@ -61,7 +61,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
                 {({ isActive }) => (
                   <>
                     <div className="text-2xl">{isActive ? activeIcon : icon}</div>
-                    <span className="font-semibold text-[10px]">{label}</span>
+                    <span className="font-semibold uppercase text-xs text-center">{label}</span>
                   </>
                 )}
               </NavLink>
@@ -70,7 +70,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
         </div>
       </div>
 
-      <div className="h-full w-full relative top-0 left-0">{children ?? <Outlet />}</div>
+      <div className="h-full w-full relative">{children ?? <Outlet />}</div>
 
       <ClockDraggable />
     </>
