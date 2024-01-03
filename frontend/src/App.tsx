@@ -169,7 +169,10 @@ function App() {
 
   // Show TimeUpPopup
   useEffect(() => {
-    if (time == shortBreak && currentProcess == Process.SHORT_BREAK) {
+    if (
+      (time == shortBreak && currentProcess == Process.SHORT_BREAK) ||
+      (time == longBreak && currentProcess == Process.LONG_BREAK)
+    ) {
       dispatch(setOpenTimeUpPopup());
       dispatch(setIsRunningFalse());
     }

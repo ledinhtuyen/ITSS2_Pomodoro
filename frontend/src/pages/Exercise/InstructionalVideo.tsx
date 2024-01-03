@@ -3,16 +3,20 @@ import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import "./Exercise.scss";
+import { PlayCircle } from "@phosphor-icons/react";
 
 function Items({ currentItems }: any) {
   return currentItems?.map((item: any, index: number) => (
     <>
       <Link to={`/exercise/video/${item.id}`} key={item.id}>
         <div className="flex gap-5">
-          <div className="aspect-video rounded-md overflow-hidden flex-[2] border border-stone-100">
+          <div className="aspect-video rounded-md overflow-hidden flex-[1] border border-stone-100 relative">
+            <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-black/[0.25] opacity-0 hover:opacity-100 transition">
+              <PlayCircle weight="fill" className="text-white" size={40} />
+            </div>
             <img src={item.thumbnail} loading="lazy" className="w-full h-full object-cover" />
           </div>
-          <div className="flex-[3]">
+          <div className="flex-[2]">
             <h2 className="font-semibold text-[#1C1917]">{item.title}</h2>
             <span className="text-[#78716C] multiline-ellipsis">{item.description}</span>
           </div>
@@ -25,7 +29,7 @@ function Items({ currentItems }: any) {
 }
 
 const InstructionalVideo = ({ items }: any) => {
-  const itemsPerPage = 2;
+  const itemsPerPage = 5;
   // index đầu của 1 trang
   const [itemOffset, setItemOffset] = useState(0);
   // index cuối của 1 trang
