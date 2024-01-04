@@ -40,7 +40,7 @@ const ExerciseDetail: React.FC<IExerciseDetailProps> = ({ exerciseType }) => {
     setLikes((prev: number) => prev + (like ? -1 : +1));
     axios
       .post(`${import.meta.env.VITE_API_DOMAIN}/like`, {
-        type: "post",
+        type: exerciseType,
         id: id,
       })
       .then((res) => {

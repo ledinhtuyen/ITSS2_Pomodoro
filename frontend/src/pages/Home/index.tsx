@@ -132,12 +132,14 @@ const Home = () => {
                 {isRunning ? "Tạm dừng" : "Bắt đầu"}
               </button>
             )}
-            <button
-              className="bg-stone-50 w-10 h-10 rounded-full flex justify-center items-center text-stone-900"
-              onClick={handleNextProcess}
-            >
-              <SkipForward size={24} />
-            </button>
+            {reset !== false && (
+              <button
+                className="bg-stone-50 w-10 h-10 rounded-full flex justify-center items-center text-stone-900"
+                onClick={handleNextProcess}
+              >
+                <SkipForward size={24} />
+              </button>
+            )}
             <button
               className="bg-stone-50 w-10 h-10 rounded-full flex justify-center items-center text-stone-900"
               onClick={handleOpenSettingPopup}
@@ -159,8 +161,9 @@ const Home = () => {
           <Spotify url={`${import.meta.env.VITE_SPOTIFY_MUSIC_URL}`} height="compact" width="380" />
         </div> */}
       </div>
+
       <PomodoroPopup isOpen={isOpenPomodoroPopup} setIsOpen={setIsOpenPomodoroPopup} />
-      {isOpenSettingPopup && <SettingPopup setIsOpenSettingPopup={setIsOpenSettingPopup} />}
+      <SettingPopup isOpen={isOpenSettingPopup} setIsOpen={setIsOpenSettingPopup} />
     </>
   );
 };

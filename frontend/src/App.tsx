@@ -202,7 +202,7 @@ function App() {
       <Notifications />
 
       <WarningPopup isOpen={isOpenWarningPopup} />
-      {isOpenTimeUpPopup && <TimeUpPopup />}
+      <TimeUpPopup isOpen={isOpenTimeUpPopup} />
     </BrowserRouter>
   );
 }
