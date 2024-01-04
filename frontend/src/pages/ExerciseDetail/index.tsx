@@ -71,9 +71,11 @@ const ExerciseDetail: React.FC<IExerciseDetailProps> = ({ exerciseType }) => {
         </div>
 
         <div className="mx-auto max-w-3xl my-10">
-          <div className="my-5 mx-auto max-w-2xl">
-            <img src={data.thumbnail} loading="lazy" className="rounded w-full" />
-          </div>
+          {exerciseType === "post" && (
+            <div className="my-5 mx-auto max-w-2xl">
+              <img src={data.thumbnail} loading="lazy" className="rounded w-full" />
+            </div>
+          )}
 
           {exerciseType === "video" && (
             <iframe

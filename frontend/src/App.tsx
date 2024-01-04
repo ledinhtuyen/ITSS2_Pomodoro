@@ -194,7 +194,8 @@ function App() {
 
       <audio ref={audioRef} src={alertSound[cookies.alert_choice - 1]}></audio>
       <Notifications />
-      {isOpenWarningPopup && <WarningPopup />}
+
+      <WarningPopup isOpen={isOpenWarningPopup} />
       {isOpenTimeUpPopup && <TimeUpPopup />}
     </BrowserRouter>
   );

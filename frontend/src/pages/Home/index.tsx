@@ -159,7 +159,7 @@ const Home = () => {
           <Spotify url={`${import.meta.env.VITE_SPOTIFY_MUSIC_URL}`} height="compact" width="380" />
         </div> */}
       </div>
-      {isOpenPomodoroPopup && <PomodoroPopup setIsOpenPomodoroPopup={setIsOpenPomodoroPopup} />}
+      <PomodoroPopup isOpen={isOpenPomodoroPopup} setIsOpen={setIsOpenPomodoroPopup} />
       {isOpenSettingPopup && <SettingPopup setIsOpenSettingPopup={setIsOpenSettingPopup} />}
     </>
   );

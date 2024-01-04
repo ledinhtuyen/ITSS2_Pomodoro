@@ -169,7 +169,7 @@ const Exercise = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-5 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
         <InstructionalBlog items={listPost} />
         <InstructionalVideo items={listVideo} />
       </div>

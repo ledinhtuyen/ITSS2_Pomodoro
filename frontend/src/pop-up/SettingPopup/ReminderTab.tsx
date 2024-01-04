@@ -33,7 +33,7 @@ const ReminderTab = () => {
   return (
     <div className="mx-5 text-white">
       <div className="flex flex-col gap-4">
-        <h1 className="text-2xl mb-3 font-semibold">Nhắc nhở đi ngủ</h1>
+        <h1 className="text-2xl mb-3 font-semibold">Nhắc nhở làm việc quá sức</h1>
 
         <div className="flex flex-col gap-4">
           <div className="">Thời điểm</div>
