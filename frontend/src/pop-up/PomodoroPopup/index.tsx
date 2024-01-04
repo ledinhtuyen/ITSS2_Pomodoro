@@ -103,7 +103,7 @@ const PomodoroPopup: React.FC<PomodoroPopupProps> = ({ isOpen, setIsOpen }) => {
                 <div className="grid grid-cols-3 gap-4">
                   {INSTRUCTIONS.map(({ image, title, description }) => (
                     <div className="flex flex-col justify-center items-center text-center">
-                      <div className="w-24 mb-4">{image}</div>
+                      <div className="w-28 mb-4">{image}</div>
                       <div className="font-semibold">{title}</div>
                       <div>{description}</div>
                     </div>

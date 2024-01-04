@@ -153,19 +153,25 @@ function App() {
   // Show WarningPopup
   useEffect(() => {
     const { hour: sleepHour, minute: sleepMinute } = extractHourAndMinute(sleepReminder);
+    const sleepTime = sleepHour * 60 * 60 + sleepMinute * 60;
+    const currentTime = dayjs().hour() * 60 * 60 + dayjs().minute() * 60 + dayjs().second();
 
-    const currentTime = currentHour * 60 + currentMinute;
-    const sleepTime = sleepHour * 60 + sleepMinute;
-    const extraTime = countOpenWarningPopup * 15;
+    const remainTimeMs = (sleepTime - currentTime) * 1000;
 
-    if (sleepTime + extraTime <= currentTime) {
-      if (cookies.alert_choice !== 3) audioRef.current?.play();
-      dispatch(setOpenWarningPopup());
-      setCountOpenWarningPopup(countOpenWarningPopup + 1);
-    } else {
-      dispatch(setCloseWarningPopup());
+    console.log("Remain Time", remainTimeMs);
+
+    if (remainTimeMs) {
+      setTimeout(() => {
+        console.log("Show Warning Popup");
+        if (cookies.alert_choice !== 3) audioRef.current?.play();
+        dispatch(setOpenWarningPopup());
+      }, remainTimeMs);
     }
-  }, [sleepReminder, currentHour, currentMinute]);
+
+    return () => {
+      dispatch(setCloseWarningPopup());
+    };
+  }, [sleepReminder, dispatch, cookies.alert_choice]);
 
   // Show TimeUpPopup
   useEffect(() => {
